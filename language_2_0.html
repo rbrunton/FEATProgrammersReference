@@ -1,0 +1,2048 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <title>Schema documentation for namespace http://cpe.mitre.org/language/2.0</title>
+      <link rel="stylesheet" href="docHtml.css" type="text/css" /><script type="text/javascript">
+         <!--
+        var propertiesBoxes= new Array('properties_cpe-language_2.2.xsd', 
+				'properties_platform-specification', 
+				'properties_platform-specification_platform', 
+				'properties_PlatformType_title', 
+				'properties_PlatformType_remark', 
+				'properties_PlatformType_logical-test', 
+				'properties_LogicalTestType_logical-test', 
+				'properties_LogicalTestType_fact-ref');
+
+        
+        var facetsBoxes= new Array('facets_http___cpe.mitre.org_language_2.0_namePattern', 
+				'facets_operatorEnumeration');
+
+        
+        var sourceBoxes= new Array('source_platform-specification', 
+				'source_platform-specification_platform', 
+				'source_PlatformType_title', 
+				'source_PlatformType_remark', 
+				'source_PlatformType_logical-test', 
+				'source_LogicalTestType_logical-test', 
+				'source_LogicalTestType_fact-ref', 
+				'source_PlatformType', 
+				'source_http___cpe.mitre.org_language_2.0_TextType', 
+				'source_LogicalTestType', 
+				'source_FactRefType', 
+				'source_http___cpe.mitre.org_language_2.0_namePattern', 
+				'source_operatorEnumeration');
+
+        var instanceBoxes= new Array('instance_platform-specification', 
+				'instance_platform-specification_platform', 
+				'instance_PlatformType_logical-test', 
+				'instance_LogicalTestType_logical-test');
+
+        var diagramBoxes= new Array('diagram_platform-specification', 
+				'diagram_platform-specification_platform', 
+				'diagram_PlatformType_title', 
+				'diagram_PlatformType_remark', 
+				'diagram_PlatformType_logical-test', 
+				'diagram_LogicalTestType_logical-test', 
+				'diagram_LogicalTestType_fact-ref', 
+				'diagram_PlatformType', 
+				'diagram_http___cpe.mitre.org_language_2.0_TextType', 
+				'diagram_LogicalTestType', 
+				'diagram_FactRefType', 
+				'diagram_http___cpe.mitre.org_language_2.0_namePattern', 
+				'diagram_operatorEnumeration');
+
+        var annotationBoxes= new Array('annotations_cpe-language_2.2.xsd', 
+				'annotations_platform-specification', 
+				'annotations_PlatformType', 
+				'annotations_http___cpe.mitre.org_language_2.0_TextType', 
+				'annotations_LogicalTestType', 
+				'annotations_FactRefType', 
+				'annotations_http___cpe.mitre.org_language_2.0_namePattern', 
+				'annotations_operatorEnumeration');
+
+        var attributesBoxes= new Array('attributes_platform-specification_platform', 
+				'attributes_PlatformType_title', 
+				'attributes_PlatformType_remark', 
+				'attributes_PlatformType_logical-test', 
+				'attributes_LogicalTestType_logical-test', 
+				'attributes_LogicalTestType_fact-ref', 
+				'attributes_PlatformType', 
+				'attributes_http___cpe.mitre.org_language_2.0_TextType', 
+				'attributes_LogicalTestType', 
+				'attributes_FactRefType');
+
+        
+        
+        var identityConstraintsBoxes= new Array('identityConstraints_platform-specification');
+
+        var modelBoxes= new Array('model_platform-specification', 
+				'model_platform-specification_platform', 
+				'model_PlatformType_logical-test', 
+				'model_LogicalTestType_logical-test', 
+				'model_PlatformType', 
+				'model_LogicalTestType');
+
+        var button_prefix = 'button_';
+        
+        /**
+        * Returns an element in the current HTML document.
+        *
+        * @param elementID Identifier of HTML element
+        * @return               HTML element object
+        */
+        function getElementObject(elementID) {
+            var elemObj = null;
+            if (document.getElementById) {
+                elemObj = document.getElementById(elementID);
+            }
+            return elemObj;
+        }
+        
+        /**
+        * Switches the state of a collapseable box, e.g.
+        * if it's opened, it'll be closed, and vice versa.
+        *
+        * @param boxID Identifier of box
+        */
+        function switchState(boxID) {
+            var boxObj = getElementObject(boxID);
+            var buttonObj = getElementObject(button_prefix + boxID);
+            if (boxObj == null || buttonObj == null) {
+                // Box or button not found
+            } else if (boxObj.style.display == "none") {
+                // Box is closed, so open it
+                openBox(boxObj, buttonObj);
+            } else if (boxObj.style.display == "block") {
+                // Box is opened, so close it
+                closeBox(boxObj, buttonObj);
+            }
+        }
+        
+        /**
+        * Opens a collapseable box.
+        *
+        * @param boxObj       Collapseable box
+        * @param buttonObj Button controlling box
+        */
+        function openBox(boxObj, buttonObj) {
+            if (boxObj == null || buttonObj == null) {
+                // Box or button not found
+            } else {
+                // Change 'display' CSS property of box
+                boxObj.style.display = "block";
+                
+                // Change text of button
+                if (boxObj.style.display == "block") {
+                    buttonObj.src = "img/btM.gif";
+                }
+            }
+        }
+        
+        /**
+        * Closes a collapseable box.
+        *
+        * @param boxObj       Collapseable box
+        * @param buttonObj Button controlling box
+        */
+        function closeBox(boxObj, buttonObj) {
+            if (boxObj == null || buttonObj == null) {
+                // Box or button not found
+            } else {
+                // Change 'display' CSS property of box
+                boxObj.style.display = "none";
+                
+                // Change text of button
+                if (boxObj.style.display == "none") {
+                    buttonObj.src = "img/btP.gif";
+                }
+            }
+        }
+    
+       function switchStateForAll(buttonObj, boxList) {
+            if (buttonObj == null) {
+                // button not found
+            } else if (buttonObj.value == "+") {
+                // Expand all
+                expandAll(boxList);
+                buttonObj.value = "-";
+            } else if (buttonObj.value == "-") {
+                // Collapse all
+                collapseAll(boxList);
+                buttonObj.value = "+";
+            }
+        }
+        
+        /**
+        * Closes all boxes in a given list.
+        *
+        * @param boxList Array of box IDs
+        */
+        function collapseAll(boxList) {
+            var idx;
+            for (idx = 0; idx < boxList.length; idx++) {
+                var boxObj = getElementObject(boxList[idx]);
+                var buttonObj = getElementObject(button_prefix + boxList[idx]);
+                closeBox(boxObj, buttonObj);
+            }
+        }
+            
+        /**
+        * Open all boxes in a given list.
+        *
+        * @param boxList Array of box IDs
+        */
+        function expandAll(boxList) {
+            var idx;
+            for (idx = 0; idx < boxList.length; idx++) {
+                var boxObj = getElementObject(boxList[idx]);
+                var buttonObj = getElementObject(button_prefix + boxList[idx]);
+                openBox(boxObj, buttonObj);
+            }
+        }
+        
+        /**
+         * Update the message presented in the title of the html page.
+         * - If the documentation was splited by namespace we present something like: "Documentation for namespace 'ns'"
+         * - If the documentation was splited by location we present somehing like: "Documentation for 'Schema.xsd'"
+         * - If no split we always present: "Documentation for 'MainSchema.xsd'"
+         */
+        function updatePageTitle(message) {
+            top.document.title = message;
+        }
+        
+          
+                    
+         /**
+          * Finds an HTML element by its ID and makes it floatable over the normal content.
+          *
+          * @param x_displacement The difference in pixels to the right side of the window from 
+          *           the left side of the element.
+          * @param y_displacement The difference in pixels to the right side of the window from 
+          *           the top of the element.          
+          */
+         function findAndFloat(id, x_displacement, y_displacement){
+
+            var element = getElementObject(id);            
+            
+            window[id + "_obj"] = element;
+            
+            if(document.layers) {
+               element.style = element;
+            }
+            
+            element.current_y = y_displacement;      
+            element.first_time = true;
+         
+            element.floatElement = function(){
+               // It may be closed by an user action.
+                
+               // Target X and Y coordinates.
+               var x, y;
+               
+               var myWidth = 0, myHeight = 0;
+               if( typeof( window.innerWidth ) == 'number' ) {
+                  //Non-IE
+                  myWidth = window.innerWidth;
+                  myHeight = window.innerHeight;
+               } else if( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ) {
+                  //IE 6+ in 'standards compliant mode'
+                  myWidth = document.documentElement.clientWidth;
+                  myHeight = document.documentElement.clientHeight;
+               } else if( document.body && ( document.body.clientWidth || document.body.clientHeight ) ) {
+                  //IE 4 compatible
+                  myWidth = document.body.clientWidth;
+                  myHeight = document.body.clientHeight;
+               }
+               
+               
+               x = myWidth - x_displacement;
+               
+               var ns = (navigator.appName.indexOf("Netscape") != -1);               
+               y = ns ? pageYOffset : document.documentElement && document.documentElement.scrollTop ? 
+                  document.documentElement.scrollTop : document.body.scrollTop;               
+               y = y + y_displacement;               
+               
+               // The current y is the current coordinate of the floating element.
+               // This should be at the limit the y target coordinate.
+               this.current_y += (y - this.current_y)/1.25;
+               
+               // Add the pixels constant after the values
+               // and move the element.
+               var px = document.layers ? "" : "px";
+               this.style.left =  x + px;
+               this.style.top =  this.current_y + px;
+                              
+               setTimeout(this.id + "_obj.floatElement()", 100);
+            }
+            
+            element.floatElement();
+            return element;
+          }
+
+         /**
+          * Finds an HTML element by its ID and makes it floatable over the normal content.
+          *
+          * @param x_displacement The difference in pixels to the right side of the window from 
+          *           the left side of the element.
+          * @param y_displacement The difference in pixels to the right side of the window from 
+          *           the top of the element.          
+          */
+         function selectTOCGroupBy(id, isChunked, indexFileLocation, indexFileNamespace, indexFileComponent){
+
+            if (!isChunked) {
+             var selectIds = new Array('toc_group_by_namespace', 'toc_group_by_location', 'toc_group_by_component_type');
+             // Make all the tabs invisible.
+               for (i = 0; i < 3; i++){
+                  var tab = getElementObject(selectIds[i]);
+                  tab.style.display = 'none';
+               }
+               var selTab = getElementObject(id);
+               selTab.style.display = 'block';
+            } else {
+             if (id == 'toc_group_by_namespace') {
+               parent.indexFrame.location = indexFileNamespace;
+             } else  if (id == 'toc_group_by_location') {
+               parent.indexFrame.location = indexFileLocation;
+             } else  if (id == 'toc_group_by_component_type') {
+              parent.indexFrame.location = indexFileComponent;
+             }
+            }
+         }
+          
+
+    --></script></head>
+   <body>
+      <div id="global_controls" class="globalControls" style="position:absolute;right:0;">
+         <table class="rt">
+            <tr>
+               <td class="rt_cornerTopLeft"></td>
+               <td class="rt_lineTop"></td>
+               <td class="rt_cornerTopRight"></td>
+            </tr>
+            <tr>
+               <td class="rt_lineLeft"></td>
+               <td class="rt_content">
+                  <h3>Showing:</h3>
+                  <table>
+                     <tr>
+                        <td><span><input type="checkbox" value="-" checked="checked" onclick="switchStateForAll(this, annotationBoxes);" class="control" /></span><span class="globalControlName">Annotations</span></td>
+                     </tr>
+                     <tr>
+                        <td><span><input type="checkbox" value="-" checked="checked" onclick="switchStateForAll(this, attributesBoxes);" class="control" /></span><span class="globalControlName">Attributes </span></td>
+                     </tr>
+                     <tr>
+                        <td><span><input type="checkbox" value="-" checked="checked" onclick="switchStateForAll(this, diagramBoxes);" class="control" /></span><span class="globalControlName">Diagrams</span></td>
+                     </tr>
+                     <tr>
+                        <td><span><input type="checkbox" value="-" checked="checked" onclick="switchStateForAll(this, facetsBoxes);" class="control" /></span><span class="globalControlName">Facets </span></td>
+                     </tr>
+                     <tr>
+                        <td><span><input type="checkbox" value="-" checked="checked" onclick="switchStateForAll(this, identityConstraintsBoxes);" class="control" /></span><span class="globalControlName">Identity Constraints</span></td>
+                     </tr>
+                     <tr>
+                        <td><span><input type="checkbox" value="-" checked="checked" onclick="switchStateForAll(this, instanceBoxes);" class="control" /></span><span class="globalControlName">Instances</span></td>
+                     </tr>
+                     <tr>
+                        <td><span><input type="checkbox" value="-" checked="checked" onclick="switchStateForAll(this, modelBoxes);" class="control" /></span><span class="globalControlName">Model </span></td>
+                     </tr>
+                     <tr>
+                        <td><span><input type="checkbox" value="-" checked="checked" onclick="switchStateForAll(this, propertiesBoxes);" class="control" /></span><span class="globalControlName">Properties </span></td>
+                     </tr>
+                     <tr>
+                        <td><span><input type="checkbox" value="-" checked="checked" onclick="switchStateForAll(this, sourceBoxes);" class="control" /></span><span class="globalControlName">Source</span></td>
+                     </tr>
+                  </table>
+                  <div align="right"><span><input type="button" onclick="getElementObject('global_controls').style.display = 'none';" value="Close" /></span></div>
+               </td>
+               <td class="rt_lineRight"></td>
+            </tr>
+            <tr>
+               <td class="rt_cornerBottomLeft"></td>
+               <td class="rt_lineBottom"></td>
+               <td class="rt_cornerBottomRight"></td>
+            </tr>
+         </table>
+      </div><a id="cpe-language_2.2.xsd"></a><div class="componentTitle">Imported schema <span class="qname">cpe-language_2.2.xsd</span></div>
+      <table class="rt">
+         <tr>
+            <td class="rt_cornerTopLeft"></td>
+            <td class="rt_lineTop"></td>
+            <td class="rt_cornerTopRight"></td>
+         </tr>
+         <tr>
+            <td class="rt_lineLeft"></td>
+            <td class="rt_content">
+               <table class="component">
+                  <tbody>
+                     <tr>
+                        <td class="firstColumn"><b>Namespace</b></td>
+                        <td>http://cpe.mitre.org/language/2.0</td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Annotations</b></div>
+                           <div class="floatRight"><input id="button_annotations_cpe-language_2.2.xsd" type="image" src="img/btM.gif" value="-" onclick="switchState('annotations_cpe-language_2.2.xsd');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="annotations_cpe-language_2.2.xsd" style="display:block">
+                              <div class="annotation">
+                                 <table style="table-layout:fixed;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;_white-space:pre;" class="preWrapContainer">
+                                    <tr>
+                                       <td width="100%"><pre><span class="tT">This XML Schema defines the CPE Language. An individual CPE Name addresses a single part of an actual system. To identify more complex platform types, there needs to be a way to combine different CPE Names using logical operators. For example, there may be a need to identify a platform with a particular operating system AND a certain application. The CPE Language exists to satisfy this need, enabling the CPE Name for the operating system to be combined with the CPE Name for the application. For more information, consult the CPE Specification document.</span></pre></td>
+                                    </tr>
+                                 </table>
+                              </div>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Properties</b></div>
+                           <div class="floatRight"><input id="button_properties_cpe-language_2.2.xsd" type="image" src="img/btM.gif" value="-" onclick="switchState('properties_cpe-language_2.2.xsd');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="properties_cpe-language_2.2.xsd" style="display:block">
+                              <table class="propertiesTable">
+                                 <tr>
+                                    <td class="firstColumn" style="white-space: nowrap;">attribute form default</td>
+                                    <td><b>unqualified</b></td>
+                                 </tr>
+                                 <tr>
+                                    <td class="firstColumn" style="white-space: nowrap;">element form default</td>
+                                    <td><b>qualified</b></td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </td>
+            <td class="rt_lineRight"></td>
+         </tr>
+         <tr>
+            <td class="rt_cornerBottomLeft"></td>
+            <td class="rt_lineBottom"></td>
+            <td class="rt_cornerBottomRight"></td>
+         </tr>
+      </table><a id="platform-specification"></a><div class="componentTitle">Element <span class="qname">cpe:platform-specification</span></div>
+      <table class="rt">
+         <tr>
+            <td class="rt_cornerTopLeft"></td>
+            <td class="rt_lineTop"></td>
+            <td class="rt_cornerTopRight"></td>
+         </tr>
+         <tr>
+            <td class="rt_lineLeft"></td>
+            <td class="rt_content">
+               <table class="component">
+                  <tbody>
+                     <tr>
+                        <td class="firstColumn"><b>Namespace</b></td>
+                        <td>http://cpe.mitre.org/language/2.0</td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Annotations</b></div>
+                           <div class="floatRight"><input id="button_annotations_platform-specification" type="image" src="img/btM.gif" value="-" onclick="switchState('annotations_platform-specification');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="annotations_platform-specification" style="display:block">
+                              <div class="annotation">
+                                 <table style="table-layout:fixed;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;_white-space:pre;" class="preWrapContainer">
+                                    <tr>
+                                       <td width="100%"><pre><span class="tT">This element is the root element of a CPE Language XML documents and therefore acts as a container for child platform definitions.</span></pre></td>
+                                    </tr>
+                                 </table>
+                              </div>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Diagram</b></div>
+                           <div class="floatRight"><input id="button_diagram_platform-specification" type="image" src="img/btM.gif" value="-" onclick="switchState('diagram_platform-specification');" class="control" /></div>
+                        </td>
+                        <td class="diagram">
+                           <div id="diagram_platform-specification" style="display:block"><img alt="Diagram" border="0" src="img/cpe-language_2_2_xsd_Element_cpe_platform-specification.png" usemap="#cpe-language_2_2_xsd_Element_cpe_platform-specification" /><map name="cpe-language_2_2_xsd_Element_cpe_platform-specification" id="cpe-language_2_2_xsd_Element_cpe_platform-specification">
+                                 <area alt="language_2_0.tmp#platform-specification_platform" href="language_2_0.html#platform-specification_platform" coords="291,6,368,30" /></map></div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Properties</b></div>
+                           <div class="floatRight"><input id="button_properties_platform-specification" type="image" src="img/btM.gif" value="-" onclick="switchState('properties_platform-specification');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="properties_platform-specification" style="display:block">
+                              <table class="propertiesTable">
+                                 <tr>
+                                    <td class="firstColumn" style="white-space: nowrap;">content</td>
+                                    <td><b>complex</b></td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn"><b>Model</b><div class="floatRight"><input id="button_model_platform-specification" type="image" src="img/btM.gif" value="-" onclick="switchState('model_platform-specification');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="model_platform-specification" style="display:block"><b><a href="language_2_0.html#platform-specification_platform" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:platform+</a></b></div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn"><b>Children</b></td>
+                        <td><b><a href="language_2_0.html#platform-specification_platform" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:platform</a></b></td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Instance</b></div>
+                           <div class="floatRight"><input id="button_instance_platform-specification" type="image" src="img/btM.gif" value="-" onclick="switchState('instance_platform-specification');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="instance_platform-specification" style="display:block">
+                              <table style="table-layout:fixed;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;_white-space:pre;" class="preWrapContainer">
+                                 <tr>
+                                    <td width="100%"><pre><span class="tEl">&lt;cpe:platform-specification</span><span class="tT"> </span><span class="tAN">xmlns:cpe=</span><span class="tAV">"http://cpe.mitre.org/language/2.0"</span><span class="tEl">&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;cpe:platform</span><span class="tT"> </span><span class="tAN">id=</span><span class="tAV">""</span><span class="tEl">&gt;</span><span class="tT" style="white-space:normal">{1,unbounded}</span><span class="tEl">&lt;/cpe:platform&gt;</span><span class="tI">
+</span><span class="tEl">&lt;/cpe:platform-specification&gt;</span></pre></td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Source</b></div>
+                           <div class="floatRight"><input id="button_source_platform-specification" type="image" src="img/btM.gif" value="-" onclick="switchState('source_platform-specification');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="source_platform-specification" style="display:block">
+                              <table style="table-layout:fixed;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;_white-space:pre;" class="preWrapContainer">
+                                 <tr>
+                                    <td width="100%"><pre><span class="tEl">&lt;xsd:element</span><span class="tAN"> name=</span><span class="tAV">"platform-specification"</span><span class="tEl">&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;xsd:annotation</span><span class="tEl">&gt;</span><span class="tI">
+    </span><span class="tEl">&lt;xsd:documentation</span><span class="tAN"> xml:lang=</span><span class="tAV">"en"</span><span class="tEl">&gt;</span><span class="tT" style="white-space:normal">This element is the root element of a CPE Language XML documents and therefore acts as a container for child platform definitions.</span><span class="tEl">&lt;/xsd:documentation&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;/xsd:annotation&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;xsd:complexType</span><span class="tEl">&gt;</span><span class="tI">
+    </span><span class="tEl">&lt;xsd:sequence</span><span class="tEl">&gt;</span><span class="tI">
+      </span><span class="tEl">&lt;xsd:element</span><span class="tAN"> name=</span><span class="tAV">"platform"</span><span class="tAN"> type=</span><span class="tAV">"cpe:PlatformType"</span><span class="tAN"> minOccurs=</span><span class="tAV">"1"</span><span class="tAN"> maxOccurs=</span><span class="tAV">"unbounded"</span><span class="tEl">/&gt;</span><span class="tI">
+    </span><span class="tEl">&lt;/xsd:sequence&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;/xsd:complexType&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;xsd:key</span><span class="tAN"> name=</span><span class="tAV">"platformKey"</span><span class="tEl">&gt;</span><span class="tI">
+    </span><span class="tEl">&lt;xsd:selector</span><span class="tAN"> xpath=</span><span class="tAV">"cpe:platform"</span><span class="tEl">/&gt;</span><span class="tI">
+    </span><span class="tEl">&lt;xsd:field</span><span class="tAN"> xpath=</span><span class="tAV">"@id"</span><span class="tEl">/&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;/xsd:key&gt;</span><span class="tI">
+</span><span class="tEl">&lt;/xsd:element&gt;</span></pre></td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </td>
+            <td class="rt_lineRight"></td>
+         </tr>
+         <tr>
+            <td class="rt_cornerBottomLeft"></td>
+            <td class="rt_lineBottom"></td>
+            <td class="rt_cornerBottomRight"></td>
+         </tr>
+      </table><a id="platform-specification_platform"></a><div class="componentTitle">Element <span class="qname"><b><a href="language_2_0.html#platform-specification" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:platform-specification</a></b> / cpe:platform</span></div>
+      <table class="rt">
+         <tr>
+            <td class="rt_cornerTopLeft"></td>
+            <td class="rt_lineTop"></td>
+            <td class="rt_cornerTopRight"></td>
+         </tr>
+         <tr>
+            <td class="rt_lineLeft"></td>
+            <td class="rt_content">
+               <table class="component">
+                  <tbody>
+                     <tr>
+                        <td class="firstColumn"><b>Namespace</b></td>
+                        <td>http://cpe.mitre.org/language/2.0</td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Diagram</b></div>
+                           <div class="floatRight"><input id="button_diagram_platform-specification_platform" type="image" src="img/btM.gif" value="-" onclick="switchState('diagram_platform-specification_platform');" class="control" /></div>
+                        </td>
+                        <td class="diagram">
+                           <div id="diagram_platform-specification_platform" style="display:block"><img alt="Diagram" border="0" src="img/cpe-language_2_2_xsd_Element_cpe_platform.png" usemap="#cpe-language_2_2_xsd_Element_cpe_platform" /><map name="cpe-language_2_2_xsd_Element_cpe_platform" id="cpe-language_2_2_xsd_Element_cpe_platform">
+                                 <area alt="NO_NAMESPACE.tmp#PlatformType_id" href="NO_NAMESPACE.html#PlatformType_id" coords="133,78,201,102" />
+                                 <area alt="language_2_0.tmp#PlatformType_title" href="language_2_0.html#PlatformType_title" coords="211,119,262,143" />
+                                 <area alt="language_2_0.tmp#PlatformType_remark" href="language_2_0.html#PlatformType_remark" coords="211,153,280,177" />
+                                 <area alt="language_2_0.tmp#PlatformType_logical-test" href="language_2_0.html#PlatformType_logical-test" coords="211,187,303,211" />
+                                 <area alt="language_2_0.tmp#PlatformType" href="language_2_0.html#PlatformType" coords="108,3,252,25" /></map></div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn"><b>Type</b></td>
+                        <td><b><a href="language_2_0.html#PlatformType" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:PlatformType</a></b></td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Properties</b></div>
+                           <div class="floatRight"><input id="button_properties_platform-specification_platform" type="image" src="img/btM.gif" value="-" onclick="switchState('properties_platform-specification_platform');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="properties_platform-specification_platform" style="display:block">
+                              <table class="propertiesTable">
+                                 <tr>
+                                    <td class="firstColumn" style="white-space: nowrap;">content</td>
+                                    <td><b>complex</b></td>
+                                 </tr>
+                                 <tr>
+                                    <td class="firstColumn" style="white-space: nowrap;">minOccurs</td>
+                                    <td><b>1</b></td>
+                                 </tr>
+                                 <tr>
+                                    <td class="firstColumn" style="white-space: nowrap;">maxOccurs</td>
+                                    <td><b>unbounded</b></td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn"><b>Model</b><div class="floatRight"><input id="button_model_platform-specification_platform" type="image" src="img/btM.gif" value="-" onclick="switchState('model_platform-specification_platform');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="model_platform-specification_platform" style="display:block"><b><a href="language_2_0.html#PlatformType_title" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:title*</a></b> , <b><a href="language_2_0.html#PlatformType_remark" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:remark*</a></b> , <b><a href="language_2_0.html#PlatformType_logical-test" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:logical-test</a></b></div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn"><b>Children</b></td>
+                        <td><b><a href="language_2_0.html#PlatformType_logical-test" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:logical-test</a></b>, <b><a href="language_2_0.html#PlatformType_remark" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:remark</a></b>, <b><a href="language_2_0.html#PlatformType_title" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:title</a></b></td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Instance</b></div>
+                           <div class="floatRight"><input id="button_instance_platform-specification_platform" type="image" src="img/btM.gif" value="-" onclick="switchState('instance_platform-specification_platform');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="instance_platform-specification_platform" style="display:block">
+                              <table style="table-layout:fixed;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;_white-space:pre;" class="preWrapContainer">
+                                 <tr>
+                                    <td width="100%"><pre><span class="tEl">&lt;cpe:platform</span><span class="tT"> </span><span class="tAN">id=</span><span class="tAV">""</span><span class="tT"> </span><span class="tAN">xmlns:cpe=</span><span class="tAV">"http://cpe.mitre.org/language/2.0"</span><span class="tEl">&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;cpe:title</span><span class="tT"> </span><span class="tAN">xml:lang=</span><span class="tAV">""</span><span class="tEl">&gt;</span><span class="tT" style="white-space:normal">{0,unbounded}</span><span class="tEl">&lt;/cpe:title&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;cpe:remark</span><span class="tT"> </span><span class="tAN">xml:lang=</span><span class="tAV">""</span><span class="tEl">&gt;</span><span class="tT" style="white-space:normal">{0,unbounded}</span><span class="tEl">&lt;/cpe:remark&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;cpe:logical-test</span><span class="tT"> </span><span class="tAN">negate=</span><span class="tAV">""</span><span class="tT"> </span><span class="tAN">operator=</span><span class="tAV">""</span><span class="tEl">&gt;</span><span class="tT" style="white-space:normal">{1,1}</span><span class="tEl">&lt;/cpe:logical-test&gt;</span><span class="tI">
+</span><span class="tEl">&lt;/cpe:platform&gt;</span></pre></td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Attributes</b></div>
+                           <div class="floatRight"><input id="button_attributes_platform-specification_platform" type="image" src="img/btM.gif" value="-" onclick="switchState('attributes_platform-specification_platform');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="attributes_platform-specification_platform" style="display:block">
+                              <table class="attributesTable">
+                                 <thead>
+                                    <tr>
+                                       <th>QName</th>
+                                       <th width="10%">Type</th>
+                                       <th width="5%">Use</th>
+                                       <th></th>
+                                    </tr>
+                                 </thead>
+                                 <tr>
+                                    <td class="firstColumn"><b><a href="NO_NAMESPACE.html#PlatformType_id" target="mainFrame" title="No namespace" onclick="updatePageTitle('Schema documentation for &#34;No namespace&#34;')">id</a></b></td>
+                                    <td><b>xsd:anyURI</b></td>
+                                    <td>required</td>
+                                    <td>
+                                       <div class="annotation"></div>
+                                    </td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Source</b></div>
+                           <div class="floatRight"><input id="button_source_platform-specification_platform" type="image" src="img/btM.gif" value="-" onclick="switchState('source_platform-specification_platform');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="source_platform-specification_platform" style="display:block">
+                              <table style="table-layout:fixed;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;_white-space:pre;" class="preWrapContainer">
+                                 <tr>
+                                    <td width="100%"><pre><span class="tEl">&lt;xsd:element</span><span class="tAN"> name=</span><span class="tAV">"platform"</span><span class="tAN"> type=</span><span class="tAV">"cpe:PlatformType"</span><span class="tAN"> minOccurs=</span><span class="tAV">"1"</span><span class="tAN"> maxOccurs=</span><span class="tAV">"unbounded"</span><span class="tEl">/&gt;</span></pre></td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </td>
+            <td class="rt_lineRight"></td>
+         </tr>
+         <tr>
+            <td class="rt_cornerBottomLeft"></td>
+            <td class="rt_lineBottom"></td>
+            <td class="rt_cornerBottomRight"></td>
+         </tr>
+      </table><a id="PlatformType_title"></a><div class="componentTitle">Element <span class="qname"><b><a href="language_2_0.html#PlatformType" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:PlatformType</a></b> / cpe:title</span></div>
+      <table class="rt">
+         <tr>
+            <td class="rt_cornerTopLeft"></td>
+            <td class="rt_lineTop"></td>
+            <td class="rt_cornerTopRight"></td>
+         </tr>
+         <tr>
+            <td class="rt_lineLeft"></td>
+            <td class="rt_content">
+               <table class="component">
+                  <tbody>
+                     <tr>
+                        <td class="firstColumn"><b>Namespace</b></td>
+                        <td>http://cpe.mitre.org/language/2.0</td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Diagram</b></div>
+                           <div class="floatRight"><input id="button_diagram_PlatformType_title" type="image" src="img/btM.gif" value="-" onclick="switchState('diagram_PlatformType_title');" class="control" /></div>
+                        </td>
+                        <td class="diagram">
+                           <div id="diagram_PlatformType_title" style="display:block"><img alt="Diagram" border="0" src="img/cpe-language_2_2_xsd_Element_cpe_title.png" usemap="#cpe-language_2_2_xsd_Element_cpe_title" /><map name="cpe-language_2_2_xsd_Element_cpe_title" id="cpe-language_2_2_xsd_Element_cpe_title">
+                                 <area alt="namespace.tmp#lang" href="namespace.html#lang" coords="107,157,201,181" />
+                                 <area alt="language_2_0.tmp#http___cpe.mitre.org_language_2.0_TextType" href="language_2_0.html#http___cpe.mitre.org_language_2.0_TextType" coords="82,3,205,25" /></map></div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn"><b>Type</b></td>
+                        <td><b><a href="language_2_0.html#http___cpe.mitre.org_language_2.0_TextType" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:TextType</a></b></td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Properties</b></div>
+                           <div class="floatRight"><input id="button_properties_PlatformType_title" type="image" src="img/btM.gif" value="-" onclick="switchState('properties_PlatformType_title');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="properties_PlatformType_title" style="display:block">
+                              <table class="propertiesTable">
+                                 <tr>
+                                    <td class="firstColumn" style="white-space: nowrap;">content</td>
+                                    <td><b>complex</b></td>
+                                 </tr>
+                                 <tr>
+                                    <td class="firstColumn" style="white-space: nowrap;">minOccurs</td>
+                                    <td><b>0</b></td>
+                                 </tr>
+                                 <tr>
+                                    <td class="firstColumn" style="white-space: nowrap;">maxOccurs</td>
+                                    <td><b>unbounded</b></td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Attributes</b></div>
+                           <div class="floatRight"><input id="button_attributes_PlatformType_title" type="image" src="img/btM.gif" value="-" onclick="switchState('attributes_PlatformType_title');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="attributes_PlatformType_title" style="display:block">
+                              <table class="attributesTable">
+                                 <thead>
+                                    <tr>
+                                       <th>QName</th>
+                                       <th width="10%">Type</th>
+                                       <th width="5%">Use</th>
+                                       <th>Annotation</th>
+                                    </tr>
+                                 </thead>
+                                 <tr>
+                                    <td class="firstColumn"><b><a href="namespace.html#lang" target="mainFrame" title="http://www.w3.org/XML/1998/namespace" onclick="updatePageTitle('Schema documentation for namespace http://www.w3.org/XML/1998/namespace')">xml:lang</a></b></td>
+                                    <td><b>xs:language</b></td>
+                                    <td>optional</td>
+                                    <td>
+                                       <div class="annotation">
+                                          <table style="table-layout:fixed;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;_white-space:pre;" class="preWrapContainer">
+                                             <tr>
+                                                <td width="100%"><pre><span class="tT">In due course, we should install the relevant ISO 2- and 3-letter</span><span class="tI">
+</span><span class="tT">codes as the enumerated possible values . . .</span></pre></td>
+                                             </tr>
+                                          </table>
+                                       </div>
+                                    </td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Source</b></div>
+                           <div class="floatRight"><input id="button_source_PlatformType_title" type="image" src="img/btM.gif" value="-" onclick="switchState('source_PlatformType_title');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="source_PlatformType_title" style="display:block">
+                              <table style="table-layout:fixed;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;_white-space:pre;" class="preWrapContainer">
+                                 <tr>
+                                    <td width="100%"><pre><span class="tEl">&lt;xsd:element</span><span class="tAN"> name=</span><span class="tAV">"title"</span><span class="tAN"> type=</span><span class="tAV">"cpe:TextType"</span><span class="tAN"> minOccurs=</span><span class="tAV">"0"</span><span class="tAN"> maxOccurs=</span><span class="tAV">"unbounded"</span><span class="tEl">/&gt;</span></pre></td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </td>
+            <td class="rt_lineRight"></td>
+         </tr>
+         <tr>
+            <td class="rt_cornerBottomLeft"></td>
+            <td class="rt_lineBottom"></td>
+            <td class="rt_cornerBottomRight"></td>
+         </tr>
+      </table><a id="PlatformType_remark"></a><div class="componentTitle">Element <span class="qname"><b><a href="language_2_0.html#PlatformType" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:PlatformType</a></b> / cpe:remark</span></div>
+      <table class="rt">
+         <tr>
+            <td class="rt_cornerTopLeft"></td>
+            <td class="rt_lineTop"></td>
+            <td class="rt_cornerTopRight"></td>
+         </tr>
+         <tr>
+            <td class="rt_lineLeft"></td>
+            <td class="rt_content">
+               <table class="component">
+                  <tbody>
+                     <tr>
+                        <td class="firstColumn"><b>Namespace</b></td>
+                        <td>http://cpe.mitre.org/language/2.0</td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Diagram</b></div>
+                           <div class="floatRight"><input id="button_diagram_PlatformType_remark" type="image" src="img/btM.gif" value="-" onclick="switchState('diagram_PlatformType_remark');" class="control" /></div>
+                        </td>
+                        <td class="diagram">
+                           <div id="diagram_PlatformType_remark" style="display:block"><img alt="Diagram" border="0" src="img/cpe-language_2_2_xsd_Element_cpe_remark.png" usemap="#cpe-language_2_2_xsd_Element_cpe_remark" /><map name="cpe-language_2_2_xsd_Element_cpe_remark" id="cpe-language_2_2_xsd_Element_cpe_remark">
+                                 <area alt="namespace.tmp#lang" href="namespace.html#lang" coords="125,157,219,181" />
+                                 <area alt="language_2_0.tmp#http___cpe.mitre.org_language_2.0_TextType" href="language_2_0.html#http___cpe.mitre.org_language_2.0_TextType" coords="100,3,223,25" /></map></div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn"><b>Type</b></td>
+                        <td><b><a href="language_2_0.html#http___cpe.mitre.org_language_2.0_TextType" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:TextType</a></b></td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Properties</b></div>
+                           <div class="floatRight"><input id="button_properties_PlatformType_remark" type="image" src="img/btM.gif" value="-" onclick="switchState('properties_PlatformType_remark');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="properties_PlatformType_remark" style="display:block">
+                              <table class="propertiesTable">
+                                 <tr>
+                                    <td class="firstColumn" style="white-space: nowrap;">content</td>
+                                    <td><b>complex</b></td>
+                                 </tr>
+                                 <tr>
+                                    <td class="firstColumn" style="white-space: nowrap;">minOccurs</td>
+                                    <td><b>0</b></td>
+                                 </tr>
+                                 <tr>
+                                    <td class="firstColumn" style="white-space: nowrap;">maxOccurs</td>
+                                    <td><b>unbounded</b></td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Attributes</b></div>
+                           <div class="floatRight"><input id="button_attributes_PlatformType_remark" type="image" src="img/btM.gif" value="-" onclick="switchState('attributes_PlatformType_remark');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="attributes_PlatformType_remark" style="display:block">
+                              <table class="attributesTable">
+                                 <thead>
+                                    <tr>
+                                       <th>QName</th>
+                                       <th width="10%">Type</th>
+                                       <th width="5%">Use</th>
+                                       <th>Annotation</th>
+                                    </tr>
+                                 </thead>
+                                 <tr>
+                                    <td class="firstColumn"><b><a href="namespace.html#lang" target="mainFrame" title="http://www.w3.org/XML/1998/namespace" onclick="updatePageTitle('Schema documentation for namespace http://www.w3.org/XML/1998/namespace')">xml:lang</a></b></td>
+                                    <td><b>xs:language</b></td>
+                                    <td>optional</td>
+                                    <td>
+                                       <div class="annotation">
+                                          <table style="table-layout:fixed;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;_white-space:pre;" class="preWrapContainer">
+                                             <tr>
+                                                <td width="100%"><pre><span class="tT">In due course, we should install the relevant ISO 2- and 3-letter</span><span class="tI">
+</span><span class="tT">codes as the enumerated possible values . . .</span></pre></td>
+                                             </tr>
+                                          </table>
+                                       </div>
+                                    </td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Source</b></div>
+                           <div class="floatRight"><input id="button_source_PlatformType_remark" type="image" src="img/btM.gif" value="-" onclick="switchState('source_PlatformType_remark');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="source_PlatformType_remark" style="display:block">
+                              <table style="table-layout:fixed;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;_white-space:pre;" class="preWrapContainer">
+                                 <tr>
+                                    <td width="100%"><pre><span class="tEl">&lt;xsd:element</span><span class="tAN"> name=</span><span class="tAV">"remark"</span><span class="tAN"> type=</span><span class="tAV">"cpe:TextType"</span><span class="tAN"> minOccurs=</span><span class="tAV">"0"</span><span class="tAN"> maxOccurs=</span><span class="tAV">"unbounded"</span><span class="tEl">/&gt;</span></pre></td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </td>
+            <td class="rt_lineRight"></td>
+         </tr>
+         <tr>
+            <td class="rt_cornerBottomLeft"></td>
+            <td class="rt_lineBottom"></td>
+            <td class="rt_cornerBottomRight"></td>
+         </tr>
+      </table><a id="PlatformType_logical-test"></a><div class="componentTitle">Element <span class="qname"><b><a href="language_2_0.html#PlatformType" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:PlatformType</a></b> / cpe:logical-test</span></div>
+      <table class="rt">
+         <tr>
+            <td class="rt_cornerTopLeft"></td>
+            <td class="rt_lineTop"></td>
+            <td class="rt_cornerTopRight"></td>
+         </tr>
+         <tr>
+            <td class="rt_lineLeft"></td>
+            <td class="rt_content">
+               <table class="component">
+                  <tbody>
+                     <tr>
+                        <td class="firstColumn"><b>Namespace</b></td>
+                        <td>http://cpe.mitre.org/language/2.0</td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Diagram</b></div>
+                           <div class="floatRight"><input id="button_diagram_PlatformType_logical-test" type="image" src="img/btM.gif" value="-" onclick="switchState('diagram_PlatformType_logical-test');" class="control" /></div>
+                        </td>
+                        <td class="diagram">
+                           <div id="diagram_PlatformType_logical-test" style="display:block"><img alt="Diagram" border="0" src="img/cpe-language_2_2_xsd_Element_cpe_logical-test.png" usemap="#cpe-language_2_2_xsd_Element_cpe_logical-test" /><map name="cpe-language_2_2_xsd_Element_cpe_logical-test" id="cpe-language_2_2_xsd_Element_cpe_logical-test">
+                                 <area alt="NO_NAMESPACE.tmp#LogicalTestType_operator" href="NO_NAMESPACE.html#LogicalTestType_operator" coords="148,78,243,102" />
+                                 <area alt="NO_NAMESPACE.tmp#LogicalTestType_negate" href="NO_NAMESPACE.html#LogicalTestType_negate" coords="148,112,232,136" />
+                                 <area alt="language_2_0.tmp#LogicalTestType_logical-test" href="language_2_0.html#LogicalTestType_logical-test" coords="226,153,318,177" />
+                                 <area alt="language_2_0.tmp#LogicalTestType_fact-ref" href="language_2_0.html#LogicalTestType_fact-ref" coords="226,187,298,211" />
+                                 <area alt="language_2_0.tmp#LogicalTestType" href="language_2_0.html#LogicalTestType" coords="123,3,283,25" /></map></div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn"><b>Type</b></td>
+                        <td><b><a href="language_2_0.html#LogicalTestType" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:LogicalTestType</a></b></td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Properties</b></div>
+                           <div class="floatRight"><input id="button_properties_PlatformType_logical-test" type="image" src="img/btM.gif" value="-" onclick="switchState('properties_PlatformType_logical-test');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="properties_PlatformType_logical-test" style="display:block">
+                              <table class="propertiesTable">
+                                 <tr>
+                                    <td class="firstColumn" style="white-space: nowrap;">content</td>
+                                    <td><b>complex</b></td>
+                                 </tr>
+                                 <tr>
+                                    <td class="firstColumn" style="white-space: nowrap;">minOccurs</td>
+                                    <td><b>1</b></td>
+                                 </tr>
+                                 <tr>
+                                    <td class="firstColumn" style="white-space: nowrap;">maxOccurs</td>
+                                    <td><b>1</b></td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn"><b>Model</b><div class="floatRight"><input id="button_model_PlatformType_logical-test" type="image" src="img/btM.gif" value="-" onclick="switchState('model_PlatformType_logical-test');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="model_PlatformType_logical-test" style="display:block"><b><a href="language_2_0.html#LogicalTestType_logical-test" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:logical-test*</a></b> , <b><a href="language_2_0.html#LogicalTestType_fact-ref" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:fact-ref*</a></b></div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn"><b>Children</b></td>
+                        <td><b><a href="language_2_0.html#LogicalTestType_fact-ref" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:fact-ref</a></b>, <b><a href="language_2_0.html#LogicalTestType_logical-test" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:logical-test</a></b></td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Instance</b></div>
+                           <div class="floatRight"><input id="button_instance_PlatformType_logical-test" type="image" src="img/btM.gif" value="-" onclick="switchState('instance_PlatformType_logical-test');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="instance_PlatformType_logical-test" style="display:block">
+                              <table style="table-layout:fixed;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;_white-space:pre;" class="preWrapContainer">
+                                 <tr>
+                                    <td width="100%"><pre><span class="tEl">&lt;cpe:logical-test</span><span class="tT"> </span><span class="tAN">negate=</span><span class="tAV">""</span><span class="tT"> </span><span class="tAN">operator=</span><span class="tAV">""</span><span class="tT"> </span><span class="tAN">xmlns:cpe=</span><span class="tAV">"http://cpe.mitre.org/language/2.0"</span><span class="tEl">&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;cpe:logical-test</span><span class="tT"> </span><span class="tAN">negate=</span><span class="tAV">""</span><span class="tT"> </span><span class="tAN">operator=</span><span class="tAV">""</span><span class="tEl">&gt;</span><span class="tT" style="white-space:normal">{0,unbounded}</span><span class="tEl">&lt;/cpe:logical-test&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;cpe:fact-ref</span><span class="tT"> </span><span class="tAN">name=</span><span class="tAV">""</span><span class="tEl">&gt;</span><span class="tT" style="white-space:normal">{0,unbounded}</span><span class="tEl">&lt;/cpe:fact-ref&gt;</span><span class="tI">
+</span><span class="tEl">&lt;/cpe:logical-test&gt;</span></pre></td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Attributes</b></div>
+                           <div class="floatRight"><input id="button_attributes_PlatformType_logical-test" type="image" src="img/btM.gif" value="-" onclick="switchState('attributes_PlatformType_logical-test');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="attributes_PlatformType_logical-test" style="display:block">
+                              <table class="attributesTable">
+                                 <thead>
+                                    <tr>
+                                       <th>QName</th>
+                                       <th width="10%">Type</th>
+                                       <th width="5%">Use</th>
+                                       <th></th>
+                                    </tr>
+                                 </thead>
+                                 <tr>
+                                    <td class="firstColumn"><b><a href="NO_NAMESPACE.html#LogicalTestType_negate" target="mainFrame" title="No namespace" onclick="updatePageTitle('Schema documentation for &#34;No namespace&#34;')">negate</a></b></td>
+                                    <td><b>xsd:boolean</b></td>
+                                    <td>required</td>
+                                    <td>
+                                       <div class="annotation"></div>
+                                    </td>
+                                 </tr>
+                                 <tr>
+                                    <td class="firstColumn"><b><a href="NO_NAMESPACE.html#LogicalTestType_operator" target="mainFrame" title="No namespace" onclick="updatePageTitle('Schema documentation for &#34;No namespace&#34;')">operator</a></b></td>
+                                    <td><b><a href="language_2_0.html#operatorEnumeration" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:operatorEnumeration</a></b></td>
+                                    <td>required</td>
+                                    <td>
+                                       <div class="annotation"></div>
+                                    </td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Source</b></div>
+                           <div class="floatRight"><input id="button_source_PlatformType_logical-test" type="image" src="img/btM.gif" value="-" onclick="switchState('source_PlatformType_logical-test');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="source_PlatformType_logical-test" style="display:block">
+                              <table style="table-layout:fixed;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;_white-space:pre;" class="preWrapContainer">
+                                 <tr>
+                                    <td width="100%"><pre><span class="tEl">&lt;xsd:element</span><span class="tAN"> name=</span><span class="tAV">"logical-test"</span><span class="tAN"> type=</span><span class="tAV">"cpe:LogicalTestType"</span><span class="tAN"> minOccurs=</span><span class="tAV">"1"</span><span class="tAN"> maxOccurs=</span><span class="tAV">"1"</span><span class="tEl">/&gt;</span></pre></td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </td>
+            <td class="rt_lineRight"></td>
+         </tr>
+         <tr>
+            <td class="rt_cornerBottomLeft"></td>
+            <td class="rt_lineBottom"></td>
+            <td class="rt_cornerBottomRight"></td>
+         </tr>
+      </table><a id="LogicalTestType_logical-test"></a><div class="componentTitle">Element <span class="qname"><b><a href="language_2_0.html#LogicalTestType" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:LogicalTestType</a></b> / cpe:logical-test</span></div>
+      <table class="rt">
+         <tr>
+            <td class="rt_cornerTopLeft"></td>
+            <td class="rt_lineTop"></td>
+            <td class="rt_cornerTopRight"></td>
+         </tr>
+         <tr>
+            <td class="rt_lineLeft"></td>
+            <td class="rt_content">
+               <table class="component">
+                  <tbody>
+                     <tr>
+                        <td class="firstColumn"><b>Namespace</b></td>
+                        <td>http://cpe.mitre.org/language/2.0</td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Diagram</b></div>
+                           <div class="floatRight"><input id="button_diagram_LogicalTestType_logical-test" type="image" src="img/btM.gif" value="-" onclick="switchState('diagram_LogicalTestType_logical-test');" class="control" /></div>
+                        </td>
+                        <td class="diagram">
+                           <div id="diagram_LogicalTestType_logical-test" style="display:block"><img alt="Diagram" border="0" src="img/cpe-language_2_2_xsd_Element_cpe_logical-test_1.png" usemap="#cpe-language_2_2_xsd_Element_cpe_logical-test_1" /><map name="cpe-language_2_2_xsd_Element_cpe_logical-test_1" id="cpe-language_2_2_xsd_Element_cpe_logical-test_1">
+                                 <area alt="NO_NAMESPACE.tmp#LogicalTestType_operator" href="NO_NAMESPACE.html#LogicalTestType_operator" coords="148,78,243,102" />
+                                 <area alt="NO_NAMESPACE.tmp#LogicalTestType_negate" href="NO_NAMESPACE.html#LogicalTestType_negate" coords="148,112,232,136" />
+                                 <area alt="language_2_0.tmp#LogicalTestType_logical-test" href="language_2_0.html#LogicalTestType_logical-test" coords="226,153,307,177" />
+                                 <area alt="language_2_0.tmp#LogicalTestType_fact-ref" href="language_2_0.html#LogicalTestType_fact-ref" coords="226,187,298,211" />
+                                 <area alt="language_2_0.tmp#LogicalTestType" href="language_2_0.html#LogicalTestType" coords="123,3,283,25" /></map></div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn"><b>Type</b></td>
+                        <td><b><a href="language_2_0.html#LogicalTestType" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:LogicalTestType</a></b></td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Properties</b></div>
+                           <div class="floatRight"><input id="button_properties_LogicalTestType_logical-test" type="image" src="img/btM.gif" value="-" onclick="switchState('properties_LogicalTestType_logical-test');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="properties_LogicalTestType_logical-test" style="display:block">
+                              <table class="propertiesTable">
+                                 <tr>
+                                    <td class="firstColumn" style="white-space: nowrap;">content</td>
+                                    <td><b>complex</b></td>
+                                 </tr>
+                                 <tr>
+                                    <td class="firstColumn" style="white-space: nowrap;">minOccurs</td>
+                                    <td><b>0</b></td>
+                                 </tr>
+                                 <tr>
+                                    <td class="firstColumn" style="white-space: nowrap;">maxOccurs</td>
+                                    <td><b>unbounded</b></td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn"><b>Model</b><div class="floatRight"><input id="button_model_LogicalTestType_logical-test" type="image" src="img/btM.gif" value="-" onclick="switchState('model_LogicalTestType_logical-test');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="model_LogicalTestType_logical-test" style="display:block"><b><a href="language_2_0.html#LogicalTestType_logical-test" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:logical-test*</a></b> , <b><a href="language_2_0.html#LogicalTestType_fact-ref" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:fact-ref*</a></b></div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn"><b>Children</b></td>
+                        <td><b><a href="language_2_0.html#LogicalTestType_fact-ref" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:fact-ref</a></b>, <b><a href="language_2_0.html#LogicalTestType_logical-test" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:logical-test</a></b></td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Instance</b></div>
+                           <div class="floatRight"><input id="button_instance_LogicalTestType_logical-test" type="image" src="img/btM.gif" value="-" onclick="switchState('instance_LogicalTestType_logical-test');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="instance_LogicalTestType_logical-test" style="display:block">
+                              <table style="table-layout:fixed;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;_white-space:pre;" class="preWrapContainer">
+                                 <tr>
+                                    <td width="100%"><pre><span class="tEl">&lt;cpe:logical-test</span><span class="tT"> </span><span class="tAN">negate=</span><span class="tAV">""</span><span class="tT"> </span><span class="tAN">operator=</span><span class="tAV">""</span><span class="tT"> </span><span class="tAN">xmlns:cpe=</span><span class="tAV">"http://cpe.mitre.org/language/2.0"</span><span class="tEl">&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;cpe:logical-test</span><span class="tT"> </span><span class="tAN">negate=</span><span class="tAV">""</span><span class="tT"> </span><span class="tAN">operator=</span><span class="tAV">""</span><span class="tEl">&gt;</span><span class="tT" style="white-space:normal">{0,unbounded}</span><span class="tEl">&lt;/cpe:logical-test&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;cpe:fact-ref</span><span class="tT"> </span><span class="tAN">name=</span><span class="tAV">""</span><span class="tEl">&gt;</span><span class="tT" style="white-space:normal">{0,unbounded}</span><span class="tEl">&lt;/cpe:fact-ref&gt;</span><span class="tI">
+</span><span class="tEl">&lt;/cpe:logical-test&gt;</span></pre></td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Attributes</b></div>
+                           <div class="floatRight"><input id="button_attributes_LogicalTestType_logical-test" type="image" src="img/btM.gif" value="-" onclick="switchState('attributes_LogicalTestType_logical-test');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="attributes_LogicalTestType_logical-test" style="display:block">
+                              <table class="attributesTable">
+                                 <thead>
+                                    <tr>
+                                       <th>QName</th>
+                                       <th width="10%">Type</th>
+                                       <th width="5%">Use</th>
+                                       <th></th>
+                                    </tr>
+                                 </thead>
+                                 <tr>
+                                    <td class="firstColumn"><b><a href="NO_NAMESPACE.html#LogicalTestType_negate" target="mainFrame" title="No namespace" onclick="updatePageTitle('Schema documentation for &#34;No namespace&#34;')">negate</a></b></td>
+                                    <td><b>xsd:boolean</b></td>
+                                    <td>required</td>
+                                    <td>
+                                       <div class="annotation"></div>
+                                    </td>
+                                 </tr>
+                                 <tr>
+                                    <td class="firstColumn"><b><a href="NO_NAMESPACE.html#LogicalTestType_operator" target="mainFrame" title="No namespace" onclick="updatePageTitle('Schema documentation for &#34;No namespace&#34;')">operator</a></b></td>
+                                    <td><b><a href="language_2_0.html#operatorEnumeration" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:operatorEnumeration</a></b></td>
+                                    <td>required</td>
+                                    <td>
+                                       <div class="annotation"></div>
+                                    </td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Source</b></div>
+                           <div class="floatRight"><input id="button_source_LogicalTestType_logical-test" type="image" src="img/btM.gif" value="-" onclick="switchState('source_LogicalTestType_logical-test');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="source_LogicalTestType_logical-test" style="display:block">
+                              <table style="table-layout:fixed;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;_white-space:pre;" class="preWrapContainer">
+                                 <tr>
+                                    <td width="100%"><pre><span class="tEl">&lt;xsd:element</span><span class="tAN"> name=</span><span class="tAV">"logical-test"</span><span class="tAN"> type=</span><span class="tAV">"cpe:LogicalTestType"</span><span class="tAN"> minOccurs=</span><span class="tAV">"0"</span><span class="tAN"> maxOccurs=</span><span class="tAV">"unbounded"</span><span class="tEl">/&gt;</span></pre></td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </td>
+            <td class="rt_lineRight"></td>
+         </tr>
+         <tr>
+            <td class="rt_cornerBottomLeft"></td>
+            <td class="rt_lineBottom"></td>
+            <td class="rt_cornerBottomRight"></td>
+         </tr>
+      </table><a id="LogicalTestType_fact-ref"></a><div class="componentTitle">Element <span class="qname"><b><a href="language_2_0.html#LogicalTestType" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:LogicalTestType</a></b> / cpe:fact-ref</span></div>
+      <table class="rt">
+         <tr>
+            <td class="rt_cornerTopLeft"></td>
+            <td class="rt_lineTop"></td>
+            <td class="rt_cornerTopRight"></td>
+         </tr>
+         <tr>
+            <td class="rt_lineLeft"></td>
+            <td class="rt_content">
+               <table class="component">
+                  <tbody>
+                     <tr>
+                        <td class="firstColumn"><b>Namespace</b></td>
+                        <td>http://cpe.mitre.org/language/2.0</td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Diagram</b></div>
+                           <div class="floatRight"><input id="button_diagram_LogicalTestType_fact-ref" type="image" src="img/btM.gif" value="-" onclick="switchState('diagram_LogicalTestType_fact-ref');" class="control" /></div>
+                        </td>
+                        <td class="diagram">
+                           <div id="diagram_LogicalTestType_fact-ref" style="display:block"><img alt="Diagram" border="0" src="img/cpe-language_2_2_xsd_Element_cpe_fact-ref.png" usemap="#cpe-language_2_2_xsd_Element_cpe_fact-ref" /><map name="cpe-language_2_2_xsd_Element_cpe_fact-ref" id="cpe-language_2_2_xsd_Element_cpe_fact-ref">
+                                 <area alt="NO_NAMESPACE.tmp#FactRefType_name" href="NO_NAMESPACE.html#FactRefType_name" coords="128,78,205,102" />
+                                 <area alt="language_2_0.tmp#FactRefType" href="language_2_0.html#FactRefType" coords="103,3,241,25" /></map></div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn"><b>Type</b></td>
+                        <td><b><a href="language_2_0.html#FactRefType" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:FactRefType</a></b></td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Properties</b></div>
+                           <div class="floatRight"><input id="button_properties_LogicalTestType_fact-ref" type="image" src="img/btM.gif" value="-" onclick="switchState('properties_LogicalTestType_fact-ref');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="properties_LogicalTestType_fact-ref" style="display:block">
+                              <table class="propertiesTable">
+                                 <tr>
+                                    <td class="firstColumn" style="white-space: nowrap;">content</td>
+                                    <td><b>complex</b></td>
+                                 </tr>
+                                 <tr>
+                                    <td class="firstColumn" style="white-space: nowrap;">minOccurs</td>
+                                    <td><b>0</b></td>
+                                 </tr>
+                                 <tr>
+                                    <td class="firstColumn" style="white-space: nowrap;">maxOccurs</td>
+                                    <td><b>unbounded</b></td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Attributes</b></div>
+                           <div class="floatRight"><input id="button_attributes_LogicalTestType_fact-ref" type="image" src="img/btM.gif" value="-" onclick="switchState('attributes_LogicalTestType_fact-ref');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="attributes_LogicalTestType_fact-ref" style="display:block">
+                              <table class="attributesTable">
+                                 <thead>
+                                    <tr>
+                                       <th>QName</th>
+                                       <th width="10%">Type</th>
+                                       <th width="5%">Use</th>
+                                       <th></th>
+                                    </tr>
+                                 </thead>
+                                 <tr>
+                                    <td class="firstColumn"><b><a href="NO_NAMESPACE.html#FactRefType_name" target="mainFrame" title="No namespace" onclick="updatePageTitle('Schema documentation for &#34;No namespace&#34;')">name</a></b></td>
+                                    <td><b><a href="language_2_0.html#http___cpe.mitre.org_language_2.0_namePattern" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:namePattern</a></b></td>
+                                    <td>required</td>
+                                    <td>
+                                       <div class="annotation"></div>
+                                    </td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Source</b></div>
+                           <div class="floatRight"><input id="button_source_LogicalTestType_fact-ref" type="image" src="img/btM.gif" value="-" onclick="switchState('source_LogicalTestType_fact-ref');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="source_LogicalTestType_fact-ref" style="display:block">
+                              <table style="table-layout:fixed;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;_white-space:pre;" class="preWrapContainer">
+                                 <tr>
+                                    <td width="100%"><pre><span class="tEl">&lt;xsd:element</span><span class="tAN"> name=</span><span class="tAV">"fact-ref"</span><span class="tAN"> type=</span><span class="tAV">"cpe:FactRefType"</span><span class="tAN"> minOccurs=</span><span class="tAV">"0"</span><span class="tAN"> maxOccurs=</span><span class="tAV">"unbounded"</span><span class="tEl">/&gt;</span></pre></td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </td>
+            <td class="rt_lineRight"></td>
+         </tr>
+         <tr>
+            <td class="rt_cornerBottomLeft"></td>
+            <td class="rt_lineBottom"></td>
+            <td class="rt_cornerBottomRight"></td>
+         </tr>
+      </table><a id="PlatformType"></a><div class="componentTitle">Complex Type <span class="qname">cpe:PlatformType</span></div>
+      <table class="rt">
+         <tr>
+            <td class="rt_cornerTopLeft"></td>
+            <td class="rt_lineTop"></td>
+            <td class="rt_cornerTopRight"></td>
+         </tr>
+         <tr>
+            <td class="rt_lineLeft"></td>
+            <td class="rt_content">
+               <table class="component">
+                  <tbody>
+                     <tr>
+                        <td class="firstColumn"><b>Namespace</b></td>
+                        <td>http://cpe.mitre.org/language/2.0</td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Annotations</b></div>
+                           <div class="floatRight"><input id="button_annotations_PlatformType" type="image" src="img/btM.gif" value="-" onclick="switchState('annotations_PlatformType');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="annotations_PlatformType" style="display:block">
+                              <div class="annotation">
+                                 <table style="table-layout:fixed;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;_white-space:pre;" class="preWrapContainer">
+                                    <tr>
+                                       <td width="100%"><pre><span class="tT">The platform element represents the description or qualifications of a particular IT platform type. The platform is defined by the logical-test child element. The id attribute holds a locally unique name for the platform. There is no defined format for this id, it just has to be unique to the containing language document.</span></pre></td>
+                                    </tr>
+                                 </table>
+                              </div>
+                              <div class="annotation">
+                                 <table style="table-layout:fixed;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;_white-space:pre;" class="preWrapContainer">
+                                    <tr>
+                                       <td width="100%"><pre><span class="tT">The optional title element may appear as a child to a platform element. It provides a human-readable title for it. To support uses intended for multiple languages, this element supports the ‘xml:lang’ attribute. At most one title element can appear for each language.</span></pre></td>
+                                    </tr>
+                                 </table>
+                              </div>
+                              <div class="annotation">
+                                 <table style="table-layout:fixed;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;_white-space:pre;" class="preWrapContainer">
+                                    <tr>
+                                       <td width="100%"><pre><span class="tT">The optional remark element may appear as a child of a platform element. It provides some additional description. Zero or more remark elements may appear. To support uses intended for multiple languages, this element supports the 'xml:lang' attribute. There can be multiple remarks for a single language.</span></pre></td>
+                                    </tr>
+                                 </table>
+                              </div>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Diagram</b></div>
+                           <div class="floatRight"><input id="button_diagram_PlatformType" type="image" src="img/btM.gif" value="-" onclick="switchState('diagram_PlatformType');" class="control" /></div>
+                        </td>
+                        <td class="diagram">
+                           <div id="diagram_PlatformType" style="display:block"><img alt="Diagram" border="0" src="img/cpe-language_2_2_xsd_Complex_Type_cpe_PlatformType.png" usemap="#cpe-language_2_2_xsd_Complex_Type_cpe_PlatformType" /><map name="cpe-language_2_2_xsd_Complex_Type_cpe_PlatformType" id="cpe-language_2_2_xsd_Complex_Type_cpe_PlatformType">
+                                 <area alt="NO_NAMESPACE.tmp#PlatformType_id" href="NO_NAMESPACE.html#PlatformType_id" coords="188,38,256,62" />
+                                 <area alt="language_2_0.tmp#PlatformType_title" href="language_2_0.html#PlatformType_title" coords="266,79,317,103" />
+                                 <area alt="language_2_0.tmp#PlatformType_remark" href="language_2_0.html#PlatformType_remark" coords="266,113,335,137" />
+                                 <area alt="language_2_0.tmp#PlatformType_logical-test" href="language_2_0.html#PlatformType_logical-test" coords="266,147,358,171" /></map></div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn"><b>Model</b><div class="floatRight"><input id="button_model_PlatformType" type="image" src="img/btM.gif" value="-" onclick="switchState('model_PlatformType');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="model_PlatformType" style="display:block"><b><a href="language_2_0.html#PlatformType_title" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:title*</a></b> , <b><a href="language_2_0.html#PlatformType_remark" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:remark*</a></b> , <b><a href="language_2_0.html#PlatformType_logical-test" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:logical-test</a></b></div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn"><b>Children</b></td>
+                        <td><b><a href="language_2_0.html#PlatformType_logical-test" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:logical-test</a></b>, <b><a href="language_2_0.html#PlatformType_remark" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:remark</a></b>, <b><a href="language_2_0.html#PlatformType_title" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:title</a></b></td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Attributes</b></div>
+                           <div class="floatRight"><input id="button_attributes_PlatformType" type="image" src="img/btM.gif" value="-" onclick="switchState('attributes_PlatformType');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="attributes_PlatformType" style="display:block">
+                              <table class="attributesTable">
+                                 <thead>
+                                    <tr>
+                                       <th>QName</th>
+                                       <th width="10%">Type</th>
+                                       <th width="5%">Use</th>
+                                       <th></th>
+                                    </tr>
+                                 </thead>
+                                 <tr>
+                                    <td class="firstColumn"><b><a href="NO_NAMESPACE.html#PlatformType_id" target="mainFrame" title="No namespace" onclick="updatePageTitle('Schema documentation for &#34;No namespace&#34;')">id</a></b></td>
+                                    <td><b>xsd:anyURI</b></td>
+                                    <td>required</td>
+                                    <td>
+                                       <div class="annotation"></div>
+                                    </td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Source</b></div>
+                           <div class="floatRight"><input id="button_source_PlatformType" type="image" src="img/btM.gif" value="-" onclick="switchState('source_PlatformType');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="source_PlatformType" style="display:block">
+                              <table style="table-layout:fixed;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;_white-space:pre;" class="preWrapContainer">
+                                 <tr>
+                                    <td width="100%"><pre><span class="tEl">&lt;xsd:complexType</span><span class="tAN"> name=</span><span class="tAV">"PlatformType"</span><span class="tEl">&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;xsd:annotation</span><span class="tEl">&gt;</span><span class="tI">
+    </span><span class="tEl">&lt;xsd:documentation</span><span class="tAN"> xml:lang=</span><span class="tAV">"en"</span><span class="tEl">&gt;</span><span class="tT" style="white-space:normal">The platform element represents the description or qualifications of a particular IT platform type. The platform is defined by the logical-test child element. The id attribute holds a locally unique name for the platform. There is no defined format for this id, it just has to be unique to the containing language document.</span><span class="tEl">&lt;/xsd:documentation&gt;</span><span class="tI">
+    </span><span class="tEl">&lt;xsd:documentation</span><span class="tAN"> xml:lang=</span><span class="tAV">"en"</span><span class="tEl">&gt;</span><span class="tT" style="white-space:normal">The optional title element may appear as a child to a platform element. It provides a human-readable title for it. To support uses intended for multiple languages, this element supports the ‘xml:lang’ attribute. At most one title element can appear for each language.</span><span class="tEl">&lt;/xsd:documentation&gt;</span><span class="tI">
+    </span><span class="tEl">&lt;xsd:documentation</span><span class="tAN"> xml:lang=</span><span class="tAV">"en"</span><span class="tEl">&gt;</span><span class="tT" style="white-space:normal">The optional remark element may appear as a child of a platform element. It provides some additional description. Zero or more remark elements may appear. To support uses intended for multiple languages, this element supports the 'xml:lang' attribute. There can be multiple remarks for a single language.</span><span class="tEl">&lt;/xsd:documentation&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;/xsd:annotation&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;xsd:sequence</span><span class="tEl">&gt;</span><span class="tI">
+    </span><span class="tEl">&lt;xsd:element</span><span class="tAN"> name=</span><span class="tAV">"title"</span><span class="tAN"> type=</span><span class="tAV">"cpe:TextType"</span><span class="tAN"> minOccurs=</span><span class="tAV">"0"</span><span class="tAN"> maxOccurs=</span><span class="tAV">"unbounded"</span><span class="tEl">/&gt;</span><span class="tI">
+    </span><span class="tEl">&lt;xsd:element</span><span class="tAN"> name=</span><span class="tAV">"remark"</span><span class="tAN"> type=</span><span class="tAV">"cpe:TextType"</span><span class="tAN"> minOccurs=</span><span class="tAV">"0"</span><span class="tAN"> maxOccurs=</span><span class="tAV">"unbounded"</span><span class="tEl">/&gt;</span><span class="tI">
+    </span><span class="tEl">&lt;xsd:element</span><span class="tAN"> name=</span><span class="tAV">"logical-test"</span><span class="tAN"> type=</span><span class="tAV">"cpe:LogicalTestType"</span><span class="tAN"> minOccurs=</span><span class="tAV">"1"</span><span class="tAN"> maxOccurs=</span><span class="tAV">"1"</span><span class="tEl">/&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;/xsd:sequence&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;xsd:attribute</span><span class="tAN"> name=</span><span class="tAV">"id"</span><span class="tAN"> type=</span><span class="tAV">"xsd:anyURI"</span><span class="tAN"> use=</span><span class="tAV">"required"</span><span class="tEl">/&gt;</span><span class="tI">
+</span><span class="tEl">&lt;/xsd:complexType&gt;</span></pre></td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </td>
+            <td class="rt_lineRight"></td>
+         </tr>
+         <tr>
+            <td class="rt_cornerBottomLeft"></td>
+            <td class="rt_lineBottom"></td>
+            <td class="rt_cornerBottomRight"></td>
+         </tr>
+      </table><a id="http___cpe.mitre.org_language_2.0_TextType"></a><div class="componentTitle">Complex Type <span class="qname">cpe:TextType</span></div>
+      <table class="rt">
+         <tr>
+            <td class="rt_cornerTopLeft"></td>
+            <td class="rt_lineTop"></td>
+            <td class="rt_cornerTopRight"></td>
+         </tr>
+         <tr>
+            <td class="rt_lineLeft"></td>
+            <td class="rt_content">
+               <table class="component">
+                  <tbody>
+                     <tr>
+                        <td class="firstColumn"><b>Namespace</b></td>
+                        <td>http://cpe.mitre.org/language/2.0</td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Annotations</b></div>
+                           <div class="floatRight"><input id="button_annotations_http___cpe.mitre.org_language_2.0_TextType" type="image" src="img/btM.gif" value="-" onclick="switchState('annotations_http___cpe.mitre.org_language_2.0_TextType');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="annotations_http___cpe.mitre.org_language_2.0_TextType" style="display:block">
+                              <div class="annotation">
+                                 <table style="table-layout:fixed;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;_white-space:pre;" class="preWrapContainer">
+                                    <tr>
+                                       <td width="100%"><pre><span class="tT">This type allows the xml:lang attribute to associate a specific language with an element's string content.</span></pre></td>
+                                    </tr>
+                                 </table>
+                              </div>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Diagram</b></div>
+                           <div class="floatRight"><input id="button_diagram_http___cpe.mitre.org_language_2.0_TextType" type="image" src="img/btM.gif" value="-" onclick="switchState('diagram_http___cpe.mitre.org_language_2.0_TextType');" class="control" /></div>
+                        </td>
+                        <td class="diagram">
+                           <div id="diagram_http___cpe.mitre.org_language_2.0_TextType" style="display:block"><img alt="Diagram" border="0" src="img/cpe-language_2_2_xsd_Complex_Type_cpe_TextType.png" usemap="#cpe-language_2_2_xsd_Complex_Type_cpe_TextType" /><map name="cpe-language_2_2_xsd_Complex_Type_cpe_TextType" id="cpe-language_2_2_xsd_Complex_Type_cpe_TextType">
+                                 <area alt="namespace.tmp#lang" href="namespace.html#lang" coords="167,117,261,141" /></map></div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn"><b>Type</b></td>
+                        <td>extension of <b>xsd:string</b></td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Attributes</b></div>
+                           <div class="floatRight"><input id="button_attributes_http___cpe.mitre.org_language_2.0_TextType" type="image" src="img/btM.gif" value="-" onclick="switchState('attributes_http___cpe.mitre.org_language_2.0_TextType');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="attributes_http___cpe.mitre.org_language_2.0_TextType" style="display:block">
+                              <table class="attributesTable">
+                                 <thead>
+                                    <tr>
+                                       <th>QName</th>
+                                       <th width="10%">Type</th>
+                                       <th width="5%">Use</th>
+                                       <th>Annotation</th>
+                                    </tr>
+                                 </thead>
+                                 <tr>
+                                    <td class="firstColumn"><b><a href="namespace.html#lang" target="mainFrame" title="http://www.w3.org/XML/1998/namespace" onclick="updatePageTitle('Schema documentation for namespace http://www.w3.org/XML/1998/namespace')">xml:lang</a></b></td>
+                                    <td><b>xs:language</b></td>
+                                    <td>optional</td>
+                                    <td>
+                                       <div class="annotation">
+                                          <table style="table-layout:fixed;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;_white-space:pre;" class="preWrapContainer">
+                                             <tr>
+                                                <td width="100%"><pre><span class="tT">In due course, we should install the relevant ISO 2- and 3-letter</span><span class="tI">
+</span><span class="tT">codes as the enumerated possible values . . .</span></pre></td>
+                                             </tr>
+                                          </table>
+                                       </div>
+                                    </td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Source</b></div>
+                           <div class="floatRight"><input id="button_source_http___cpe.mitre.org_language_2.0_TextType" type="image" src="img/btM.gif" value="-" onclick="switchState('source_http___cpe.mitre.org_language_2.0_TextType');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="source_http___cpe.mitre.org_language_2.0_TextType" style="display:block">
+                              <table style="table-layout:fixed;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;_white-space:pre;" class="preWrapContainer">
+                                 <tr>
+                                    <td width="100%"><pre><span class="tEl">&lt;xsd:complexType</span><span class="tAN"> name=</span><span class="tAV">"TextType"</span><span class="tEl">&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;xsd:annotation</span><span class="tEl">&gt;</span><span class="tI">
+    </span><span class="tEl">&lt;xsd:documentation</span><span class="tAN"> xml:lang=</span><span class="tAV">"en"</span><span class="tEl">&gt;</span><span class="tT" style="white-space:normal">This type allows the xml:lang attribute to associate a specific language with an element's string content.</span><span class="tEl">&lt;/xsd:documentation&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;/xsd:annotation&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;xsd:simpleContent</span><span class="tEl">&gt;</span><span class="tI">
+    </span><span class="tEl">&lt;xsd:extension</span><span class="tAN"> base=</span><span class="tAV">"xsd:string"</span><span class="tEl">&gt;</span><span class="tI">
+      </span><span class="tEl">&lt;xsd:attribute</span><span class="tAN"> ref=</span><span class="tAV">"xml:lang"</span><span class="tEl">/&gt;</span><span class="tI">
+    </span><span class="tEl">&lt;/xsd:extension&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;/xsd:simpleContent&gt;</span><span class="tI">
+</span><span class="tEl">&lt;/xsd:complexType&gt;</span></pre></td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </td>
+            <td class="rt_lineRight"></td>
+         </tr>
+         <tr>
+            <td class="rt_cornerBottomLeft"></td>
+            <td class="rt_lineBottom"></td>
+            <td class="rt_cornerBottomRight"></td>
+         </tr>
+      </table><a id="LogicalTestType"></a><div class="componentTitle">Complex Type <span class="qname">cpe:LogicalTestType</span></div>
+      <table class="rt">
+         <tr>
+            <td class="rt_cornerTopLeft"></td>
+            <td class="rt_lineTop"></td>
+            <td class="rt_cornerTopRight"></td>
+         </tr>
+         <tr>
+            <td class="rt_lineLeft"></td>
+            <td class="rt_content">
+               <table class="component">
+                  <tbody>
+                     <tr>
+                        <td class="firstColumn"><b>Namespace</b></td>
+                        <td>http://cpe.mitre.org/language/2.0</td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Annotations</b></div>
+                           <div class="floatRight"><input id="button_annotations_LogicalTestType" type="image" src="img/btM.gif" value="-" onclick="switchState('annotations_LogicalTestType');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="annotations_LogicalTestType" style="display:block">
+                              <div class="annotation">
+                                 <table style="table-layout:fixed;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;_white-space:pre;" class="preWrapContainer">
+                                    <tr>
+                                       <td width="100%"><pre><span class="tT">The logical-test element appears as a child of a platform element, and may also be nested to create more complex logical tests. The content consists of one or more elements: fact-ref, and logical-test children are permitted. The operator to be applied, and optional negation of the test, are given as attributes.</span></pre></td>
+                                    </tr>
+                                 </table>
+                              </div>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Diagram</b></div>
+                           <div class="floatRight"><input id="button_diagram_LogicalTestType" type="image" src="img/btM.gif" value="-" onclick="switchState('diagram_LogicalTestType');" class="control" /></div>
+                        </td>
+                        <td class="diagram">
+                           <div id="diagram_LogicalTestType" style="display:block"><img alt="Diagram" border="0" src="img/cpe-language_2_2_xsd_Complex_Type_cpe_LogicalTestType.png" usemap="#cpe-language_2_2_xsd_Complex_Type_cpe_LogicalTestType" /><map name="cpe-language_2_2_xsd_Complex_Type_cpe_LogicalTestType" id="cpe-language_2_2_xsd_Complex_Type_cpe_LogicalTestType">
+                                 <area alt="NO_NAMESPACE.tmp#LogicalTestType_operator" href="NO_NAMESPACE.html#LogicalTestType_operator" coords="204,38,299,62" />
+                                 <area alt="NO_NAMESPACE.tmp#LogicalTestType_negate" href="NO_NAMESPACE.html#LogicalTestType_negate" coords="204,72,288,96" />
+                                 <area alt="language_2_0.tmp#LogicalTestType_logical-test" href="language_2_0.html#LogicalTestType_logical-test" coords="282,113,374,137" />
+                                 <area alt="language_2_0.tmp#LogicalTestType_fact-ref" href="language_2_0.html#LogicalTestType_fact-ref" coords="282,147,354,171" /></map></div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn"><b>Model</b><div class="floatRight"><input id="button_model_LogicalTestType" type="image" src="img/btM.gif" value="-" onclick="switchState('model_LogicalTestType');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="model_LogicalTestType" style="display:block"><b><a href="language_2_0.html#LogicalTestType_logical-test" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:logical-test*</a></b> , <b><a href="language_2_0.html#LogicalTestType_fact-ref" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:fact-ref*</a></b></div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn"><b>Children</b></td>
+                        <td><b><a href="language_2_0.html#LogicalTestType_fact-ref" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:fact-ref</a></b>, <b><a href="language_2_0.html#LogicalTestType_logical-test" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:logical-test</a></b></td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Attributes</b></div>
+                           <div class="floatRight"><input id="button_attributes_LogicalTestType" type="image" src="img/btM.gif" value="-" onclick="switchState('attributes_LogicalTestType');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="attributes_LogicalTestType" style="display:block">
+                              <table class="attributesTable">
+                                 <thead>
+                                    <tr>
+                                       <th>QName</th>
+                                       <th width="10%">Type</th>
+                                       <th width="5%">Use</th>
+                                       <th></th>
+                                    </tr>
+                                 </thead>
+                                 <tr>
+                                    <td class="firstColumn"><b><a href="NO_NAMESPACE.html#LogicalTestType_negate" target="mainFrame" title="No namespace" onclick="updatePageTitle('Schema documentation for &#34;No namespace&#34;')">negate</a></b></td>
+                                    <td><b>xsd:boolean</b></td>
+                                    <td>required</td>
+                                    <td>
+                                       <div class="annotation"></div>
+                                    </td>
+                                 </tr>
+                                 <tr>
+                                    <td class="firstColumn"><b><a href="NO_NAMESPACE.html#LogicalTestType_operator" target="mainFrame" title="No namespace" onclick="updatePageTitle('Schema documentation for &#34;No namespace&#34;')">operator</a></b></td>
+                                    <td><b><a href="language_2_0.html#operatorEnumeration" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:operatorEnumeration</a></b></td>
+                                    <td>required</td>
+                                    <td>
+                                       <div class="annotation"></div>
+                                    </td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Source</b></div>
+                           <div class="floatRight"><input id="button_source_LogicalTestType" type="image" src="img/btM.gif" value="-" onclick="switchState('source_LogicalTestType');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="source_LogicalTestType" style="display:block">
+                              <table style="table-layout:fixed;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;_white-space:pre;" class="preWrapContainer">
+                                 <tr>
+                                    <td width="100%"><pre><span class="tEl">&lt;xsd:complexType</span><span class="tAN"> name=</span><span class="tAV">"LogicalTestType"</span><span class="tEl">&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;xsd:annotation</span><span class="tEl">&gt;</span><span class="tI">
+    </span><span class="tEl">&lt;xsd:documentation</span><span class="tAN"> xml:lang=</span><span class="tAV">"en"</span><span class="tEl">&gt;</span><span class="tT" style="white-space:normal">The logical-test element appears as a child of a platform element, and may also be nested to create more complex logical tests. The content consists of one or more elements: fact-ref, and logical-test children are permitted. The operator to be applied, and optional negation of the test, are given as attributes.</span><span class="tEl">&lt;/xsd:documentation&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;/xsd:annotation&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;xsd:sequence</span><span class="tEl">&gt;</span><span class="tI">
+    </span><span class="tEl">&lt;xsd:element</span><span class="tAN"> name=</span><span class="tAV">"logical-test"</span><span class="tAN"> type=</span><span class="tAV">"cpe:LogicalTestType"</span><span class="tAN"> minOccurs=</span><span class="tAV">"0"</span><span class="tAN"> maxOccurs=</span><span class="tAV">"unbounded"</span><span class="tEl">/&gt;</span><span class="tI">
+    </span><span class="tEl">&lt;xsd:element</span><span class="tAN"> name=</span><span class="tAV">"fact-ref"</span><span class="tAN"> type=</span><span class="tAV">"cpe:FactRefType"</span><span class="tAN"> minOccurs=</span><span class="tAV">"0"</span><span class="tAN"> maxOccurs=</span><span class="tAV">"unbounded"</span><span class="tEl">/&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;/xsd:sequence&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;xsd:attribute</span><span class="tAN"> name=</span><span class="tAV">"operator"</span><span class="tAN"> type=</span><span class="tAV">"cpe:operatorEnumeration"</span><span class="tAN"> use=</span><span class="tAV">"required"</span><span class="tEl">/&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;xsd:attribute</span><span class="tAN"> name=</span><span class="tAV">"negate"</span><span class="tAN"> type=</span><span class="tAV">"xsd:boolean"</span><span class="tAN"> use=</span><span class="tAV">"required"</span><span class="tEl">/&gt;</span><span class="tI">
+</span><span class="tEl">&lt;/xsd:complexType&gt;</span></pre></td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </td>
+            <td class="rt_lineRight"></td>
+         </tr>
+         <tr>
+            <td class="rt_cornerBottomLeft"></td>
+            <td class="rt_lineBottom"></td>
+            <td class="rt_cornerBottomRight"></td>
+         </tr>
+      </table><a id="FactRefType"></a><div class="componentTitle">Complex Type <span class="qname">cpe:FactRefType</span></div>
+      <table class="rt">
+         <tr>
+            <td class="rt_cornerTopLeft"></td>
+            <td class="rt_lineTop"></td>
+            <td class="rt_cornerTopRight"></td>
+         </tr>
+         <tr>
+            <td class="rt_lineLeft"></td>
+            <td class="rt_content">
+               <table class="component">
+                  <tbody>
+                     <tr>
+                        <td class="firstColumn"><b>Namespace</b></td>
+                        <td>http://cpe.mitre.org/language/2.0</td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Annotations</b></div>
+                           <div class="floatRight"><input id="button_annotations_FactRefType" type="image" src="img/btM.gif" value="-" onclick="switchState('annotations_FactRefType');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="annotations_FactRefType" style="display:block">
+                              <div class="annotation">
+                                 <table style="table-layout:fixed;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;_white-space:pre;" class="preWrapContainer">
+                                    <tr>
+                                       <td width="100%"><pre><span class="tT">The fact-ref element appears as a child of a logical-test element. It is simply a reference to a CPE Name that always evaluates to a Boolean result.</span></pre></td>
+                                    </tr>
+                                 </table>
+                              </div>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Diagram</b></div>
+                           <div class="floatRight"><input id="button_diagram_FactRefType" type="image" src="img/btM.gif" value="-" onclick="switchState('diagram_FactRefType');" class="control" /></div>
+                        </td>
+                        <td class="diagram">
+                           <div id="diagram_FactRefType" style="display:block"><img alt="Diagram" border="0" src="img/cpe-language_2_2_xsd_Complex_Type_cpe_FactRefType.png" usemap="#cpe-language_2_2_xsd_Complex_Type_cpe_FactRefType" /><map name="cpe-language_2_2_xsd_Complex_Type_cpe_FactRefType" id="cpe-language_2_2_xsd_Complex_Type_cpe_FactRefType">
+                                 <area alt="NO_NAMESPACE.tmp#FactRefType_name" href="NO_NAMESPACE.html#FactRefType_name" coords="182,38,259,62" /></map></div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Attributes</b></div>
+                           <div class="floatRight"><input id="button_attributes_FactRefType" type="image" src="img/btM.gif" value="-" onclick="switchState('attributes_FactRefType');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="attributes_FactRefType" style="display:block">
+                              <table class="attributesTable">
+                                 <thead>
+                                    <tr>
+                                       <th>QName</th>
+                                       <th width="10%">Type</th>
+                                       <th width="5%">Use</th>
+                                       <th></th>
+                                    </tr>
+                                 </thead>
+                                 <tr>
+                                    <td class="firstColumn"><b><a href="NO_NAMESPACE.html#FactRefType_name" target="mainFrame" title="No namespace" onclick="updatePageTitle('Schema documentation for &#34;No namespace&#34;')">name</a></b></td>
+                                    <td><b><a href="language_2_0.html#http___cpe.mitre.org_language_2.0_namePattern" target="mainFrame" title="http://cpe.mitre.org/language/2.0" onclick="updatePageTitle('Schema documentation for namespace http://cpe.mitre.org/language/2.0')">cpe:namePattern</a></b></td>
+                                    <td>required</td>
+                                    <td>
+                                       <div class="annotation"></div>
+                                    </td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Source</b></div>
+                           <div class="floatRight"><input id="button_source_FactRefType" type="image" src="img/btM.gif" value="-" onclick="switchState('source_FactRefType');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="source_FactRefType" style="display:block">
+                              <table style="table-layout:fixed;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;_white-space:pre;" class="preWrapContainer">
+                                 <tr>
+                                    <td width="100%"><pre><span class="tEl">&lt;xsd:complexType</span><span class="tAN"> name=</span><span class="tAV">"FactRefType"</span><span class="tEl">&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;xsd:annotation</span><span class="tEl">&gt;</span><span class="tI">
+    </span><span class="tEl">&lt;xsd:documentation</span><span class="tAN"> xml:lang=</span><span class="tAV">"en"</span><span class="tEl">&gt;</span><span class="tT" style="white-space:normal">The fact-ref element appears as a child of a logical-test element. It is simply a reference to a CPE Name that always evaluates to a Boolean result.</span><span class="tEl">&lt;/xsd:documentation&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;/xsd:annotation&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;xsd:attribute</span><span class="tAN"> name=</span><span class="tAV">"name"</span><span class="tAN"> type=</span><span class="tAV">"cpe:namePattern"</span><span class="tAN"> use=</span><span class="tAV">"required"</span><span class="tEl">/&gt;</span><span class="tI">
+</span><span class="tEl">&lt;/xsd:complexType&gt;</span></pre></td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </td>
+            <td class="rt_lineRight"></td>
+         </tr>
+         <tr>
+            <td class="rt_cornerBottomLeft"></td>
+            <td class="rt_lineBottom"></td>
+            <td class="rt_cornerBottomRight"></td>
+         </tr>
+      </table><a id="http___cpe.mitre.org_language_2.0_namePattern"></a><div class="componentTitle">Simple Type <span class="qname">cpe:namePattern</span></div>
+      <table class="rt">
+         <tr>
+            <td class="rt_cornerTopLeft"></td>
+            <td class="rt_lineTop"></td>
+            <td class="rt_cornerTopRight"></td>
+         </tr>
+         <tr>
+            <td class="rt_lineLeft"></td>
+            <td class="rt_content">
+               <table class="component">
+                  <tbody>
+                     <tr>
+                        <td class="firstColumn"><b>Namespace</b></td>
+                        <td>http://cpe.mitre.org/language/2.0</td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Annotations</b></div>
+                           <div class="floatRight"><input id="button_annotations_http___cpe.mitre.org_language_2.0_namePattern" type="image" src="img/btM.gif" value="-" onclick="switchState('annotations_http___cpe.mitre.org_language_2.0_namePattern');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="annotations_http___cpe.mitre.org_language_2.0_namePattern" style="display:block">
+                              <div class="annotation">
+                                 <table style="table-layout:fixed;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;_white-space:pre;" class="preWrapContainer">
+                                    <tr>
+                                       <td width="100%"><pre><span class="tT">Define the format for acceptable CPE Names. A URN format is used with the id starting with the word cpe followed by :/ and then some number of individual  components separated by colons.</span></pre></td>
+                                    </tr>
+                                 </table>
+                              </div>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Diagram</b></div>
+                           <div class="floatRight"><input id="button_diagram_http___cpe.mitre.org_language_2.0_namePattern" type="image" src="img/btM.gif" value="-" onclick="switchState('diagram_http___cpe.mitre.org_language_2.0_namePattern');" class="control" /></div>
+                        </td>
+                        <td class="diagram">
+                           <div id="diagram_http___cpe.mitre.org_language_2.0_namePattern" style="display:block"><img alt="Diagram" border="0" src="img/cpe-language_2_2_xsd_Simple_Type_cpe_namePattern.png" /></div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn"><b>Type</b></td>
+                        <td>restriction of <b>xsd:anyURI</b></td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Facets</b></div>
+                           <div class="floatRight"><input id="button_facets_http___cpe.mitre.org_language_2.0_namePattern" type="image" src="img/btM.gif" value="-" onclick="switchState('facets_http___cpe.mitre.org_language_2.0_namePattern');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="facets_http___cpe.mitre.org_language_2.0_namePattern" style="display:block">
+                              <table class="facetsTable">
+                                 <tr>
+                                    <td class="firstColumn">pattern</td>
+                                    <td width="30%"><b>[c][pP][eE]:/[AHOaho]?(:[A-Za-z0-9\._\-~%]*){0,6}</b></td>
+                                    <td>
+                                       <div class="annotation"></div>
+                                    </td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Source</b></div>
+                           <div class="floatRight"><input id="button_source_http___cpe.mitre.org_language_2.0_namePattern" type="image" src="img/btM.gif" value="-" onclick="switchState('source_http___cpe.mitre.org_language_2.0_namePattern');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="source_http___cpe.mitre.org_language_2.0_namePattern" style="display:block">
+                              <table style="table-layout:fixed;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;_white-space:pre;" class="preWrapContainer">
+                                 <tr>
+                                    <td width="100%"><pre><span class="tEl">&lt;xsd:simpleType</span><span class="tAN"> name=</span><span class="tAV">"namePattern"</span><span class="tEl">&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;xsd:annotation</span><span class="tEl">&gt;</span><span class="tI">
+    </span><span class="tEl">&lt;xsd:documentation</span><span class="tAN"> xml:lang=</span><span class="tAV">"en"</span><span class="tEl">&gt;</span><span class="tT" style="white-space:normal">Define the format for acceptable CPE Names. A URN format is used with the id starting with the word cpe followed by :/ and then some number of individual components separated by colons.</span><span class="tEl">&lt;/xsd:documentation&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;/xsd:annotation&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;xsd:restriction</span><span class="tAN"> base=</span><span class="tAV">"xsd:anyURI"</span><span class="tEl">&gt;</span><span class="tI">
+    </span><span class="tEl">&lt;xsd:pattern</span><span class="tAN"> value=</span><span class="tAV">"[c][pP][eE]:/[AHOaho]?(:[A-Za-z0-9\._\-~%]*){0,6}"</span><span class="tEl">/&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;/xsd:restriction&gt;</span><span class="tI">
+</span><span class="tEl">&lt;/xsd:simpleType&gt;</span></pre></td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </td>
+            <td class="rt_lineRight"></td>
+         </tr>
+         <tr>
+            <td class="rt_cornerBottomLeft"></td>
+            <td class="rt_lineBottom"></td>
+            <td class="rt_cornerBottomRight"></td>
+         </tr>
+      </table><a id="operatorEnumeration"></a><div class="componentTitle">Simple Type <span class="qname">cpe:operatorEnumeration</span></div>
+      <table class="rt">
+         <tr>
+            <td class="rt_cornerTopLeft"></td>
+            <td class="rt_lineTop"></td>
+            <td class="rt_cornerTopRight"></td>
+         </tr>
+         <tr>
+            <td class="rt_lineLeft"></td>
+            <td class="rt_content">
+               <table class="component">
+                  <tbody>
+                     <tr>
+                        <td class="firstColumn"><b>Namespace</b></td>
+                        <td>http://cpe.mitre.org/language/2.0</td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Annotations</b></div>
+                           <div class="floatRight"><input id="button_annotations_operatorEnumeration" type="image" src="img/btM.gif" value="-" onclick="switchState('annotations_operatorEnumeration');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="annotations_operatorEnumeration" style="display:block">
+                              <div class="annotation">
+                                 <table style="table-layout:fixed;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;_white-space:pre;" class="preWrapContainer">
+                                    <tr>
+                                       <td width="100%"><pre><span class="tT">The OperatorEnumeration simple type defines acceptable operators. Each operator defines how to evaluate multiple arguments.</span></pre></td>
+                                    </tr>
+                                 </table>
+                              </div>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Diagram</b></div>
+                           <div class="floatRight"><input id="button_diagram_operatorEnumeration" type="image" src="img/btM.gif" value="-" onclick="switchState('diagram_operatorEnumeration');" class="control" /></div>
+                        </td>
+                        <td class="diagram">
+                           <div id="diagram_operatorEnumeration" style="display:block"><img alt="Diagram" border="0" src="img/cpe-language_2_2_xsd_Simple_Type_cpe_operatorEnumeration.png" /></div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn"><b>Type</b></td>
+                        <td>restriction of <b>xsd:string</b></td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Facets</b></div>
+                           <div class="floatRight"><input id="button_facets_operatorEnumeration" type="image" src="img/btM.gif" value="-" onclick="switchState('facets_operatorEnumeration');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="facets_operatorEnumeration" style="display:block">
+                              <table class="facetsTable">
+                                 <tr>
+                                    <td class="firstColumn">enumeration</td>
+                                    <td width="30%"><b>AND</b></td>
+                                    <td>
+                                       <div class="annotation"></div>
+                                    </td>
+                                 </tr>
+                                 <tr>
+                                    <td class="firstColumn">enumeration</td>
+                                    <td width="30%"><b>OR</b></td>
+                                    <td>
+                                       <div class="annotation"></div>
+                                    </td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="firstColumn">
+                           <div class="floatLeft"><b>Source</b></div>
+                           <div class="floatRight"><input id="button_source_operatorEnumeration" type="image" src="img/btM.gif" value="-" onclick="switchState('source_operatorEnumeration');" class="control" /></div>
+                        </td>
+                        <td>
+                           <div id="source_operatorEnumeration" style="display:block">
+                              <table style="table-layout:fixed;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;_white-space:pre;" class="preWrapContainer">
+                                 <tr>
+                                    <td width="100%"><pre><span class="tEl">&lt;xsd:simpleType</span><span class="tAN"> name=</span><span class="tAV">"operatorEnumeration"</span><span class="tEl">&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;xsd:annotation</span><span class="tEl">&gt;</span><span class="tI">
+    </span><span class="tEl">&lt;xsd:documentation</span><span class="tAN"> xml:lang=</span><span class="tAV">"en"</span><span class="tEl">&gt;</span><span class="tT" style="white-space:normal">The OperatorEnumeration simple type defines acceptable operators. Each operator defines how to evaluate multiple arguments.</span><span class="tEl">&lt;/xsd:documentation&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;/xsd:annotation&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;xsd:restriction</span><span class="tAN"> base=</span><span class="tAV">"xsd:string"</span><span class="tEl">&gt;</span><span class="tI">
+    </span><span class="tEl">&lt;xsd:enumeration</span><span class="tAN"> value=</span><span class="tAV">"AND"</span><span class="tEl">/&gt;</span><span class="tI">
+    </span><span class="tEl">&lt;xsd:enumeration</span><span class="tAN"> value=</span><span class="tAV">"OR"</span><span class="tEl">/&gt;</span><span class="tI">
+  </span><span class="tEl">&lt;/xsd:restriction&gt;</span><span class="tI">
+</span><span class="tEl">&lt;/xsd:simpleType&gt;</span></pre></td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </td>
+            <td class="rt_lineRight"></td>
+         </tr>
+         <tr>
+            <td class="rt_cornerBottomLeft"></td>
+            <td class="rt_lineBottom"></td>
+            <td class="rt_cornerBottomRight"></td>
+         </tr>
+      </table>
+      <div class="footer">
+         <hr />
+         <div align="center">XML Schema documentation generated by <a href="http://www.oxygenxml.com" target="_parent"><span class="oXygenLogo"><span class="redX">&lt;</span>o<span class="redX">X</span>ygen<span class="redX">/&gt;</span></span></a><sup>®</sup> XML Editor.
+         </div>
+      </div><script type="text/javascript">
+         <!--                     
+                     // The namespace is the selected option in the TOC combo.
+                    
+                     // Floats the toolbar.
+                     var globalControls = getElementObject("global_controls"); 
+                     
+                     if(globalControls != null){
+	                     var browser=navigator.appName;
+						 var version = parseFloat(navigator.appVersion.split('MSIE')[1]);
+						 
+						 var IE6 = false;
+						 if ((browser=="Microsoft Internet Explorer") && (version < 7)){
+						 	IE6 = true;
+						 }
+	
+	                     //alert (IE6 + " |V| " + version);
+	                     
+	                     if(IE6){
+	                     	// On IE 6 the 'fixed' property is not supported. We must use javascript. 
+	                         globalControls.style.position='absolute';                         
+	                         // The global controls will do not exist in the TOC frame, when chunking.
+	                         findAndFloat("global_controls", 225, 30);    
+	                     } else {
+	                      	  globalControls.style.position='fixed';                     	
+	                     }
+	                     
+	                     globalControls.style.right='0';                       
+                     }
+                --></script></body>
+</html>

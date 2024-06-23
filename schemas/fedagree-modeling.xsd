@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:fedagree="http://www.sisostds.org/schemas/feat/v1"
+    xmlns:gml="http://www.opengis.net/gml/3.2"
+    targetNamespace="http://www.sisostds.org/schemas/feat/v1">
+
+    <xs:import namespace="http://www.opengis.net/gml/3.2" schemaLocation="gml/3.2.1/gml.xsd"/>
+
+    <xs:include schemaLocation="fedagree-design.xsd"/>
+
+    <xs:element name="modeling">
+        <xs:annotation>
+            <xs:documentation>
+                Agreements to be implemented in the member applications that semantically affect the current execution of the federation.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:effectsAdjudication" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:coordinateSystems" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:deadReckoning" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:aggregation" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:ddm" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:controlTransfers" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:issues" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:misc" minOccurs="0" maxOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="effectsAdjudication">
+        <xs:annotation>
+            <xs:documentation>
+                Effects adjudication agreements ensure a 'fair fight' by specifying what component has the authority to determine the outcome or
+                effect of an interaction between member applications, e.g. “shooter” (or the one initiating the effect) adjudicates, 'target'
+                (the one the effect is perpetrated on) and, 'server' (some 3rd party member application). This list should not be considered exhaustive.    
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="adjudication" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:attribute name="appRef" type="xs:IDREF">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    Reference to the unique ID of a previously included member application.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="effect" type="fedagree:effectEnumType" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="coordinateSystems">
+        <xs:annotation>
+            <xs:documentation>
+                Reference to authoritative coordinate system representations. Included coordinate systems
+                must be able to substitute for gml:AbstractCoordinateSystem.                
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="gml:AbstractCoordinateSystem" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deadReckoning">
+        <xs:annotation>
+            <xs:documentation>
+                Dead reckoning algorithms to be used.    
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="usage" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="usingApp" type="xs:IDREF" minOccurs="0"
+                                maxOccurs="unbounded">
+                                <xs:annotation>
+                                    <xs:documentation>
+                                        Reference to the unique ID of a previously included member application.
+                                    </xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="algorithm" type="fedagree:disDeadReckoningEnum"
+                            use="required"/>
+                        <xs:attribute name="global" type="xs:boolean" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="aggregation">
+        <xs:annotation>
+            <xs:documentation>
+                Triggers and algorithms for aggregation and disaggregation.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="trigger" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="description" type="fedagree:triggerType" minOccurs="1"
+                                maxOccurs="1"/>
+                            <xs:element name="result" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                        </xs:sequence>
+                        <xs:attribute name="name" type="xs:string"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="ddm">
+        <xs:annotation>
+            <xs:documentation>
+                Parameters and algorithms for interest management.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="managementRule" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="description" type="xs:string" minOccurs="1"
+                                maxOccurs="1"/>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="fedagree:xmiModel"/>
+                                <xs:element name="modelImage" type="fedagree:imageType"/>
+                            </xs:choice>
+                        </xs:sequence>
+                        <xs:attribute name="entityRef" type="xs:string">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    Reference to the unique ID of an entity described in an HLA FOM.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="controlTransfers">
+        <xs:annotation>
+            <xs:documentation>
+                Triggers, constraints, and algorithms for transferring control of entities between member applications.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="transferOfControl" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="description" type="xs:string" minOccurs="1"
+                                maxOccurs="1"/>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="fedagree:xmiModel"/>
+                                <xs:element name="modelImage" type="fedagree:imageType"/>
+                            </xs:choice>
+                        </xs:sequence>
+                        <xs:attribute name="affectedEntity" type="xs:string" use="required">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    Reference to the unique ID of an entity described in an HLA FOM.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="transferStrategy"
+                            type="fedagree:controlTransferEnumType" use="optional">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    Strategy for transferring control/ownership.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="misc" type="fedagree:complexDescription">
+        <xs:annotation>
+            <xs:documentation>
+                Catch-all for modeling agreements that cannot be easily categorized. As an example, notes would be included here about
+                treating weekends and holidays different than weekdays or allowing for regular work hours during weekdays.
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
+    <xs:element name="issues">
+        <xs:annotation>
+            <xs:documentation>
+                Federation-specific modeling issues such as ground clamping, resupply/refuel.    
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="issue" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="description" type="xs:string" minOccurs="1"
+                                maxOccurs="1"/>
+                            <xs:element name="mitigation" type="xs:string" minOccurs="1"
+                                maxOccurs="1"/>
+                        </xs:sequence>
+                        <xs:attribute name="name" type="xs:string"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:simpleType name="disDeadReckoningEnum">
+        <xs:annotation>
+            <xs:documentation>
+                Enumeration of DIS dead reckoning algorithms.    
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Other"/>
+            <xs:enumeration value="Static"/>
+            <xs:enumeration value="DRM(F,P,W)"/>
+            <xs:enumeration value="DRM(R,P,W)"/>
+            <xs:enumeration value="DRM(R,V,W)"/>
+            <xs:enumeration value="DRM(F,V,W)"/>
+            <xs:enumeration value="DRM(F,P,B)"/>
+            <xs:enumeration value="DRM(R,P,B)"/>
+            <xs:enumeration value="DRM(R,V,B)"/>
+            <xs:enumeration value="DRM(F,V,B)"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="effectEnumType">
+        <xs:annotation>
+            <xs:documentation>
+                Enumeration of engagement effects.    
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="damage"/>
+            <xs:enumeration value="attrition"/>
+            <xs:enumeration value="collision"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="controlTransferEnumType">
+        <xs:annotation>
+            <xs:documentation>
+                Enumeration of acceptable values for the control tranfer strategies.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="push/pull"/>
+            <xs:enumeration value="negotiated/unconditional"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:annotation>
+        <xs:documentation>Copyright © 2013 by the Simulation Interoperability Standards Organization, Inc. 
+            
+            P.O. Box 781238
+            
+            Orlando, FL 32878-1238, USA
+            
+            All rights reserved.
+            
+            Permission is hereby granted for this document to be used for production of both commercial and non- commercial products. Removal of this copyright statement and claiming rights to this document is prohibited. In addition, permission is hereby granted for this document to be distributed in its original or modified format (e.g. as part of a database) provided that no charge is invoked for the provision. Modification only applies to format and does not apply to the content of this document.
+            
+            SISO Inc. Board of Directors 
+            
+            P.O. Box 781238
+            Orlando, FL 32878-1238, USA</xs:documentation>
+    </xs:annotation>
+
+</xs:schema>

@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:fedagree="http://www.sisostds.org/schemas/feat/v1"
+    targetNamespace="http://www.sisostds.org/schemas/feat/v1"
+    xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:cpe="http://cpe.mitre.org/language/2.0"
+    xmlns:cpe_dict="http://cpe.mitre.org/dictionary/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+    xmlns:bom="http://www.sisostds.org/schemas/bom">
+
+    <xs:import namespace="http://cpe.mitre.org/language/2.0" schemaLocation="cpe/cpe-language_2.2.xsd"/>
+    <xs:import namespace="http://cpe.mitre.org/dictionary/2.0" schemaLocation="cpe/cpe-dictionary_2.2.xsd"/>
+    <xs:import namespace="http://www.opengis.net/gml/3.2" schemaLocation="gml/3.2.1/gml.xsd"/>
+    <xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="xlink.xsd"/>
+    <xs:import namespace="http://www.sisostds.org/schemas/bom" schemaLocation="BOM_v2006.xsd"/>
+    
+    <xs:include schemaLocation="fedagree-common.xsd"/>
+    <xs:include schemaLocation="fedagree-metadata.xsd"/>
+
+    <xs:element name="design">
+        <xs:annotation>
+            <xs:documentation>
+                Agreements about the basic purpose and design of the federation.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:conceptualModel" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:infosec" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:terrain" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:objectivesAndRequirements" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:environment" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:scenario" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:architecture" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:memberApps" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:tools" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:domainInfo" minOccurs="0" maxOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Start design elements -->
+    <xs:element name="conceptualModel">
+        <xs:annotation>
+            <xs:documentation>
+                Element for inclusion of a conceptual model that includes entities within the domain of interest, 
+                static and dynamic relationships among entities, and entity behaviors Can include 0 or more references 
+                to remote documents, 0 or more inline XMI-encoded models, and 0 or more BOM-encoded models. Federations
+                with detailed conceptual models may choose to include such models by reference using document number,
+                title, version, and reference. Alternatively, a minimal conceptual model may be documented using the
+                combination of the entities, event traces/sequence diagrams, and state transition diagrams/entity behaviors
+                within this document.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="archModel" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:choice>
+                            <xs:element ref="fedagree:xmiModel"/>
+                            <xs:element name="modelImage" type="fedagree:imageType"/>
+                        </xs:choice>
+                        <xs:attributeGroup ref="fedagree:common"/>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element ref="fedagree:bomModel" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="infosec">
+        <xs:annotation>
+            <xs:documentation>
+                Information security and information assurance procedures and policies applicable to the 
+                simulation environment; level at which the federation will be executed; compliance with DISR standards.
+                Intelligence Community Information Security Marking (IC-ISM) attributes are used to inline 
+                reuse restriction information. Links to external documents containing the infosec information 
+                and procedures may substitute for or supplement any or all elements and attributes. For federations 
+                with detailed security requirements, a reference to a separate security plan or policy document is 
+                appropriate here.  Alternatively, unclassified federations may choose to document applicable IT security 
+                standards and processes here. Applies to the simulation environment and execution, not to the agreements
+                document or its constituent agreements.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="standards">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0"
+                                maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="procedures" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:annotation>
+                            <xs:documentation>
+                                Security procedures can be encoded directly in the federation agreements document using simple tables.
+                                The eXtensible Configuration Checklist Description Format (XCCDF) developed by the NSA and managed
+                                by NIST (http://scap.nist.gov/specifications/xccdf/) may be supported in the future, but current issues
+                                with the public schema make such use untenable at this time.                                
+                            </xs:documentation>
+                        </xs:annotation>
+                        <xs:sequence>
+                            <xs:element ref="fedagree:table" minOccurs="0" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:SecurityAttributesOptionGroup"/>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="terrain">
+        <xs:annotation>
+            <xs:documentation>
+                Playbox, format, resolution, correlation/transposition. Geography Markup Language (GML) is used to encode geographical
+                bounding boxes and conversion and transformation options.                
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="terrainInstance" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="gml:boundedBy" minOccurs="0" maxOccurs="1"/>
+                            <xs:element name="configuration" type="xs:string" minOccurs="0"
+                                maxOccurs="1"/>
+                        </xs:sequence>
+                        <xs:attribute name="terrainSoftwareRef" use="optional" type="xs:IDREF">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    Optional reference to the software package or platform used to create or load this terrain instance
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="format" type="xs:string" use="required">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    The format in which this terrain instance is encoded.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="title" type="xs:string" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="conversion" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="gml:AbstractGeneralConversion"/>
+                        </xs:sequence>
+                        <xs:attribute name="title" use="required" type="xs:string"/>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="transformation" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="gml:AbstractGeneralTransformation"/>
+                        </xs:sequence>
+                        <xs:attribute name="title" use="required" type="xs:string"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="objectivesAndRequirements">
+        <xs:annotation>
+            <xs:documentation>
+                Measurable objectives and requirements for the federation.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="objective" type="fedagree:abstractRequirement" minOccurs="0"
+                    maxOccurs="unbounded"/>
+                <xs:element name="requirement" type="fedagree:abstractRequirement" minOccurs="0"
+                    maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="abstractRequirement">
+        <xs:annotation>
+            <xs:documentation>
+                Common type for the representation of both objectives and requirements.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="value" type="xs:string" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The text of the requirement.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="modifiers" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Modifications or clarifications to requirements or objectives referenced in external documents.
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    Optional reference to a remote document within which the requirement is contained.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="modifier" type="xs:string">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    Arbitrary modifier information for this requirement.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attributeGroup ref="fedagree:common"/>
+        <xs:attribute name="id" type="xs:ID" use="required"/>
+        <xs:attribute name="referenceNumber" use="optional" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>
+                    Optional reference number for the requirement. Could be a globally unique reference number or specific to a child
+                    remote document reference.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:element name="environment">
+        <xs:annotation>
+            <xs:documentation>
+                References to environment representation-specific objectives and requirements. For federations with detailed
+                environment representation requirements, a reference to a separate document is appropriate here.    
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="trigger" type="fedagree:triggerType" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="requirement" type="xs:IDREF" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>
+                            A reference to an environment-specific requirement from objectivesAndRequirements.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+            <xs:attribute type="xs:string" name="name"/>
+            <xs:attribute ref="xlink:href" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                        Remote reference to the environment implementation. Could be a file, server, or database.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="scenario">
+        <xs:annotation>
+            <xs:documentation>
+                Scenario description including initial laydown; reference to scenario files, e.g. MSDL; scenario file format.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="scenarioDescription" type="fedagree:complexDescription"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="architecture">
+        <xs:annotation>
+            <xs:documentation>
+                Describes the top level architecture of the federation. For federations with detailed 
+                federation architectures, a reference to a separate document is appropriate here.  Simpler 
+                federations may just insert a graphic or UML diagram of the architecture.   
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="archModel" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:choice>
+                            <xs:element ref="fedagree:xmiModel"/>
+                            <xs:element name="modelImage" type="fedagree:imageType"/>
+                        </xs:choice>
+                        <xs:attributeGroup ref="fedagree:common"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="memberApps">
+        <xs:annotation>
+            <xs:documentation>
+                Type, name, version, description, responsibilities of each member application.    
+                For federations with detailed federation architectures, a reference to a separate 
+                document is appropriate here, possibly the same document as the federation architecture.  
+                Simpler federations may just identify the member applications here.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="fedagree:memberApplication" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="memberApplication">
+        <xs:annotation>
+            <xs:documentation>
+                An application that is serving some defined role within a simulation environment. Application metadata
+                maintained externally to the FEAT file (e.g., MSC-DMS metacards) should be referenced using the "reference"
+                element in the "references" list that is a child of this element. The body of the "reference" tag can be used
+                to describe the nature of the external metadata, and the "href" attribute can be used to directly point to its URL.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="cpe_dict:cpe-item">
+                    <xs:annotation>
+                        <xs:documentation>
+                            Common Platform Enumeration (CPE) entry for this member application. As member applications
+                            are unlikely to be already present within the global dictionary maintained by NIST, these will
+                            need to be created either by the member application developers as part of their CM process or 
+                            maintained by the federation. The parent memberApps element should be considered a CPE dictionary
+                            for puroposes of maintaining this data for the federation.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="instance">
+                    <xs:annotation>
+                        <xs:documentation>
+                            If there are multiple instances of a single member application in the federation, the description
+                            and responsibilities of each should be included here.
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="description" type="fedagree:complexDescription"
+                                minOccurs="0" maxOccurs="1"/>
+                            <xs:element name="responsibilities" maxOccurs="1" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="responsibility" minOccurs="0"
+                                            maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:simpleContent>
+                                                  <xs:extension base="xs:string">
+                                                  <xs:attribute name="requirementRef"
+                                                  type="xs:IDREF" use="optional">
+                                                  <xs:annotation>
+                                                      <xs:documentation>
+                                                          Optional reference to the requirement or objective with which this responsibility is associated.
+                                                      </xs:documentation>
+                                                  </xs:annotation>
+                                                  </xs:attribute>
+                                                  </xs:extension>
+                                                </xs:simpleContent>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+
+                        </xs:sequence>
+                        <xs:attribute name="simID" type="xs:string" use="required">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    The unique ID for this member application instance within the federation.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="middleware" type="fedagree:simArchitectureType" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attribute type="xs:string" name="type"/>
+            <xs:attribute name="appID" type="xs:ID" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                        Reference to the ID of a previously identified member application.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="requiredRAM" type="xs:string" use="optional"/>
+            <xs:attribute name="requiredDiskSpace" type="xs:string" use="optional"/>
+            <xs:attribute name="CMLabel" type="xs:string" use="optional"/>
+            <xs:attribute name="osRefs" type="fedagree:refList" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                        Reference to the unique ID of a previously included tool element representing the 
+                        operating system used on this hardware.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:simpleType name="refList">
+        <xs:annotation>
+            <xs:documentation>
+                A list of ID references to other elements in the federation agreements document
+            </xs:documentation>
+        </xs:annotation>
+        <xs:list itemType="xs:IDREF"/>
+    </xs:simpleType>
+
+    <xs:element name="tools">
+        <xs:annotation>
+            <xs:documentation>
+                Tools used in the design and support of the simulation. This section should include any relevant
+                operating systems, database engines, etc. explicitly required by the federation in addition to 
+                simulation-specific tools.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="fedagree:tool" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="domainInfo">
+        <xs:annotation>
+            <xs:documentation>
+                Information traceable to authoritative sources that is used to build supporting databases 
+                and algorithms for member applications and the simulation environment    
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="info" type="xs:string" maxOccurs="1" minOccurs="0"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="bomModel">
+        <xs:annotation>
+            <xs:documentation>
+                BOM-encoded conceptual models can be included inline using this element. In order to maintain tool-specific extensions and the full range of BOM-encoded models, this element wraps a single BOM element, which is the root element for any BOM-encoded document. Such documents may include numerous models, and conventionally these models will all be related.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="bom:BOM" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!--End design elements -->
+    <xs:annotation>
+        <xs:documentation>Copyright © 2013 by the Simulation Interoperability Standards Organization, Inc. 
+            
+            P.O. Box 781238
+            
+            Orlando, FL 32878-1238, USA
+            
+            All rights reserved.
+            
+            Permission is hereby granted for this document to be used for production of both commercial and non- commercial products. Removal of this copyright statement and claiming rights to this document is prohibited. In addition, permission is hereby granted for this document to be distributed in its original or modified format (e.g. as part of a database) provided that no charge is invoked for the provision. Modification only applies to format and does not apply to the content of this document.
+            
+            SISO Inc. Board of Directors 
+            
+            P.O. Box 781238
+            Orlando, FL 32878-1238, USA</xs:documentation>
+    </xs:annotation>
+    
+</xs:schema>

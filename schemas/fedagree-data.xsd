@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:fedagree="http://www.sisostds.org/schemas/feat/v1"
+    xmlns:cpe="http://cpe.mitre.org/language/2.0" xmlns:xlink="http://www.w3.org/1999/xlink"
+    targetNamespace="http://www.sisostds.org/schemas/feat/v1">
+
+    <xs:import namespace="http://cpe.mitre.org/language/2.0" schemaLocation="cpe/cpe-language_2.2.xsd"/>
+    <xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="xlink.xsd"/>
+
+    <xs:include schemaLocation="fedagree-common.xsd"/>
+
+    <xs:element name="data">
+        <xs:annotation>
+            <xs:documentation>
+                Agreements about structure, values, and semantics of data to be exchanged during 
+                federation execution.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:encodings" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:dataExchangeModels" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:namingConventions" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:pubSubResponsibilities" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:dataDictionary" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:supportingDatabases" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:userSuppliedData" minOccurs="0" maxOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="encodings">
+        <xs:annotation>
+            <xs:documentation>
+                Data encodings used in the federation, including acceptable and unacceptable representation of 
+                "no current value" by data type and endianness.    
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:dataEncoding" maxOccurs="unbounded" minOccurs="0"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="dataExchangeModels">
+        <xs:annotation>
+            <xs:documentation>
+                FOM, LROM, and PDU utilization and tailoring and direct interactions (e.g. remote methods).    
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="dem" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0"
+                                maxOccurs="unbounded"/>
+                            <xs:element ref="fedagree:simArchitecture" minOccurs="1" maxOccurs="1"/>
+                            <xs:element name="directInteractions" minOccurs="0" maxOccurs="1">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="interaction" minOccurs="0"
+                                            maxOccurs="unbounded">
+                                            <xs:annotation>
+                                                <xs:documentation>
+                                                    Encoding of direct interactions such as remote method calls.
+                                                </xs:documentation>
+                                            </xs:annotation>
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="parameters">
+                                                  <xs:annotation>
+                                                  <xs:documentation>
+                                                                Parameters passed as input to the direct interaction for which this is a child element.
+                                                            </xs:documentation>
+                                                  </xs:annotation>
+                                                  <xs:complexType>
+                                                  <xs:sequence>
+                                                  <xs:element name="parameter" minOccurs="0"
+                                                  maxOccurs="unbounded" type="fedagree:paramType"/>
+                                                  </xs:sequence>
+                                                  </xs:complexType>
+                                                  </xs:element>
+                                                  <xs:element name="return"
+                                                  type="fedagree:paramType" minOccurs="1"
+                                                  maxOccurs="1">
+                                                  <xs:annotation>
+                                                  <xs:documentation>
+                                                                Return type for the direct interaction for which this is a child element.
+                                                            </xs:documentation>
+                                                  </xs:annotation>
+                                                  </xs:element>
+                                                  <xs:element name="purpose" minOccurs="1"
+                                                  maxOccurs="1" type="xs:string"/>
+                                                  <xs:element name="trigger" minOccurs="0"
+                                                  maxOccurs="1" type="fedagree:triggerType"/>
+                                                </xs:sequence>
+                                                <xs:attribute name="name" type="xs:string"/>
+                                                <xs:attribute name="type"
+                                                  type="fedagree:interactionType"/>
+                                                <xs:attribute name="client" type="xs:IDREF"
+                                                  use="optional">
+                                                  <xs:annotation>
+                                                  <xs:documentation>
+                                                            A reference to the ID of a previously documented tool or member application that is the client.
+                                                        </xs:documentation>
+                                                  </xs:annotation>
+                                                </xs:attribute>
+                                                <xs:attribute name="server" type="xs:IDREF"
+                                                  use="optional">
+                                                  <xs:annotation>
+                                                  <xs:documentation>
+                                                            A reference to the ID of a previously documented tool or member application that is the server.
+                                                        </xs:documentation>
+                                                  </xs:annotation>
+                                                </xs:attribute>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="name" type="xs:string" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="namingConventions">
+        <xs:annotation>
+            <xs:documentation>
+                Naming conventions for objects, attributes/parameters, enumerations, and member applications.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="convention" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="standardPattern" type="xs:string" minOccurs="0"
+                                maxOccurs="1">
+                                <xs:annotation>
+                                    <xs:documentation>
+                                        Optional regular expression designating the standard pattern for the naming convention for which this is a child element.
+                                    </xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="forbidden" minOccurs="0" maxOccurs="1">
+                                <xs:annotation>
+                                    <xs:documentation>
+                                        Forbidden characters, prefixes, postfixes, substrings, and patterns.
+                                    </xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:choice maxOccurs="unbounded">
+                                            <xs:element name="prefix" type="xs:string"/>
+                                            <xs:element name="postfix" type="xs:string"/>
+                                            <xs:element name="character" type="xs:string"/>
+                                            <xs:element name="substring" type="xs:string"/>
+                                            <xs:element name="pattern" type="xs:string"/>
+                                        </xs:choice>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="name" type="xs:string" use="required"/>
+                        <xs:attribute name="type" type="fedagree:refTypeEnum" use="required"/>
+                        <xs:attribute name="minLength" type="xs:integer" use="optional"/>
+                        <xs:attribute name="maxLength" type="xs:integer" use="optional"/>
+                        <xs:attribute name="delimiter" type="xs:string" use="optional"/>
+                        <xs:attribute name="prefix" type="xs:string" use="optional"/>
+                        <xs:attribute name="postfix" type="xs:string" use="optional"/>
+                        <xs:attribute name="capitalization" type="fedagree:capitalizationSchemeEnum"
+                            use="optional"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="pubSubResponsibilities">
+        <xs:annotation>
+            <xs:documentation>
+                Allocation of responsibility for sending and receiving data between member applications.
+                Types and formats of data to be exchanged are specified separately in the simulation data exchange model.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="appEntry" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>
+                            Publication/subscription responsibilities of individual member applications.
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="publications" minOccurs="0" maxOccurs="1">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="publication" type="fedagree:pubSubType"
+                                            minOccurs="0" maxOccurs="unbounded"/>
+                                    </xs:sequence>
+                                    <xs:attributeGroup ref="fedagree:common"/>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="subscriptions" minOccurs="0" maxOccurs="1">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="subscription" type="fedagree:pubSubType"
+                                            minOccurs="0" maxOccurs="unbounded"/>
+                                    </xs:sequence>
+                                    <xs:attributeGroup ref="fedagree:common"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="appRef" type="xs:IDREF" use="required">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    A reference to the unique ID of a previously identified member application.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="dataDictionary">
+        <xs:annotation>
+            <xs:documentation>
+                Identification of standard data dictionary references used in the Simulation Data Exchange Model 
+                and associated Simulation Environment Agreements.    
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="dictionaryEntry" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="description" type="xs:string" maxOccurs="1"
+                                minOccurs="0"/>
+                        </xs:sequence>
+                        <xs:attribute name="name" type="xs:string" use="required"/>
+                        <xs:attribute name="supportingDB" type="xs:IDREF" use="required">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    A reference to a database listed in the supporting databases section.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="type" type="fedagree:dictType" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="supportingDatabases">
+        <xs:annotation>
+            <xs:documentation>
+                Common and consistent data used across the simulation environment to guarantee 
+                valid interactions among all member applications. This element contains information
+                on how to access common and consistent data used across the simulation environment
+                to guarantee valid interactions among all member applications. This data may be stored
+                in a relational database, in which case the 'dbEngineRef' attribute should refer to a
+                previously identified database engine, or some other location (e.g., web service). The
+                'accessInterfaces' and 'accessRestrictions' child elements should be utilized for connection details.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="database" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="description" type="xs:string" minOccurs="0"
+                                maxOccurs="1"/>
+                            <xs:element name="accessRestrictions" minOccurs="0" maxOccurs="1">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="restriction" type="xs:string"
+                                            minOccurs="0" maxOccurs="unbounded"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="accessInterfaces" minOccurs="0" maxOccurs="1">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="interface" type="xs:string" minOccurs="0"
+                                            maxOccurs="unbounded"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="name" type="xs:string" use="required"/>
+                        <xs:attributeGroup ref="xlink:simpleAttrs"/>
+                        <xs:attribute name="version" type="xs:string" use="required"/>
+                        <xs:attribute name="dbEngineRef" type="xs:IDREF" use="optional">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    Reference to a previously identified database engine listed in the tools section.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="id" type="xs:ID" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="userSuppliedData">
+        <xs:annotation>
+            <xs:documentation>
+                This element is for data supplied by a user of the simulation that may prove useful to other users,
+                but which is not part of the general federation data. This information includes tag values, entity
+                identifiers, site identifiers, host identifiers, or any other event-, user- or site-specific data not
+                captured in the other structured data agreements.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:userData" maxOccurs="unbounded" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="userData">
+        <xs:annotation>
+            <xs:documentation>
+                User data
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="type" type="fedagree:userDataTypesUnion"/>
+                <xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:simpleType name="userDataTypesUnion">
+        <xs:annotation>
+            <xs:documentation>
+                Complex type for capturing varying types of user data
+            </xs:documentation>
+        </xs:annotation>
+        <xs:union memberTypes="xs:string fedagree:userDataTypes"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="userDataTypes">
+        <xs:annotation>
+            <xs:documentation>
+                Enumeration of types of user data
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="TAG Value"/>
+            <xs:enumeration value="Entity Identifiers"/>
+            <xs:enumeration value="Site Identifiers"/>
+            <xs:enumeration value="Host Identifiers"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="pubSubType">
+        <xs:annotation>
+            <xs:documentation>
+                Common type for publications and subscriptions. Information encoded includes name, model architecture, a 
+                reference to the DEM and ID within the DEM for the target of the publication or subscription declaration. The latter
+                can be used when the linked DEM is formatted in XML with unique IDs for the entities, attributes, and interactions
+                (e.g., HLA 1516 FOM).                
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="demTargetEntity" type="fedagree:demTargetEntityType" maxOccurs="1"
+                minOccurs="1"/>
+            <xs:element ref="fedagree:simArchitecture" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="dictType">
+        <xs:annotation>
+            <xs:documentation>
+                Enumeration of types of dictionary that have been identified.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="relation"/>
+            <xs:enumeration value="attribute"/>
+            <xs:enumeration value="tuple"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:annotation>
+        <xs:documentation>Copyright © 2013 by the Simulation Interoperability Standards Organization, Inc. 
+            
+            P.O. Box 781238
+            
+            Orlando, FL 32878-1238, USA
+            
+            All rights reserved.
+            
+            Permission is hereby granted for this document to be used for production of both commercial and non- commercial products. Removal of this copyright statement and claiming rights to this document is prohibited. In addition, permission is hereby granted for this document to be distributed in its original or modified format (e.g. as part of a database) provided that no charge is invoked for the provision. Modification only applies to format and does not apply to the content of this document.
+            
+            SISO Inc. Board of Directors 
+            
+            P.O. Box 781238
+            Orlando, FL 32878-1238, USA</xs:documentation>
+    </xs:annotation>
+    
+</xs:schema>

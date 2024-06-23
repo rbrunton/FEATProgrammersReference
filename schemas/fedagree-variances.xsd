@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:fedagree="http://www.sisostds.org/schemas/feat/v1"
+    targetNamespace="http://www.sisostds.org/schemas/feat/v1">
+
+    <xs:include schemaLocation="fedagree-common.xsd"/>
+
+    <xs:element name="variances">
+        <xs:annotation>
+            <xs:documentation>
+                Exceptions to the federation agreements deemed necessary during integration and testing.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="variance" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>
+                            Includes reference to agreement requiring variance, description of the variance, 
+                            and the motivation/need for the variance. The variance element has two attributes:
+                            the varianceID and a reference to the id of an agreement in this document. The
+                            description of the variance is in the body of the tag.                            
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:string">
+                                <xs:attribute name="varianceID" type="xs:integer" use="required"/>
+                                <xs:attribute name="reference" type="xs:string" use="required">
+                                    <xs:annotation>
+                                        <xs:documentation>
+                                            Reference to an agreement within the federation agreements document
+                                            for which this is a variance.
+                                        </xs:documentation>
+                                    </xs:annotation>
+                                </xs:attribute>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:annotation>
+        <xs:documentation>Copyright © 2013 by the Simulation Interoperability Standards Organization, Inc. 
+            
+            P.O. Box 781238
+            
+            Orlando, FL 32878-1238, USA
+            
+            All rights reserved.
+            
+            Permission is hereby granted for this document to be used for production of both commercial and non- commercial products. Removal of this copyright statement and claiming rights to this document is prohibited. In addition, permission is hereby granted for this document to be distributed in its original or modified format (e.g. as part of a database) provided that no charge is invoked for the provision. Modification only applies to format and does not apply to the content of this document.
+            
+            SISO Inc. Board of Directors 
+            
+            P.O. Box 781238
+            Orlando, FL 32878-1238, USA</xs:documentation>
+    </xs:annotation>
+
+</xs:schema>

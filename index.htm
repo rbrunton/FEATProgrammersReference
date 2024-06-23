@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title>SISO :: Federation Engineering Agreements Template (FEAT) Programmer's Reference Guide</title>
+  <link rel="stylesheet" type="text/css" href="http://www.sisostds.org/Portals/_default/Skins/SISO/skin.css"/>
+  <style type="text/css">
+p.code {font-weight:bold; font-style:italic; color:#9000A1}
+span.dir {font-style:italic;} </style>
+</head>
+<body>
+<!--[if IE 7]>
+<h1 style="color:red;"">Warning: The Programmer's Reference guide is not viewable using IE7 due to a known, unpatched bug. Please re-open in another  browser.</h1>
+<script type="text/javascript">
+    function removeGuide() {
+        alert("Warning: The Programmer's Reference guide is not viewable using IE7 due to a known, unpatched bug. Please re-open in another browser.");
+        document.getElementById("progref").href="./index.html";
+    }
+    window.onload=removeGuide;
+</script>
+<![endif]-->
+<img src="img/siso_logo.png"/>
+
+
+<div style="float:right; border: 1px dashed #036; padding: 10px; width: 400px; margin-left: 10px; background: #ecf8ff;">
+<h2 style="border-bottom: 1px dashed #036; text-transform:uppercase;">Table of Contents:</h2>
+    <ol>
+        <li><a id="progref" href="fedagreements.html">FEAT Programmer's Reference Guide</a></li> 	
+        <li>Federation Engineering Agreements Schema</li>
+            <ul type="disc">
+                <li><a href="schemas/fedagreements.xsd">Root</a> (Reference this in conformant documents)</li>
+                <li><a href="schemas/fedagree-common.xsd">Common types and elements</a></li>
+                <li><a href="schemas/fedagree-data.xsd">Data agreements</a></li>
+                <li><a href="schemas/fedagree-design.xsd">Design agreements</a></li>
+                <li><a href="schemas/fedagree-execution.xsd">Execution agreements</a></li>
+                <li><a href="schemas/fedagree-infrastructure.xsd">Infrastructure agreements</a></li>
+                <li><a href="schemas/fedagree-management.xsd">Management agreements</a></li>
+                <li><a href="schemas/fedagree-modeling.xsd">Modeling agreements</a></li>
+                <li><a href="schemas/fedagree-variances.xsd">Variance agreements</a></li>
+            </ul>
+        </li>
+    </ol>
+<h2 style="border-bottom: 1px dashed #036; text-transform:uppercase;">How to use this Reference Guide:</h2>
+	Copy the contents of the <a href="schemas.zip" target="_blank">schemas directory</a> to someplace it will be accessible to your XML editor
+	or XML-enabled tool, then reference the <a  href="schemas/fedagreements.xsd">root schema</a> from within your document. As an example, if you have created your
+	document in directory <span class="dir">foo</span>, and you have placed the schemas in <span class="dir">foo/schemas</span>
+	you would need the following line as the root element in your schemas document:
+<p class="code">
+	&lt;fedagree:agreement xmlns:fedagree="http://msco.mil/lvcar/fedagreements"<br>
+	&nbsp;&nbsp;&nbsp;
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"<br>
+	&nbsp;&nbsp;&nbsp;
+	xsi:schemaLocation="http://msco.mil/lvcar/fedagreements
+	file:./schemas/fedagreements.xsd"&gt;
+</p>
+</div>
+<h1>Federation Engineering Agreements Template (FEAT) Programmer's Reference Guide</h1>
+<p>
+    Federation agreements are critical to the successful design, execution, and reuse of federation assets. However, inconsistent formats and use across 
+    federations have made it difficult to capture and compare agreements between federations. This lack of a consistent approach to documenting federation 
+    agreements makes reuse and understanding more difficult. Lack of consistent format also prevents tool development and automation.
+</p>
+<p>
+    The federation agreements template is intended to provide a standardized format for recording federation agreements to increase their usability and reuse. 
+    The template is an eXtensible Markup Language (XML) schema from which compliant XML-based federation agreement documents can be created. XML was chosen for 
+    encoding agreements documents because it is both human and machine-readable and has wide tool support. Creating the template as an XML schema allows XML-enabled 
+    tools to both validate conformant documents, and edit and exchange agreements documents without introducing incompatibilities.
+</p>
+<p>
+    Wherever possible, the team that prepared the template leveraged existing, authoritative schemas for the representation of elements in this schema including:
+    <ul>
+    	<li>Modeling and Simulation (M&S) Community of Interest—Discovery Metadata Specification (MSC-DMS)</li>
+        <li>XML Linking Language (XLink)</li>
+        <li>XML Metadata Interchange (XMI)</li>
+        <li>Common Platform Enumeration (CPE)</li>
+        <li>Intelligence Community Information Security Marking (IC-ISM)</li>
+        <li>eXtensible Configuration Checklist Description Format (XCCDF)</li>
+        <li>Geography Markup Language (GML)</li>
+        <li>State Chart XML (SCXML)</li>
+    </ul>
+ The federation agreements are decomposed into eight categories:
+ 	<ol>
+    	<li>Metadata—Information about the federation agreements document itself.</li>
+        <li>Design—Agreements about the basic purpose and design of the federation.</li>
+        <li>Execution—Technical and process agreements affecting execution of the federation.</li>
+        <li>Management—Systems/software engineering and project management agreements.</li>
+		<li>Data—Agreements about structure, values, and semantics of data to be exchanged during federation execution.</li>
+		<li>Infrastructure—Technical agreements about hardware, software, network protocols, and processes for implementing the infrastructure to support federation execution.</li>
+		<li>Modeling—Agreements to be implemented in the member applications that semantically affect the current execution of the federation.</li>
+		<li>Variances—Exceptions to the federation agreements deemed necessary during integration and testing.</li>
+    </ol>
+    
+<strong>This Programmer’s Reference provides specific technical guidance on the syntax and semantics required to create a conformant XML-based federation agreements document.</strong>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+</body>
+</html>

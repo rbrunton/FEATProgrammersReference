@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:fedagree="http://www.sisostds.org/schemas/feat/v1"
+    targetNamespace="http://www.sisostds.org/schemas/feat/v1">
+
+    <xs:include schemaLocation="fedagree-common.xsd"/>
+    <xs:include schemaLocation="fedagree-metadata.xsd"/>
+
+    <xs:element name="management">
+        <xs:annotation>
+            <xs:documentation>
+                Systems/software engineering and project management agreements.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:softwareCM" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:vva" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:schedules" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:testPlan" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:miscProcesses" minOccurs="0" maxOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="miscProcesses">
+        <xs:annotation>
+            <xs:documentation>
+                Processes not captured by one of the more specific sibling agreements.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="process" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="tools" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="tool" minOccurs="0" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:attribute name="toolRef" type="xs:IDREF"
+                                                  use="required"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="description" type="fedagree:complexDescription"
+                                minOccurs="0" maxOccurs="1"/>
+                        </xs:sequence>
+                        <xs:attribute name="name" type="xs:string" use="required"/>
+                        <xs:attribute name="type" type="xs:string" use="optional"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="softwareCM">
+        <xs:annotation>
+            <xs:documentation>
+                Tool identification and references to plan(s); includes methodology and guidelines for establishing 
+                and managing Configuration Management (CM) baselines of member applications and any middleware 
+                expressly under development for the federation; identification of standard software practices 
+                to support lifecycle development and reuse. Federations that utilize formal software management 
+                processes and procedures may  reference these artifacts using document citation and/or reference.  
+                Alternatively, the federation agreements document may outline applicable processes and procedures 
+                in the body of the test with supporting graphics.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="configurationManagement" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="type" type="xs:string"/>
+                            <xs:element name="description" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="vva">
+        <xs:annotation>
+            <xs:documentation>
+                VV&amp;A tool identification, and references to plan(s) and other documents including formal
+                certification of compliance with simulation environment architecture interface specification
+                and rules. The latter may include documentation of agreements pertaining to architecture compliance
+                and artifacts demonstrating that compliance has been achieved.    
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="vvaArtifacts" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0"
+                                maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="tools">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="tool" type="xs:IDREF" minOccurs="0"
+                                maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="schedules">
+        <xs:annotation>
+            <xs:documentation>
+                Reference to program schedule(s). Provides information about scheduled activities as 
+                part of a detailed event plan per DSEEP or applicable process/overlay.   
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="fedagree:table" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="schedule" type="fedagree:schedule" minOccurs="0"
+                    maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="testPlan">
+        <xs:annotation>
+            <xs:documentation>
+                Test Tool identification and references to plan(s); test requirements and criteria. Planned activities to 
+                perform testing of M&amp;S at increasingly higher levels of integration prior to LVC event execution. Test 
+                planning processes and artifacts may address M&amp;S verification requirements to be addressed prior to event 
+                execution; explicit traceability will be addressed as part of these agreements
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="testProceduresDocs">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0"
+                                maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="testArtifacts">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0"
+                                maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="tools" type="xs:IDREF" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="schedule">
+        <xs:sequence>
+            <xs:element name="event" type="fedagree:scheduleEvent" minOccurs="0"
+                maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:ID" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="scheduleEvent">
+        <xs:annotation>
+            <xs:documentation>
+                This type is used for representing scheduled events. Users can specify start as either a dateTime entry or using a string
+                describing a triggering simulation event. Likewise, users can specify either an event duration or a specific end, where
+                the end can also be specified as either a dateTime entry or a string describing a triggering simulation event.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="name" type="xs:string" maxOccurs="1" minOccurs="1"/>
+            <xs:sequence>
+                <xs:choice>
+                    <xs:element name="startTime" type="xs:dateTime" minOccurs="1" maxOccurs="1"/>
+                    <xs:element name="startSimEvent" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                </xs:choice>
+                <xs:choice>
+                    <xs:element name="endTime" type="xs:dateTime" maxOccurs="1" minOccurs="1"/>
+                    <xs:element name="endSimEvent" type="xs:string" maxOccurs="1" minOccurs="1"/>
+                    <xs:element name="duration" type="xs:duration" maxOccurs="1" minOccurs="1"/>
+                </xs:choice>
+            </xs:sequence>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:annotation>
+        <xs:documentation>Copyright © 2013 by the Simulation Interoperability Standards Organization, Inc. 
+            
+            P.O. Box 781238
+            
+            Orlando, FL 32878-1238, USA
+            
+            All rights reserved.
+            
+            Permission is hereby granted for this document to be used for production of both commercial and non- commercial products. Removal of this copyright statement and claiming rights to this document is prohibited. In addition, permission is hereby granted for this document to be distributed in its original or modified format (e.g. as part of a database) provided that no charge is invoked for the provision. Modification only applies to format and does not apply to the content of this document.
+            
+            SISO Inc. Board of Directors 
+            
+            P.O. Box 781238
+            Orlando, FL 32878-1238, USA</xs:documentation>
+    </xs:annotation>
+
+</xs:schema>

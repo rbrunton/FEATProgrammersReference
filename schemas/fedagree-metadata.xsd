@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://www.sisostds.org/schemas/feat/v1"
+    xmlns:fedagree="http://www.sisostds.org/schemas/feat/v1">
+
+    <xs:element name="Title">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:Security" minOccurs="0"/>
+                <xs:element ref="fedagree:Releasability" minOccurs="0"/>
+            </xs:sequence>
+            <xs:attribute name="value" type="xs:string" use="required"/>
+            <xs:attribute name="subtitle" type="xs:string"/>
+            <xs:attribute name="acronym" type="xs:string"/>
+            <xs:attribute name="documentNumber" type="xs:string"/>
+            <xs:attribute name="taxonomy" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="Version">
+        <xs:complexType>
+            <xs:attribute name="value" type="xs:string" use="required"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="Security">
+        <xs:complexType>
+            <xs:attributeGroup ref="fedagree:SecurityAttributesOptionGroup"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:attributeGroup name="SecurityAttributesOptionGroup">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                Copied from IC-ISM 2.1 and locally modified.
+                The group of Information Security Marking attributes in which the use of attributes 'classification' and 'ownerProducer' is optional. 
+                
+                This group is to be contrasted with group 'SecurityAttributesGroup' in which use of these attributes is required.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute type="xs:string" name="classification" use="optional"/>
+        <xs:attribute type="xs:string" name="ownerProducer" use="optional"/>
+        <xs:attribute type="xs:string" name="SCIcontrols" use="optional"/>
+        <xs:attribute type="xs:string" name="SARIdentifier" use="optional"/>
+        <xs:attribute type="xs:string" name="disseminationControls" use="optional"/>
+        <xs:attribute type="xs:string" name="FGIsourceOpen" use="optional"/>
+        <xs:attribute type="xs:string" name="FGIsourceProtected" use="optional"/>
+        <xs:attribute type="xs:string" name="releasableTo" use="optional"/>
+        <xs:attribute type="xs:string" name="nonICmarkings" use="optional"/>
+        <xs:attribute type="xs:string" name="classifiedBy" use="optional"/>
+        <!-- ******* v2.1  added derivativelyClassifiedBy ******* -->
+        <xs:attribute type="xs:string" name="derivativelyClassifiedBy" use="optional"/>
+        <xs:attribute type="xs:string" name="classificationReason" use="optional"/>
+        <xs:attribute type="xs:string" name="derivedFrom" use="optional"/>
+        <xs:attribute type="xs:date" name="declassDate" use="optional"/>
+        <xs:attribute type="xs:string" name="declassEvent" use="optional"/>
+        <xs:attribute type="xs:string" name="declassException" use="optional"/>
+        <xs:attribute type="xs:string" name="typeOfExemptedSource" use="optional"/>
+        <xs:attribute type="xs:string" name="dateOfExemptedSource" use="optional"/>
+        <xs:attribute type="xs:string" name="declassManualReview" use="optional"/>
+    </xs:attributeGroup>
+
+    <xs:element name="Releasability" type="fedagree:releasabilityType"/>
+
+    <xs:complexType name="releasabilityType">
+        <xs:annotation>
+            <xs:documentation>
+                Copied from DDMS CompoundLanguageIdentifierType.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="value" type="fedagree:releasabilityValueUnion" use="required"/>
+        <xs:anyAttribute namespace="##other" processContents="lax"/>
+    </xs:complexType>
+
+    <xs:simpleType name="releasabilityValueEnumerations">
+        <xs:annotation>
+            <xs:documentation>
+                Copied from DDMS CompoundLanguageIdentifierType.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="A: Unlimited distribution "/>
+            <xs:enumeration value="B: U.S. Govt. agencies only"/>
+            <xs:enumeration value="C: U.S. Govt. agencies and contractors only"/>
+            <xs:enumeration value="D: DoD and DoD contractors only"/>
+            <xs:enumeration value="E: DoD components only"/>
+            <xs:enumeration value="F: As directed by DoD originator"/>
+            <xs:enumeration value="X: Those eligible to obtain export-controlled technical data"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="releasabilityValueUnion">
+        <xs:annotation>
+            <xs:documentation>
+                Copied from DDMS CompoundLanguageIdentifierType.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:union memberTypes="fedagree:releasabilityValueEnumerations xs:string"/>
+    </xs:simpleType>
+
+    <xs:complexType name="languageType">
+        <xs:annotation>
+            <xs:documentation>
+                Copied from DDMS CompoundLanguageIdentifierType.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="qualifier" type="xs:string">
+            <xs:annotation>
+                <xs:appinfo>
+                    The value that specifies the originating agency or discipline of the language vocabulary.  Specifies the domain vocabulary of which the Language Value is a member.  ISO 639-1 and ISO 639-2, Codes for the representation of names of languages, reference 2 and 3 digit language codes.
+                    
+                </xs:appinfo>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="value" type="xs:string">
+            <xs:annotation>
+                <xs:appinfo>
+                    The primary language of the intellectual content of the resource.  {Source: DCMI: language, v. 004IC MSP v. 1.0a: Language} The most specific in-scope language present (if any) should be specified in this category. 
+                    
+                </xs:appinfo>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:simpleType name="dateTypeEnumerations">
+        <xs:annotation>
+            <xs:documentation>
+                Copied from MSC-DMS 1.3.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="created"/>
+            <xs:enumeration value="posted"/>
+            <xs:enumeration value="accepted"/>
+            <xs:enumeration value="modified"/>
+            <xs:enumeration value="validTil"/>
+            <xs:enumeration value="infoCutOff"/>
+            <xs:enumeration value="used"/>
+            <xs:enumeration value="v&amp;v"/>
+            <xs:enumeration value="accreditation"/>
+            <xs:enumeration value="retired"/>
+            <xs:enumeration value="lastVerified"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="applicationDomainTypeUnion">
+        <xs:annotation>
+            <xs:documentation>
+                Copied from MSC-DMS 1.3.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:union memberTypes="fedagree:applicationDomainTypeEnumerations xs:string"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="applicationDomainTypeEnumerations">
+        <xs:annotation>
+            <xs:documentation>
+                Copied from MSC-DMS 1.3.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="analysis"/>
+            <xs:enumeration value="training"/>
+            <xs:enumeration value="t&amp;e"/>
+            <xs:enumeration value="engineering"/>
+            <xs:enumeration value="acquisition"/>
+            <xs:enumeration value="planning"/>
+            <xs:enumeration value="assessment"/>
+            <xs:enumeration value="doctrine"/>
+            <xs:enumeration value="logistics"/>
+            <xs:enumeration value="support to ops"/>
+            <xs:enumeration value="intelligence"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="organizationTypeType">
+        <xs:annotation>
+            <xs:documentation>
+                Copied from MSC-DMS 1.3.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="value" type="fedagree:organizationTypeUnion" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="orgReferenceType">
+        <xs:annotation>
+            <xs:documentation>
+                Copied from MSC-DMS 1.3.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="Name" type="xs:string"/>
+        </xs:sequence>
+        <xs:attribute name="organizationID" type="xs:string" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="personNameType">
+        <xs:annotation>
+            <xs:documentation>
+                Copied from MSC-DMS 1.3.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="first" type="xs:string" use="required"/>
+        <xs:attribute name="middle" type="xs:string"/>
+        <xs:attribute name="last" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="personPositionType">
+        <xs:annotation>
+            <xs:documentation>
+                Copied from MSC-DMS 1.3.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="Org" type="fedagree:orgReferenceType" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="value" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="personReferenceType">
+        <xs:annotation>
+            <xs:documentation>
+                Copied from MSC-DMS 1.3.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="Name" type="fedagree:personNameType"/>
+        </xs:sequence>
+        <xs:attribute name="personID" type="xs:string" use="optional"/>
+    </xs:complexType>
+
+    <xs:simpleType name="organizationTypeEnumerations">
+        <xs:annotation>
+            <xs:documentation>
+                Copied from MSC-DMS 1.3.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="government"/>
+            <xs:enumeration value="academia"/>
+            <xs:enumeration value="industry"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="organizationTypeUnion">
+        <xs:annotation>
+            <xs:documentation>
+                Copied from MSC-DMS 1.3.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:union memberTypes="fedagree:organizationTypeEnumerations xs:string"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="phoneTypeEnumerations">
+        <xs:annotation>
+            <xs:documentation>
+                Copied from MSC-DMS 1.3.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="work"/>
+            <xs:enumeration value="home"/>
+            <xs:enumeration value="DSN"/>
+            <xs:enumeration value="mobile"/>
+            <xs:enumeration value="fax"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="phoneTypeUnion">
+        <xs:annotation>
+            <xs:documentation>
+                Copied from MSC-DMS 1.3.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:union memberTypes="fedagree:phoneTypeEnumerations xs:string"/>
+    </xs:simpleType>
+
+    <xs:complexType name="addressInfoType">
+        <xs:annotation>
+            <xs:documentation>
+                Copied from MSC-DMS 1.3 and locally modified.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="AddressLine1" type="xs:string" minOccurs="0"/>
+            <xs:element name="AddressLine2" type="xs:string" minOccurs="0"/>
+            <xs:element name="AddressLine3" type="xs:string" minOccurs="0"/>
+            <xs:element name="City" type="xs:string" minOccurs="0"/>
+            <xs:element name="State" type="xs:string" minOccurs="0"/>
+            <xs:element name="Country" type="xs:string" minOccurs="0"/>
+            <xs:element name="PostalCode" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="phoneType">
+        <xs:annotation>
+            <xs:documentation>
+                Copied from MSC-DMS 1.3 and locally modified.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="type" type="fedagree:phoneTypeUnion" use="required"/>
+        <xs:attribute name="number" type="xs:string" use="required"/>
+        <xs:attribute name="extension" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:simpleType name="emailTypeEnumerations">
+        <xs:annotation>
+            <xs:documentation>
+                Copied from MSC-DMS 1.3 and locally modified.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="work"/>
+            <xs:enumeration value="home"/>
+            <xs:enumeration value="NIPRNET"/>
+            <xs:enumeration value="SIPRNET"/>
+            <xs:enumeration value="JWICS"/>
+            <xs:enumeration value="DKO"/>
+            <xs:enumeration value="AKO"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="emailTypeUnion">
+        <xs:annotation>
+            <xs:documentation>
+                Copied from MSC-DMS 1.3 and locally modified.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:union memberTypes="fedagree:emailTypeEnumerations xs:string"/>
+    </xs:simpleType>
+
+    <xs:complexType name="emailType">
+        <xs:annotation>
+            <xs:documentation>
+                Copied from MSC-DMS 1.3 and locally modified.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="type" type="fedagree:emailTypeUnion" use="required"/>
+        <xs:attribute name="address" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:simpleType name="pocRoleUnion">
+        <xs:annotation>
+            <xs:documentation>
+                Copied from MSC-DMS 1.3.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:union memberTypes="fedagree:pocRoleEnumerations xs:string"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="pocRoleEnumerations">
+        <xs:annotation>
+            <xs:documentation>
+                Copied from MSC-DMS 1.3.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="primary author"/>
+            <xs:enumeration value="contributor"/>
+            <xs:enumeration value="publisher"/>
+            <xs:enumeration value="proponent"/>
+            <xs:enumeration value="sponsor"/>
+            <xs:enumeration value="release authority"/>
+            <xs:enumeration value="IP holder"/>
+            <xs:enumeration value="copyright holder"/>
+            <xs:enumeration value="technical POC"/>
+            <xs:enumeration value="ADS-Designator"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="RightsType">
+        <xs:annotation>
+            <xs:appinfo>
+                    Copied from DDMS 2.0.
+                    Type used to model the rights element.
+            </xs:appinfo>
+        </xs:annotation>
+        <xs:attribute name="privacyAct" type="xs:boolean" default="false">
+            <xs:annotation>
+                <xs:appinfo>
+                    (TBD:PrivacyActIndicator, 1.0) An indicator that this product is categorized as containing personal information subject to protection by the Privacy Act.  This element has no data content.  Attribute "indicator", a yes/no toggle, is used to specify applicability of the Privacy Act.  The default is "no".  {False = No}
+                </xs:appinfo>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="intellectualProperty" type="xs:boolean" default="false">
+            <xs:annotation>
+                <xs:appinfo>
+                    An indicator identifying products under protection against reproduction and distribution without the express written permission of the intellectual property rights owner. A yes/no value used to specify applicability of the rights.  The default is “no”. {False = No}    
+                </xs:appinfo>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="copyright" type="xs:boolean" default="false">
+            <xs:annotation>
+                <xs:appinfo>
+                    An indicator identifying products under protection against reproduction and distribution without the express written permission of the copyright owner.  A yes/no value used to specify applicability of the rights.  The default is “no”.  {False = No}  (TBD:CopyrightIndicator, 1.0) An indicator identifying documents under protection against reproduction and distribution without the express written   permission of the copyright owner   This prohibition is binding on individuals and corporations,  as well as the US Government.  Examples of applicability:  books (yes), newspaper photos (yes), US Federal Publications (no), magazine articles  (yes), vendor technical information (yes).           
+                </xs:appinfo>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:simpleType name="configurationManagementTypeEnumerations">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Configuration Control Board (CCB)"/>
+            <xs:enumeration value="User Group"/>
+            <xs:enumeration value="Executive Steering Committee"/>
+            <xs:enumeration value="None"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="configurationManagementTypeUnion">
+        <xs:union memberTypes="fedagree:configurationManagementTypeEnumerations xs:string"/>
+    </xs:simpleType>
+
+    <xs:annotation>
+        <xs:documentation>Copyright © 2013 by the Simulation Interoperability Standards Organization, Inc. 
+            
+            P.O. Box 781238
+            
+            Orlando, FL 32878-1238, USA
+            
+            All rights reserved.
+            
+            Permission is hereby granted for this document to be used for production of both commercial and non- commercial products. Removal of this copyright statement and claiming rights to this document is prohibited. In addition, permission is hereby granted for this document to be distributed in its original or modified format (e.g. as part of a database) provided that no charge is invoked for the provision. Modification only applies to format and does not apply to the content of this document.
+            
+            SISO Inc. Board of Directors 
+            
+            P.O. Box 781238
+            Orlando, FL 32878-1238, USA</xs:documentation>
+    </xs:annotation>
+
+</xs:schema>

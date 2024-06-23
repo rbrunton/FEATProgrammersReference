@@ -1,0 +1,610 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://www.sisostds.org/schemas/feat/v1"
+    xmlns:fedagree="http://www.sisostds.org/schemas/feat/v1"
+    xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1"
+    xmlns:glossml="http://www.maxprograms.com/gml">
+
+    <xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="xlink.xsd"/>
+    <xs:import namespace="http://schema.omg.org/spec/XMI/2.1" schemaLocation="xmi.xsd"/>
+    <xs:import namespace="http://www.maxprograms.com/gml" schemaLocation="GlossML.xsd"/>
+
+    <xs:include schemaLocation="fedagree-common.xsd"/>
+    <xs:include schemaLocation="fedagree-design.xsd"/>
+    <xs:include schemaLocation="fedagree-execution.xsd"/>
+    <xs:include schemaLocation="fedagree-management.xsd"/>
+    <xs:include schemaLocation="fedagree-data.xsd"/>
+    <xs:include schemaLocation="fedagree-infrastructure.xsd"/>
+    <xs:include schemaLocation="fedagree-modeling.xsd"/>
+    <xs:include schemaLocation="fedagree-variances.xsd"/>
+    <xs:include schemaLocation="fedagree-metadata.xsd"/>
+
+    <xs:annotation>
+        <xs:appinfo>
+            <glossml:glossary>
+                <glossml:glossentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>CM</glossml:term>
+                            <glossml:definition>Configuration Management</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>CPE</glossml:term>
+                            <glossml:definition>Common Platform Enumeration</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>CTIA</glossml:term>
+                            <glossml:definition>Common Training Instrumentation Architecture</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>DB</glossml:term>
+                            <glossml:definition>Database</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>DDMS</glossml:term>
+                            <glossml:definition>DoD Discovery Metadata Specification</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>DEM</glossml:term>
+                            <glossml:definition>Data Exchange Model</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>DIS</glossml:term>
+                            <glossml:definition>Distributed Interactive Simulation</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>DMS</glossml:term>
+                            <glossml:definition>Discovery Metadata Specification</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>DRM</glossml:term>
+                            <glossml:definition>Dead Reckoning Model</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>DSEEP</glossml:term>
+                            <glossml:definition>Distributed Simulation Engineering and Execution Process</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>ERC</glossml:term>
+                            <glossml:definition>Environment Runtime Component</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>FOM</glossml:term>
+                            <glossml:definition>Federation Object Model</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>GALT</glossml:term>
+                            <glossml:definition>Greatest Available Logical Time </glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>Gbps</glossml:term>
+                            <glossml:definition>Gigabits Per Second</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>GIF</glossml:term>
+                            <glossml:definition>Graphics Interchange Format</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>GML</glossml:term>
+                            <glossml:definition>Geographic Markup Language</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>GPS</glossml:term>
+                            <glossml:definition>Global Positioning System</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>HLA</glossml:term>
+                            <glossml:definition>High Level Architecture</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>HWIL</glossml:term>
+                            <glossml:definition>Hardware in the Loop</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>IC-ISM</glossml:term>
+                            <glossml:definition>Intelligence Community (Metadata Standard for) Information Security Marking</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>ID</glossml:term>
+                            <glossml:definition>Identification</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>IDREF</glossml:term>
+                            <glossml:definition>ID Reference</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>IFF</glossml:term>
+                            <glossml:definition>Identify Friend or Foe</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>ISBN</glossml:term>
+                            <glossml:definition>International Standard Book Number</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>JPEG</glossml:term>
+                            <glossml:definition>Joint Photographic Experts Group</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>Kbps</glossml:term>
+                            <glossml:definition>Kilobits Per Second</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>LAN</glossml:term>
+                            <glossml:definition>Local Area Network</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>LBTS</glossml:term>
+                            <glossml:definition>Lower Bound Time Stamp</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>LITS</glossml:term>
+                            <glossml:definition>Least Incoming Time Stamp</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>LROM</glossml:term>
+                            <glossml:definition>Logical Range Object Model</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>LVCAR</glossml:term>
+                            <glossml:definition>Live Virtual Constructive Architecture Roadmap</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>M&amp;S</glossml:term>
+                            <glossml:definition>Modeling &amp; Simulation</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>Mbps</glossml:term>
+                            <glossml:definition>Megabits Per Second</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>MSC</glossml:term>
+                            <glossml:definition>Modeling &amp; Simulation Community of Interest</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>MSCO</glossml:term>
+                            <glossml:definition>M&amp;S Coordination Office</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>MSDL</glossml:term>
+                            <glossml:definition>Military Scenario Definition Language</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>NACK</glossml:term>
+                            <glossml:definition>Response Negative Acknowledgment</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>NATO</glossml:term>
+                            <glossml:definition>North Atlantic Treaty Organization</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>NIST</glossml:term>
+                            <glossml:definition>National Institute of Standards &amp; Technology</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>NMRA</glossml:term>
+                            <glossml:definition> Next Message Request Available</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>NSA</glossml:term>
+                            <glossml:definition>National Security Agency</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>OMG</glossml:term>
+                            <glossml:definition>Object Management Group</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>OS</glossml:term>
+                            <glossml:definition>Operating System</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>PDU</glossml:term>
+                            <glossml:definition>Protocol Data Unit</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>PNG</glossml:term>
+                            <glossml:definition>Portable Network Graphics</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>POC</glossml:term>
+                            <glossml:definition>Point of Contact</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>RTI</glossml:term>
+                            <glossml:definition>Runtime Infrastructure</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>SEES</glossml:term>
+                            <glossml:definition>Supplemental Emission/Entity State </glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>SNE</glossml:term>
+                            <glossml:definition>Synthetic Natural Environment</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>TAR</glossml:term>
+                            <glossml:definition>Time Advance Request</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>TBD</glossml:term>
+                            <glossml:definition>To Be Determined</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>TENA</glossml:term>
+                            <glossml:definition>Test &amp; Training Enabling Architecture</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>TIFF</glossml:term>
+                            <glossml:definition>Tagged Image File Format</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>UA</glossml:term>
+                            <glossml:definition>Underwater Acoustic</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>UKMOD</glossml:term>
+                            <glossml:definition>United Kingdom Ministry of Defence</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>UML</glossml:term>
+                            <glossml:definition>Unified Markup Language</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>URI</glossml:term>
+                            <glossml:definition>Uniform Resource Identifier</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>URL</glossml:term>
+                            <glossml:definition>Uniform Resource Locator</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>US</glossml:term>
+                            <glossml:definition>United States</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>USDOD</glossml:term>
+                            <glossml:definition>US Department of Defense</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>USDOE</glossml:term>
+                            <glossml:definition>US Department of Energy</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>UTF</glossml:term>
+                            <glossml:definition>Unicode Transformation Format</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>VLAN</glossml:term>
+                            <glossml:definition>Virtual LAN</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>VV&amp;A</glossml:term>
+                            <glossml:definition>Verification, Validation &amp; Accreditation</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>WAN</glossml:term>
+                            <glossml:definition>Wide Area Network</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>XCCDF</glossml:term>
+                            <glossml:definition>Extensible Configuration Checklist Description Format</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>XMI</glossml:term>
+                            <glossml:definition>XML Metadata Interchange</glossml:definition>
+                    </glossml:langentry>
+                    <glossml:langentry xml:lang="en-US">
+                        <glossml:term>XML</glossml:term>
+                            <glossml:definition>eXtensible Markup Language</glossml:definition>
+                    </glossml:langentry>
+                    
+                </glossml:glossentry>
+            </glossml:glossary>
+        </xs:appinfo>
+        <xs:documentation>
+            The Federation Engineering Agreements Template (FEAT) is intended to provide a standardized format for recording federation agreements
+            to increase their usability and reuse.  The template is an eXtensible Markup Language (XML) schema from which compliant XML-based
+            federation agreement documents can be created.  XML was chosen for encoding agreements documents because it is both human and
+            machine-readable and has wide tool support.  Creating the template as an XML schema allows XML-enabled tools to both validate
+            conformant documents, and edit and exchange agreements documents without introducing incompatibilities.
+            
+            The federation agreements are decomposed into eight categories:
+            1.	Metadata — Information about the federation agreements document itself. 
+            2.	Design — Agreements about the basic purpose and design of the federation. 
+            3.	Execution — Technical and process agreements affecting execution of the federation. 
+            4.	Management — Systems/software engineering and project management agreements. 
+            5.	Data — Agreements about structure, values, and semantics of data to be exchanged during federation execution. 
+            6.	Infrastructure — Technical agreements about hardware, software, network protocols, and processes for implementing the infrastructure
+                to support federation execution. 
+            7.	Modeling — Agreements to be implemented in the member applications that semantically affect the current execution of the federation. 
+            8.	Variances — Exceptions to the federation agreements deemed necessary during integration and testing.
+            
+            Conformance: Within the context of this specification, conformance can be claimed for markup and documents. Conformance means that the conforming
+            object supports the minimal content model of the agreement element:  the agreement element, the immediate children of the agreement element
+            (metadata, design, execution, management, data, infrastructure, modeling, and variances), and the identification child element of metadata
+            (and it’s required children). 
+            
+            Many elements in the FEAT schemas contain a zero-to-many, structured child element and a zero-to-many list of "remoteDocumentRef" elements
+            (e.g., "conceptualModel" has a zero-to-many "archModel" children and zero-to-many "remoteDocumentRef" children). 
+            This pattern exists to allow conforming documents to be populated with agreement data in the structured elements or reference existing
+            agreements in external documents, or a combination of both. References to existing agreements are allowed because there are many standardized
+            formats suitable for capturing complex, detailed agreements.
+            
+            Versions for all third-party schemas are fixed for this version of the specification to those distributed with the FEAT schemas. Future versions
+            of the specification will endeavor to remain current with the current, stable versions of these third-party schemas as they exist at the time of
+            specification revision.
+            
+            References
+            [1] IEEE Std 1516-2010, IEEE Standard for Modeling and Simulation (M&amp;S) High Level Architecture (HLA) Framework and Rules.
+            [2] IEEE Std 1730-2010, IEEE Recommended Practice for Distributed Simulation Engineering and Execution Process (DSEEP).
+            [3] IEEE Std 1278.1-2012, IEEE Standard for Distributed Interactive Simulation--Application Protocols
+            
+            Contributors:
+            Katherine L. Morse, PDG Chair
+            Wim Huiskamp, PDG Vice Chair
+            Dannie Cutts, PDG Secretary
+            Ryan Brunton, Editor
+            
+            Curt Blais
+            Andy Bowers
+            Michael Burnette
+            Bobby Chawla
+            John Fay
+            Scott Gallant
+            James Gallogly
+            Peggy Gravitz
+            Kevin Gupton
+            Mark Hazen
+            John Jinkerson
+            Fredrik Jonsson
+            Brian Kibel
+            Jonathan Labin
+            Jennifer Lewis
+            Wayne Lindo
+            Margaret Loper
+            Björn Möller
+            William Oates
+            Laurent Prignac
+            Steven Sheasby
+            Robert Siegfried
+            Keith Snively
+            Jeff Truong
+            Tom van den Berg
+            Eric Whittington
+        </xs:documentation>
+    </xs:annotation>
+
+    <xs:element name="agreement">
+        <xs:annotation>
+            <xs:documentation>Root element for the federation agreement.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:metadata" maxOccurs="1"/>
+                <xs:element ref="fedagree:design" maxOccurs="1"/>
+                <xs:element ref="fedagree:execution" maxOccurs="1"/>
+                <xs:element ref="fedagree:management" maxOccurs="1"/>
+                <xs:element ref="fedagree:data" maxOccurs="1"/>
+                <xs:element ref="fedagree:infrastructure" maxOccurs="1"/>
+                <xs:element ref="fedagree:modeling" maxOccurs="1"/>
+                <xs:element ref="fedagree:variances" minOccurs="0" maxOccurs="1"/>
+            </xs:sequence>
+            <xs:attribute name="federationName" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="metadata">
+        <xs:annotation>
+            <xs:documentation>
+                Information about the federation agreements document itself.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:identification" minOccurs="1" maxOccurs="1"/>
+                <xs:element ref="fedagree:federationExecutions" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:referencedDocs" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:addressBook" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:previousAgreements" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:glossary" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:changelog" minOccurs="0" maxOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="identification">
+        <xs:annotation>
+            <xs:documentation>
+                Identifies this document; version number and name if applicable. Makes extensive use of the MSC-DMS metadata
+                elements, making this the most important element relative to registering the federation agreements document
+                in repositories based upon MSC-DMS markup.                
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:Title" minOccurs="1" maxOccurs="1"/>
+                <xs:element ref="fedagree:Version" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="modificationDate" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="authors" type="fedagree:pocListType" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:rights" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="notes" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="federationExecutions">
+        <xs:annotation>
+            <xs:documentation>
+                Defines the federation execution(s) to which the document applies.    
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:federationExecution" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="federationExecution">
+        <xs:annotation>
+            <xs:documentation>
+                The actual operation, over time, of a set of joined federates that are interconnected by middleware.    
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="purpose" type="xs:string"/>
+                <xs:element name="applicationDomain" type="fedagree:applicationDomainTypeUnion"
+                    minOccurs="0"/>
+                <xs:element name="limitations" type="xs:string" minOccurs="0"/>
+                <xs:element name="date" type="xs:date" minOccurs="0"/>
+                <xs:element name="description" type="xs:string"/>
+                <xs:element name="language" type="fedagree:languageType" minOccurs="0"/>
+                <xs:element name="capabilities" type="xs:string" minOccurs="0"/>
+                <xs:element ref="fedagree:Releasability" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>
+                            Releasability designation of federation agreements pertaining to the federation execution.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element ref="fedagree:Security" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>
+                            Security classification at which the federation is executed.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="pocs" type="fedagree:pocListType"/>
+                <xs:element name="contract" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attribute name="executionName" type="xs:string"/>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="referencedDocs">
+        <xs:annotation>
+            <xs:documentation>
+                Location and version of documents referenced in other agreements.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocument" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="addressBook">
+        <xs:annotation>
+            <xs:documentation>
+                People and organizations used as points of contact in other agreements. Any POCs listed throughout the rest
+                of schema must have an associated address book entry even though the addressBook itself is an optional element.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="people" minOccurs="1" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="fedagree:person" minOccurs="0" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="organizations" minOccurs="1" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="fedagree:organization" minOccurs="0"
+                                maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="previousAgreements">
+        <xs:annotation>
+            <xs:documentation>
+                Prior agreements used for reference during simulation design and development; 
+                these may be reused or modified as necessary.    
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="glossary">
+        <xs:annotation>
+            <xs:documentation>
+                Terminology, Acronyms and definitions.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="definition" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>
+                            Term being defined goes in the "term" attribute while the definition goes
+                            in the tag body.
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:string">
+                                <xs:attribute name="term" type="xs:string" use="required"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="changelog">
+        <xs:annotation>
+            <xs:documentation>
+                A log of changes to the federation agreements document.    
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="version" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="changes" type="fedagree:complexDescription"/>
+                        </xs:sequence>
+                        <xs:attribute name="versionNumber" type="xs:string" use="required"/>
+                        <xs:attribute name="modificationDate" type="xs:dateTime" use="optional"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:annotation>
+        <xs:documentation>Copyright © 2013 by the Simulation Interoperability Standards Organization, Inc. 
+            
+            P.O. Box 781238
+            
+            Orlando, FL 32878-1238, USA
+            
+            All rights reserved.
+            
+            Permission is hereby granted for this document to be used for production of both commercial and non- commercial products. Removal of this copyright statement and claiming rights to this document is prohibited. In addition, permission is hereby granted for this document to be distributed in its original or modified format (e.g. as part of a database) provided that no charge is invoked for the provision. Modification only applies to format and does not apply to the content of this document.
+            
+            SISO Inc. Board of Directors 
+            
+            P.O. Box 781238
+            Orlando, FL 32878-1238, USA</xs:documentation>
+    </xs:annotation>
+
+</xs:schema>

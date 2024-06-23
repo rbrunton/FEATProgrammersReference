@@ -1,0 +1,699 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:fedagree="http://www.sisostds.org/schemas/feat/v1"
+    xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:scxml="http://www.w3.org/2005/07/scxml"
+    targetNamespace="http://www.sisostds.org/schemas/feat/v1">
+
+    <xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="xlink.xsd"/>
+    <xs:include schemaLocation="fedagree-common.xsd"/>
+    <xs:import namespace="http://www.w3.org/2005/07/scxml"
+        schemaLocation="scxml/scxml-module-core.xsd"/>
+
+    <xs:element name="execution">
+        <xs:annotation>
+            <xs:documentation>
+                Technical and process agreements affecting execution of the federation.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:executionStates" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:timeManagement" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:joinAndResign" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:updateRates" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:performanceThresholds" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:dataLogging" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:dataReplay" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:monitoring" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:middlewareAgreements" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:memberConfiguration" minOccurs="0" maxOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Start execution elements -->
+
+    <xs:element name="executionStates">
+        <xs:annotation>
+            <xs:documentation>
+                A list of changes in the overall state of the federation execution, e.g. initialization, saving, shutdown.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="executionState" minOccurs="0" maxOccurs="unbounded"
+                    type="fedagree:stateChangeType"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="timeManagement">
+        <xs:annotation>
+            <xs:documentation>
+                How simulation time will be advanced. Particularly important if any part of the event is time
+                managed (i.e., simulation time is not necessarily scaled to wall clock time). This is related to 
+                event ordering and repeatability
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="federationStrategy">
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:string">
+                                <xs:attribute name="strategy" type="fedagree:timeMgmtEnumType"
+                                    use="required"/>
+                                <xs:attributeGroup ref="fedagree:simTime"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="appStrategies" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="appEntry" maxOccurs="unbounded" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:simpleContent>
+                                        <xs:extension base="xs:string">
+                                            <xs:attribute name="appID" type="xs:IDREF">
+                                                <xs:annotation>
+                                                  <xs:documentation>
+                                                        Reference to the ID of a previously identified member application.
+                                                    </xs:documentation>
+                                                </xs:annotation>
+                                            </xs:attribute>
+                                            <xs:attribute name="strategy"
+                                                type="fedagree:timeMgmtEnumType" use="required"/>
+                                            <xs:attribute name="appStrategy" use="optional"
+                                                type="fedagree:appTimeMgmtEnumUnion"/>
+                                            <xs:attributeGroup ref="fedagree:simTime"/>
+                                        </xs:extension>
+                                    </xs:simpleContent>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:simpleType name="appTimeMgmtEnumUnion">
+        <xs:annotation>
+            <xs:documentation>
+                A union of appTimeMgmtEnums
+            </xs:documentation>
+        </xs:annotation>
+        <xs:union memberTypes="xs:string fedagree:appTimeMgmtEnumType"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="appTimeMgmtEnumType">
+        <xs:annotation>
+            <xs:documentation>
+                Enumeration of time management schemes:
+                timeStepped - A type of discrete simulation distinguished by the time advancement mechanism.  Time is represented as a sequence of equal-sized time steps, where a simulation advances from one time step to the next.  The simulation repeatedly computes a new state for each timestep before advancing to the next.  In distributed simulation systems with conservative synchronization, the lookahead is typically the size of the time step.
+                eventDriven - Sometimes referred to as event stepped.  Rather than computing a new state per timestep, some simulations only update their state when an “interesting” event occurs.  This might be more efficient than computing a new state for a step where nothing happens.  Each “event” has a timestamp associated with it that indicates the simulation time that event occurs.  The difficulty with this mechanism in distributed simulation with conservative synchronization is that those “interesting” events may come from other/external simulations.  Those external events have to be merged into the receiving simulation’s event queue in timestamp order (to preserve cause/effect and repeatability).                
+                optimisticSynchronization - While conservative mechanisms avoid local causality constraints (by keeping all events in timestamp order), optimistic mechanisms allow violations of causality (typically events in a simulation’s past), but provide mechanisms to recover to a consistent state.  This mechanism allows simulations to compute state into the future “optimistically” assuming no causality violations (timestamped events in their past), but providing the ability to return to a consistent state if such a causality violation occurs.
+                paced - Some simulations pace their execution to an external source (e.g. system clock or GPS clock) rather than an algorithmic mechanism such as conservative or optimistic synchronization.  In a paced environment, each advance in simulation time is paced to occur in synchrony with an equivalent (perhaps scaled) advance in wallclock time.  Sometimes referred to as (scaled) real-time simulation execution.  This mechanism when used alone typically does not support causal and repeatable executions.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="timeStepped"/>
+            <xs:enumeration value="eventDriven"/>
+            <xs:enumeration value="optimisticSynchronization"/>
+            <xs:enumeration value="paced"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:element name="joinAndResign">
+        <xs:annotation>
+            <xs:documentation>
+                Preconditions and procedures, including ordering, for joining and resigning the federation under normal conditions.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="enrollments" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="join" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:complexContent>
+                                        <xs:extension base="fedagree:membershipChangeType">
+                                            <xs:attribute name="createFederationOnJoin"
+                                                type="xs:boolean" use="optional"/>
+                                        </xs:extension>
+                                    </xs:complexContent>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="resignations" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="resign" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:complexContent>
+                                        <xs:extension base="fedagree:membershipChangeType">
+                                            <xs:attribute name="destroyFederationOnResign"
+                                                type="xs:boolean" use="optional"/>
+                                        </xs:extension>
+                                    </xs:complexContent>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateRates">
+        <xs:annotation>
+            <xs:documentation>
+                Agreements on how often member applications agree to update states; may be static or dynamic.      
+                Might give upper/lower limits or set rates.  
+                Rates may be set for the entire federation, federates (member applications), or object classes.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="updateRate" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:annotation>
+                                <xs:documentation>
+                                    If there is no child element, update rate applies to entire federation. Other options
+                                    include application to a member application (federate), an object class (DEM target   
+                                    entity), or an object class owned by a specific member application.
+                                </xs:documentation>
+                            </xs:annotation>
+                            <xs:element name="appID" maxOccurs="1" minOccurs="0" type="xs:IDREF">
+                                <xs:annotation>
+                                    <xs:documentation>
+                                        Reference to the ID of a previously identified member application.
+                                    </xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="demTargetEntity" type="fedagree:demTargetEntityType"
+                                maxOccurs="1" minOccurs="0"/>
+                        </xs:sequence>
+                        <xs:attribute name="description" type="xs:string" use="optional">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    Brief description of the conditions under which this update rate applies.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="driver" type="fedagree:updateRateDriver" use="optional"/>
+                        <xs:attributeGroup ref="fedagree:rateAttrGroup"/>
+                        <xs:attributeGroup ref="fedagree:simTime"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:simpleType name="updateRateDriver">
+        <xs:annotation>
+            <xs:documentation>
+                Enumeration of drivers of update rates
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="fixed"/>
+            <xs:enumeration value="event-driven"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:element name="performanceThresholds">
+        <xs:annotation>
+            <xs:documentation>
+                Agreements on federate thresholds, such as maximum entity or contact counts, indicating how federates will respond when thresholds are exceeded.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="threshold" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="semantics" minOccurs="1" maxOccurs="1"
+                                type="xs:string"/>
+                            <xs:element name="action" minOccurs="1" maxOccurs="1" type="xs:string"/>
+                        </xs:sequence>
+                        <xs:attribute name="id" type="xs:ID"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="dataLogging">
+        <xs:annotation>
+            <xs:documentation>
+                Responsibilities for logging data, including uploading and configuration management.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="logger" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="log" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="logfileLocation" minOccurs="0"
+                                            maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:choice>
+                                                  <xs:element name="logFile">
+                                                  <xs:complexType>
+                                                  <xs:sequence>
+                                                  <xs:element name="fileURI" type="xs:anyURI"/>
+                                                  <xs:element name="hardwareRef" type="xs:IDREF"
+                                                  minOccurs="0"/>
+                                                  </xs:sequence>
+                                                  </xs:complexType>
+                                                  </xs:element>
+                                                  <xs:element name="logLocation" type="xs:string"/>
+                                                </xs:choice>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="loggingMimeType" use="optional"
+                                        type="xs:string"/>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="entity" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="demTargetEntity"
+                                            type="fedagree:demTargetEntityType" minOccurs="0"
+                                            maxOccurs="1"/>
+                                        <xs:element name="instance">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="responsibility" type="xs:string"
+                                                  minOccurs="0" maxOccurs="1"/>
+                                                </xs:sequence>
+                                                <xs:attribute name="simID" type="xs:string"/>
+                                                <xs:attribute name="enabled" type="xs:boolean"
+                                                  use="optional" default="true"/>
+                                                <xs:attributeGroup ref="fedagree:simTime"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="genericData" maxOccurs="unbounded" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="trigger" type="fedagree:triggerType"/>
+                                        <xs:element name="data" type="xs:string"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="appRef" type="xs:IDREF">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    Reference to the ID of a previously included member application.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="dataReplay">
+        <xs:annotation>
+            <xs:documentation>
+                Responsibilities and requirements for replaying data during an execution, including configuration management.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="replayedEntity" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:attribute name="runtimeID" type="xs:string" use="required">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    The runtime ID of the entity instance to be replayed.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="logURI" type="xs:anyURI" use="required">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    The URI for the log. Could be a file, database, server, or unique ID usable by an external tool to locate the log.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attributeGroup ref="fedagree:simTime"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="monitoring">
+        <xs:annotation>
+            <xs:documentation>
+                Tools and procedures for monitoring federation execution.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="monitor" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="monitoredItem" type="xs:string"/>
+                        </xs:sequence>
+                        <xs:attribute name="monitorAppRef" type="xs:IDREF" use="required">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    Reference to the unique ID of a tool previously included in the federations agreement document.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attributeGroup ref="fedagree:rateAttrGroup"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="middlewareAgreements">
+        <xs:annotation>
+            <xs:documentation>
+                Identification of which middleware services may be used, and under what conditions.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="HLA1516.2000" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="service" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:attribute name="name"
+                                        type="fedagree:HLA1516.2000-ServicesEnum" use="required"/>
+                                    <xs:attribute name="condition" type="xs:string" use="optional"/>
+                                    <xs:attribute name="allowed" type="xs:boolean" default="true"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="HLA1516.Evolved" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="service" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:attribute name="name"
+                                        type="fedagree:HLA1516.Evolved-ServicesEnum" use="required"/>
+                                    <xs:attribute name="condition" type="xs:string" use="optional"/>
+                                    <xs:attribute name="allowed" type="xs:boolean" default="true"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="HLA1.3" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="service" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:attribute name="name" type="fedagree:HLA1.3-ServicesEnum"
+                                        use="required"/>
+                                    <xs:attribute name="condition" type="xs:string" use="optional"/>
+                                    <xs:attribute name="allowed" type="xs:boolean" default="true"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="DIS" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="service" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:attribute name="name" type="fedagree:DIS-PDU-Enum"
+                                        use="required"/>
+                                    <xs:attribute name="condition" type="xs:string" use="optional"/>
+                                    <xs:attribute name="allowed" type="xs:boolean" default="true"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="CTIA" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="service" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:attribute name="name" type="fedagree:CTIA-ServicesEnum"
+                                        use="required"/>
+                                    <xs:attribute name="condition" type="xs:string" use="optional"/>
+                                    <xs:attribute name="allowed" type="xs:boolean" default="true"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="TENA" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="service" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:attribute name="name" type="xs:string" use="required"/>
+                                    <xs:attribute name="condition" type="xs:string" use="optional"/>
+                                    <xs:attribute name="allowed" type="xs:boolean" default="true"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Other" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="service" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:attribute name="name" type="xs:string" use="required"/>
+                                    <xs:attribute name="condition" type="xs:string" use="optional"/>
+                                    <xs:attribute name="allowed" type="xs:boolean" default="true"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="architecture" type="xs:string" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="memberConfiguration">
+        <xs:annotation>
+            <xs:documentation>
+                Configuration options for a member application.                
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="applicationConfiguration" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:any processContents="lax" minOccurs="0"/>
+                        </xs:sequence>
+                        <xs:attribute name="appRef" type="xs:IDREF" use="required">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    A reference to the unique ID of a previously identified member application.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="stateChangeType">
+        <xs:annotation>
+            <xs:documentation>
+                Common type for those elements which represent state change information. Allowed content
+                includes references to remote documents, XMI-encoded UML, and/or graphics showing the state
+                transitions.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element ref="fedagree:xmiModel"/>
+                <xs:element name="modelImage" type="fedagree:imageType"/>
+                <xs:element ref="scxml:scxml"/>
+            </xs:choice>
+        </xs:sequence>
+        <xs:attribute name="name" type="fedagree:executionStatesEnum" use="required"/>
+        <xs:attributeGroup ref="fedagree:simTime"/>
+        <xs:attribute name="delay" type="xs:string" use="optional"/>
+    </xs:complexType>
+
+    <xs:simpleType name="executionStatesUnion">
+        <xs:annotation>
+            <xs:documentation>
+                Union of executionStatesEnums with xs:string
+            </xs:documentation>
+        </xs:annotation>
+        <xs:union memberTypes="xs:string fedagree:executionStatesEnum"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="executionStatesEnum">
+        <xs:annotation>
+            <xs:documentation>
+                Enumeration of federation execution states
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="initialization">
+                <xs:annotation>
+                    <xs:documentation>Preconditions and procedures, including ordering, for initializing the federation.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="shutdown">
+                <xs:annotation>
+                    <xs:documentation>
+                        Triggers and processes for orderly shutdown of the federation.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="save">
+                <xs:annotation>
+                    <xs:documentation>
+                        Trigger conditions for save; elements to be saved; process for initializing save.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="restore">
+                <xs:annotation>
+                    <xs:documentation>
+                        Trigger conditions for restore; elements to be restored; process for initializing restore.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="synchronization">
+                <xs:annotation>
+                    <xs:documentation>
+                        Synchronization triggers and procedures. Predetermined "points" or situations 
+                        in which specific actions are to be taken by (some) members of the federation
+                        (e.g. pause, resume, take_a_break).
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="running">
+                <xs:annotation>
+                    <xs:documentation>
+                        The federation is currently running normally.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="paused">
+                <xs:annotation>
+                    <xs:documentation>
+                        Federation execution is paused.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="exceptions">
+                <xs:annotation>
+                    <xs:documentation>
+                        Procedures for recovering from crashes, faults, and exceptions.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="timeMgmtEnumType">
+        <xs:annotation>
+            <xs:documentation>
+                Enumeration of acceptable values for the type of time management utilized.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="softRealTime"/>
+            <xs:enumeration value="hardRealTime"/>
+            <xs:enumeration value="scaledRealTime"/>
+            <xs:enumeration value="asFastAsPossible"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="membershipChangeType">
+        <xs:annotation>
+            <xs:documentation>
+                Common type for the representation of a membership change.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="appID" type="xs:IDREF" use="required">
+            <xs:annotation>
+                <xs:documentation>
+                    Reference to the unique ID of a previously included member application.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="optional" type="xs:boolean" use="required"/>
+        <xs:attribute name="order" type="fedagree:countingInt" use="required"/>
+        <xs:attribute name="preconditions" type="xs:string" use="optional"/>
+    </xs:complexType>
+
+    <xs:simpleType name="countingInt">
+        <xs:annotation>
+            <xs:documentation>
+                Simple type that can hold positive integers greater than or equal to 1.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:annotation>
+        <xs:documentation>Copyright © 2013 by the Simulation Interoperability Standards Organization, Inc. 
+            
+            P.O. Box 781238
+            
+            Orlando, FL 32878-1238, USA
+            
+            All rights reserved.
+            
+            Permission is hereby granted for this document to be used for production of both commercial and non- commercial products. Removal of this copyright statement and claiming rights to this document is prohibited. In addition, permission is hereby granted for this document to be distributed in its original or modified format (e.g. as part of a database) provided that no charge is invoked for the provision. Modification only applies to format and does not apply to the content of this document.
+            
+            SISO Inc. Board of Directors 
+            
+            P.O. Box 781238
+            Orlando, FL 32878-1238, USA</xs:documentation>
+    </xs:annotation>
+
+</xs:schema>

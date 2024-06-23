@@ -1,0 +1,1349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://www.sisostds.org/schemas/feat/v1"
+    xmlns:fedagree="http://www.sisostds.org/schemas/feat/v1"
+    xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1"
+    xmlns:cpe="http://cpe.mitre.org/language/2.0"
+    xmlns:cpe_dict="http://cpe.mitre.org/dictionary/2.0">
+
+    <xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="xlink.xsd"/>
+    <xs:import namespace="http://schema.omg.org/spec/XMI/2.1" schemaLocation="xmi.xsd"/>
+    <xs:import namespace="http://cpe.mitre.org/language/2.0"
+        schemaLocation="cpe/cpe-language_2.2.xsd"/>
+    <xs:import namespace="http://cpe.mitre.org/dictionary/2.0"
+        schemaLocation="cpe/cpe-dictionary_2.2.xsd"/>
+
+    <xs:include schemaLocation="fedagree-metadata.xsd"/>
+
+    <xs:attributeGroup name="common">
+        <xs:annotation>
+            <xs:documentation>
+                Attribute group for common attributes to be applied generically in numerous locations throughout the schema.
+                Currenyly only contains the status attribute.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="status" type="fedagree:statusEnum"/>
+    </xs:attributeGroup>
+
+    <xs:attributeGroup name="simTime">
+        <xs:annotation>
+            <xs:documentation>
+                Simulated time
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="simStartTime" type="xs:string" use="optional"/>
+        <xs:attribute name="simEndTime" type="xs:string" use="optional"/>
+    </xs:attributeGroup>
+
+    <xs:simpleType name="statusEnum">
+        <xs:annotation>
+            <xs:documentation>
+                These are the enumerated values to be used to designate the current status of a section of the federation 
+                agreements document.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="TBD"/>
+            <xs:enumeration value="Negotiated"/>
+            <xs:enumeration value="Designed"/>
+            <xs:enumeration value="Implemented"/>
+            <xs:enumeration value="Tested"/>
+            <xs:enumeration value="Validated"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:element name="dataEncoding">
+        <xs:annotation>
+            <xs:documentation>
+                This element encapsulates the information necessary to designate the nature of a referenced binary data encoding.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:attribute name="endianness" type="fedagree:endianEnum"/>
+            <xs:attribute name="nullable" type="xs:boolean"/>
+            <xs:attribute name="nullRepresentation" type="xs:string"/>
+            <xs:attribute name="includesTerminator" type="xs:boolean"/>
+            <xs:attribute name="terminator" type="xs:string"/>
+            <xs:attribute name="dataType" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:simpleType name="endianEnum">
+        <xs:annotation>
+            <xs:documentation>
+                An enumeration of the supported endianness representations.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="big-endian"/>
+            <xs:enumeration value="little-endian"/>
+            <xs:enumeration value="middle-endian"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="modelFormatEnum">
+        <xs:annotation>
+            <xs:documentation>
+                An enumeration of the simulation architecture formats currently supported. These currently
+                include HLA 1.3, 1516, 1516 Evolved, TENA LROM, CTIA, and DIS PDU.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="HLA"/>
+            <xs:enumeration value="TENA"/>
+            <xs:enumeration value="DIS"/>
+            <xs:enumeration value="CTIA"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="simArchitectureType">
+        <xs:choice>
+            <xs:element name="architecture" type="fedagree:archType" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="other" type="fedagree:otherArchType" minOccurs="1" maxOccurs="1"/>
+        </xs:choice>
+    </xs:complexType>
+    <xs:element name="simArchitecture" type="fedagree:simArchitectureType"/>
+
+    <xs:simpleType name="architectureVersionEnum">
+        <xs:annotation>
+            <xs:documentation>
+                An enumeration of simulation architecture standards.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="DoD_1.3"/>
+            <xs:enumeration value="IEEE_1516-2000"/>
+            <xs:enumeration value="IEEE_1516-2010"/>
+            <xs:enumeration value="IEEE_1278-1995"/>
+            <xs:enumeration value="IEEE_1278.1-2012"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="archType">
+        <xs:sequence>
+            <xs:element name="architecture" type="fedagree:modelFormatEnum" minOccurs="1"
+                maxOccurs="1"/>
+            <xs:element name="version" type="fedagree:architectureVersionUnion" minOccurs="1"
+                maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="otherArchType">
+        <xs:sequence>
+            <xs:element name="architectureName" type="xs:string" maxOccurs="1" minOccurs="1"/>
+            <xs:element ref="fedagree:remoteDocumentRef" maxOccurs="1" minOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="architectureVersionUnion">
+        <xs:annotation>
+            <xs:documentation>
+                Union of architectureVersionEnum with xs:string
+            </xs:documentation>
+        </xs:annotation>
+        <xs:union memberTypes="xs:string fedagree:architectureVersionEnum"/>
+    </xs:simpleType>
+
+    <xs:element name="xmiModel">
+        <xs:annotation>
+            <xs:documentation>
+                XMI-encoded models, primarily UML, can be included inline using this element. In order
+                to maintain tool-specific extensions and the full range of XMI-encoded models, this
+                element wraps a single XMI element, which is the root element for any XMI-encoded
+                document. Such documents may include numerous models, and conventionally these models
+                will all be related.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="xmi:XMI" minOccurs="1" maxOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="complexDescription">
+        <xs:annotation>
+            <xs:documentation>
+                This type should be used where inline descriptions more complex than simple text are required. 
+                In addition to text values for usage and notes, this type supports the addition of supporting
+                tables, lists, and graphics.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="text" type="xs:string"/>
+            <xs:element ref="fedagree:image"/>
+            <xs:element ref="fedagree:table"/>
+            <xs:element ref="fedagree:list"/>
+        </xs:choice>
+    </xs:complexType>
+
+    <xs:element name="tool" type="fedagree:toolType"/>
+
+    <xs:complexType name="toolType">
+        <xs:annotation>
+            <xs:documentation>
+                Common type for the description of software tools. The first element in this type uses the 
+                Common Platform Enumeration (CPE) schema from MITRE (http://cpe.mitre.org/specification/index.html) 
+                and accepted as a standard by NIST (http://nvd.nist.gov/cpe.cfm), a scheme developed
+                to uniquely identify software systems, platforms, and packages. An official dictionary of CPE
+                entries is maintained by NIST, though it is expected that an additional dictionary may need
+                to be maintained for the federation if some of the more domain-specific and esoteric tools
+                are not included in the NIST dictionary. In addition to the CPE entry, this type supports the
+                inclusion of a text description, role, type, and references to external configuration files.
+                A unique ID is required for each tool entry and is used whenever an element in the federation
+                agreements document needs to reference a tool utilized in a specific context or provisioned to 
+                a specific piece of hardware. Please reference the MITRE and NIST URLs above for instructions on
+                how to correctly fill in the data required for a CPE entry.                
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence minOccurs="1" maxOccurs="1">
+            <xs:element ref="cpe_dict:cpe-item" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="description" minOccurs="0" maxOccurs="1"
+                type="fedagree:complexDescription"/>
+            <xs:element name="configFile" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="fileType" type="xs:string"/>
+                    <xs:attributeGroup ref="fedagree:remoteDocAttrs"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="type" type="fedagree:toolTypeEnum" use="required"/>
+        <xs:attribute name="id" type="xs:ID" use="required"/>
+    </xs:complexType>
+
+    <xs:simpleType name="toolTypeEnum">
+        <xs:annotation>
+            <xs:documentation>
+                An enumeration of the identified types of tools likely to be utilized.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="middleware"/>
+            <xs:enumeration value="initialization"/>
+            <xs:enumeration value="executionMonitoring"/>
+            <xs:enumeration value="postExecutionAnalysisAndFeedback"/>
+            <xs:enumeration value="visualization"/>
+            <xs:enumeration value="test"/>
+            <xs:enumeration value="executionManagement"/>
+            <xs:enumeration value="design"/>
+            <xs:enumeration value="configurationManagement"/>
+            <xs:enumeration value="vva"/>
+            <xs:enumeration value="exercisePreparation"/>
+            <xs:enumeration value="softwareManagement"/>
+            <xs:enumeration value="operatingSystem"/>
+            <xs:enumeration value="other"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:element name="remoteDocument" type="fedagree:remoteDocumentType"/>
+    <xs:complexType name="remoteDocumentType">
+        <xs:annotation>
+            <xs:documentation>
+                Type used to describe external supporting documents. In addition to the data found in 
+                remoteDocAttrs, this type adds a textual description and the Title metadata from the
+                M&amp;S Community of Interest Discovery Metadata Specification (MSC-DMS) schema.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element ref="fedagree:Title" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+        <xs:attributeGroup ref="fedagree:remoteDocAttrs"/>
+    </xs:complexType>
+
+    <xs:attributeGroup name="remoteDocAttrs">
+        <xs:annotation>
+            <xs:documentation>
+                Abstract group of attributes needed to reference a remote document. xlink:href and
+                xlink:title are used to provide the addressable location of the remote document, while
+                the xlink:type is set to "fixed". Additionally a "version" attribute is included, though
+                no formal versioning standard is mandated, and an optional "docNumber" attribute for 
+                organization-specific document numbers.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attributeGroup ref="xlink:simpleAttrs"/>
+        <xs:attribute name="version" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation>
+                    Document producer’s version # or designation
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="docNumber" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    Document producer’s designation for the document according to organizational nomenclature
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="format" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    Format of the document, e.g. xsd, Word, pdf
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" name="formatVersion" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    Version of format with which the document is conformant
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:ID" name="id" use="required">
+            <xs:annotation>
+                <xs:documentation>
+                    Unique identifier within the FEAT document for referencing this record from elsewhere in the FEAT document
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:dateTime" name="date" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    Date stamp of the referenced document
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+
+    <xs:element name="remoteDocumentRef">
+        <xs:annotation>
+            <xs:documentation>
+                Reference to the ID of a remote document identified in the metadata section of the federation agreement document in accordance with fedagree-design.xsd.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:attribute name="ref" type="xs:IDREF"/>
+            <xs:attribute name="section" type="xs:string" use="optional"/>
+            <xs:attribute name="page" type="xs:string" use="optional"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="pocListType">
+        <xs:annotation>
+            <xs:documentation>
+                Base type for elements that list POCs.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element ref="fedagree:pointOfContact" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="pointOfContact">
+        <xs:complexType>
+            <xs:attribute name="ref" type="xs:IDREF" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                        This attribute's value must be that of the ID of a person or organiation in the addressBook element.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="type" type="fedagree:pocTypeEnum" use="optional"/>
+            <xs:attribute name="role" type="fedagree:pocRoleUnion" use="optional"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:simpleType name="pocTypeEnum">
+        <xs:annotation>
+            <xs:documentation>
+                Simple enumeration with two options: organization or person.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="person"/>
+            <xs:enumeration value="organization"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:element name="person">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Title" type="xs:string" minOccurs="0"/>
+                <xs:element name="Name" type="fedagree:personNameType"/>
+                <xs:element name="Position" type="fedagree:personPositionType" minOccurs="0"
+                    maxOccurs="unbounded"/>
+                <xs:element name="AddressInfo" type="fedagree:addressInfoType" maxOccurs="unbounded"/>
+                <xs:element name="Phone" type="fedagree:phoneType" maxOccurs="unbounded"/>
+                <xs:element name="Email" type="fedagree:emailType" maxOccurs="unbounded"/>
+                <xs:element name="URL" type="xs:anyURI" minOccurs="0"/>
+                <xs:element name="ContactInstruction" type="xs:string" minOccurs="0"/>
+            </xs:sequence>
+            <xs:attribute name="ID" type="xs:ID" use="required"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="organization">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Name" type="xs:string"/>
+                <xs:element name="Type" type="fedagree:organizationTypeType"/>
+                <xs:element name="AddressInfo" type="fedagree:addressInfoType" maxOccurs="unbounded"/>
+                <xs:element name="Phone" type="fedagree:phoneType" minOccurs="0"
+                    maxOccurs="unbounded"/>
+                <xs:element name="Email" type="fedagree:emailType" minOccurs="0"/>
+                <xs:element name="URL" type="xs:anyURI" minOccurs="0"/>
+                <xs:element name="ContactInstruction" type="xs:string" minOccurs="0"/>
+            </xs:sequence>
+            <xs:attribute name="ID" type="xs:ID"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:simpleType name="emailTypeEnums">
+        <xs:annotation>
+            <xs:documentation>
+                Types of email addresses
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Government Controlled"/>
+            <xs:enumeration value="Government Intranet"/>
+            <xs:enumeration value="Government Intranet (secret)"/>
+            <xs:enumeration value="Corporate Controlled"/>
+            <xs:enumeration value="Corporate Internal"/>
+            <xs:enumeration value="Corporate Internal (classified)"/>
+            <xs:enumeration value="Site Controlled"/>
+            <xs:enumeration value="Site Internal"/>
+            <xs:enumeration value="Site Internal (classified)"/>
+            <xs:enumeration value="Other"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:element name="rights">
+        <xs:annotation>
+            <xs:documentation>
+                Information about rights held in and over the resource.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="fedagree:RightsType">
+                    <xs:sequence>
+                        <xs:element name="POCs" type="fedagree:pocListType" minOccurs="1"
+                            maxOccurs="1"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="image" type="fedagree:imageType"/>
+    <xs:complexType name="imageType">
+        <xs:annotation>
+            <xs:documentation>
+                Type used to represent base 64 encoded binary images.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:base64Binary">
+                <xs:attribute name="format" type="fedagree:imageFormatEnum"/>
+                <xs:attribute name="title" type="xs:string"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:simpleType name="imageFormatEnum">
+        <xs:annotation>
+            <xs:documentation>
+                Supported binary image formats determined based on widest format support by web-enabled tools
+                such as browsers and editors.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="GIF"/>
+            <xs:enumeration value="PNG"/>
+            <xs:enumeration value="JPEG"/>
+            <xs:enumeration value="TIFF"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="paramType">
+        <xs:annotation>
+            <xs:documentation>
+                Type used to describe input or output parameters.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="name" use="optional"/>
+        <xs:attribute name="type" use="required"/>
+        <xs:attribute name="nullable" use="optional"/>
+        <xs:attribute name="maxValue" use="optional"/>
+        <xs:attribute name="minValue" use="optional"/>
+    </xs:complexType>
+
+    <xs:simpleType name="interactionType">
+        <xs:annotation>
+            <xs:documentation>
+                Supported interaction types.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="webService"/>
+            <xs:enumeration value="socket"/>
+            <xs:enumeration value="sharedMemory"/>
+            <xs:enumeration value="file"/>
+            <xs:enumeration value="database"/>
+            <xs:enumeration value="manual"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="refTypeEnum">
+        <xs:annotation>
+            <xs:documentation>
+                Enumeration of types of agreements to which naming conventions may apply
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="all"/>
+            <xs:enumeration value="objects"/>
+            <xs:enumeration value="attributes"/>
+            <xs:enumeration value="parameters"/>
+            <xs:enumeration value="enumerations"/>
+            <xs:enumeration value="memberApps"/>
+            <xs:enumeration value="interactions"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="capitalizationSchemeEnum">
+        <xs:annotation>
+            <xs:documentation>
+                Enumeration of capitalization
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="upper"/>
+            <xs:enumeration value="lower"/>
+            <xs:enumeration value="firstLetterUpper"/>
+            <xs:enumeration value="lowerCamel"/>
+            <xs:enumeration value="upperCamel"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="timeUnitsEnum">
+        <xs:annotation>
+            <xs:documentation>
+                Units available for the measurement of time.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="milliseconds"/>
+            <xs:enumeration value="seconds"/>
+            <xs:enumeration value="minutes"/>
+            <xs:enumeration value="hours"/>
+            <xs:enumeration value="days"/>
+            <xs:enumeration value="step"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:attributeGroup name="rateAttrGroup">
+        <xs:annotation>
+            <xs:documentation>
+                Rate is per-unit-type. For example, a value of "5" for rate and a value
+                of "seconds" for units would be interpreted as "5 X per second" where "X"
+                is context-sensitive (e.g., "X = updates" if used in "updateRate").                
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="rate" type="xs:integer" use="required"/>
+        <xs:attribute name="units" type="fedagree:timeUnitsEnum" use="required"/>
+    </xs:attributeGroup>
+
+    <xs:element name="table">
+        <xs:annotation>
+            <xs:documentation>
+                Generic table element. Useful for inclusion of arbitrary tabular information in the federation 
+                agreements document.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="row" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="value" type="xs:string" minOccurs="0"
+                                maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="list">
+        <xs:annotation>
+            <xs:documentation>
+                Generic list element. Allows nested lists or simple text list items. Can be ordered or unordered.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+                <xs:element ref="fedagree:list"/>
+                <xs:element name="item" type="xs:string"/>
+            </xs:choice>
+            <xs:attribute name="ordered" type="xs:boolean" default="false"/>
+            <xs:attribute name="title" type="xs:string" use="optional"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="assertions">
+        <xs:annotation>
+            <xs:documentation>
+                A list of assertions about variables or results for which member applications are responsible.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="assert">
+                    <xs:annotation>
+                        <xs:documentation>
+                            An assertion about a variable or result for which some member application is responsible. The body of the element
+                            contains a plain-text explanation of the assertion.
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:string">
+                                <xs:attribute name="appRef" type="xs:IDREF">
+                                    <xs:annotation>
+                                        <xs:documentation>
+                                            Reference to the previously identified application for which this assertion is applicable.
+                                        </xs:documentation>
+                                    </xs:annotation>
+                                </xs:attribute>
+                                <xs:attribute type="xs:string" name="test">
+                                    <xs:annotation>
+                                        <xs:documentation>
+                                            The test condition for which the assertion is being made. Any statement that evaluates to a boolean result.
+                                        </xs:documentation>
+                                    </xs:annotation>
+                                </xs:attribute>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="demTargetEntityType">
+        <xs:annotation>
+            <xs:documentation>
+                Data exchange model entity type
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="demName" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation>
+                    The name of the object class or interaction being updated
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attributeGroup ref="xlink:simpleAttrs">
+            <xs:annotation>
+                <xs:documentation>
+                    A reference to the unique ID of the entity or interaction as represented in an XML-formatted
+                    DEM (e.g., HLA 1516 FOM).
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attributeGroup>
+    </xs:complexType>
+
+    <xs:simpleType name="clearanceEnum">
+        <xs:annotation>
+            <xs:documentation>
+                Union of the currently supported clearance groups. Current clearance lists include USDOD, USDOE, UKMOD, and NATO.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:union
+            memberTypes="fedagree:USDOD_ClearanceEnum fedagree:NATO_ClearanceEnum fedagree:UKMOD_ClearanceEnum fedagree:USDOE_ClearanceEnum"
+        />
+    </xs:simpleType>
+
+    <xs:simpleType name="USDOD_ClearanceEnum">
+        <xs:annotation>
+            <xs:documentation>
+                Enumeration of US DoD clearance types as applied to physicalSecurity.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Secret"/>
+            <xs:enumeration value="TopSecret"/>
+            <xs:enumeration value="Unclassified"/>
+            <xs:enumeration value="None"/>
+            <xs:enumeration value="ForeignNational"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="USDOE_ClearanceEnum">
+        <xs:annotation>
+            <xs:documentation>
+                Enumeration of US DoE clearance types
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="L"/>
+            <xs:enumeration value="Q"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="NATO_ClearanceEnum">
+        <xs:annotation>
+            <xs:documentation>
+                Enumeration of NATO clearance types
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="NATOSecret"/>
+            <xs:enumeration value="NATOConfidential"/>
+            <xs:enumeration value="CosmicTopSecret"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="UKMOD_ClearanceEnum">
+        <xs:annotation>
+            <xs:documentation>
+                Enumeration of UK MoD clearance types
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="CounterTerroristCheck"/>
+            <xs:enumeration value="SecurityCheck"/>
+            <xs:enumeration value="DevelopedVetting"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="HLA1516.2000-ServicesEnum">
+        <xs:annotation>
+            <xs:documentation>
+                Enumeration of services available under the HLA 1516-2000 simulation architecture.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <!--Federation management-->
+            <xs:enumeration value="Create Federation Execution"/>
+            <xs:enumeration value="Destroy Federation Execution"/>
+            <xs:enumeration value="Join Federation Execution"/>
+            <xs:enumeration value="Resign Federation Execution"/>
+            <xs:enumeration value="Register Federation Synchronization Point"/>
+            <xs:enumeration value="Confirm Synchronization Point Registration "/>
+            <xs:enumeration value="Announce Synchronization Point"/>
+            <xs:enumeration value="Synchronization Point Achieved"/>
+            <xs:enumeration value="Federation Synchronized"/>
+            <xs:enumeration value="Request Federation Save"/>
+            <xs:enumeration value="Initiate Federate Save"/>
+            <xs:enumeration value="Federate Save Begun"/>
+            <xs:enumeration value="Federate Save Complete"/>
+            <xs:enumeration value="Federation Saved"/>
+            <xs:enumeration value="Query Federation Save Status"/>
+            <xs:enumeration value="Federation Save Status Response"/>
+            <xs:enumeration value="Request Federation Restore "/>
+            <xs:enumeration value="Confirm Federation Restoration Request"/>
+            <xs:enumeration value="Federation Restore Begun"/>
+            <xs:enumeration value="Initiate Federate Restore"/>
+            <xs:enumeration value="Federate Restore Complete"/>
+            <xs:enumeration value="Federation Restored"/>
+            <xs:enumeration value="Query Federation Restore Status"/>
+            <xs:enumeration value="Federation Restore Status Response"/>
+            <!--Declaration management-->
+            <xs:enumeration value="Publish Object Class Attributes"/>
+            <xs:enumeration value="Unpublish Object Class Attributes"/>
+            <xs:enumeration value="Publish Interaction Class"/>
+            <xs:enumeration value="Unpublish Interaction Class"/>
+            <xs:enumeration value="Subscribe Object Class Attributes"/>
+            <xs:enumeration value="Unsubscribe Object Class Attributes"/>
+            <xs:enumeration value="Subscribe Interaction Class"/>
+            <xs:enumeration value="Unsubscribe Interaction Class"/>
+            <xs:enumeration value="Start Registration For Object Class"/>
+            <xs:enumeration value="Stop Registration For Object Class"/>
+            <xs:enumeration value="Turn Interactions On"/>
+            <xs:enumeration value="Turn Interactions Off"/>
+            <!--Object management -->
+            <xs:enumeration value="Reserve Object Instance Name"/>
+            <xs:enumeration value="Object Instance Name Reserved"/>
+            <xs:enumeration value="Register Object Instance"/>
+            <xs:enumeration value="Discover Object Instance"/>
+            <xs:enumeration value="Update Attribute Values"/>
+            <xs:enumeration value="Reflect Attribute Values"/>
+            <xs:enumeration value="Send Interaction"/>
+            <xs:enumeration value="Receive Interaction"/>
+            <xs:enumeration value="Delete Object Instance"/>
+            <xs:enumeration value="Remove object instance"/>
+            <xs:enumeration value="Local Delete Object Instance"/>
+            <xs:enumeration value="Change Attribute Transportation Type"/>
+            <xs:enumeration value="Change Interaction Transportation Type"/>
+            <xs:enumeration value="Attributes In Scope"/>
+            <xs:enumeration value="Attributes Out Of Scope"/>
+            <xs:enumeration value="Request Attribute Value Update"/>
+            <xs:enumeration value="Provide Attribute Value Update"/>
+            <xs:enumeration value="Turn Updates On For Object Instance"/>
+            <xs:enumeration value="Turn Updates Off For Object Instance"/>
+            <!--Ownership management-->
+            <xs:enumeration value="Unconditional Attribute Ownership Divestiture"/>
+            <xs:enumeration value="Negotiated Attribute Ownership Divestiture"/>
+            <xs:enumeration value="Request Attribute Ownership Assumption"/>
+            <xs:enumeration value="Request Divestiture Confirmation"/>
+            <xs:enumeration value="Confirm Divestiture"/>
+            <xs:enumeration value="Attribute Ownership Acquisition Notification"/>
+            <xs:enumeration value="Attribute Ownership Acquisition"/>
+            <xs:enumeration value="Attribute Ownership Acquisition If Available"/>
+            <xs:enumeration value="Attribute Ownership Unavailable"/>
+            <xs:enumeration value="Request Attribute Ownership Release"/>
+            <xs:enumeration value="Attribute Ownership Divestiture If Wanted"/>
+            <xs:enumeration value="Cancel Negotiated Attribute Ownership Divestiture"/>
+            <xs:enumeration value="Cancel Attribute Ownership Acquisition"/>
+            <xs:enumeration value="Confirm Attribute Ownership Acquisition Cancellation"/>
+            <xs:enumeration value="Query Attribute Ownership"/>
+            <xs:enumeration value="Inform Attribute Ownership"/>
+            <xs:enumeration value="Is Attribute Owned By Federate"/>
+            <!--Time management-->
+            <xs:enumeration value="Enable time regulation"/>
+            <xs:enumeration value="Time Regulation Enabled"/>
+            <xs:enumeration value="Disable Time Regulation"/>
+            <xs:enumeration value="Enable Time Constrained"/>
+            <xs:enumeration value="Time Constrained Enabled"/>
+            <xs:enumeration value="Disable Time Constrained"/>
+            <xs:enumeration value="Time Advance Request"/>
+            <xs:enumeration value="Time Advance Request Available"/>
+            <xs:enumeration value="Next Message Request"/>
+            <xs:enumeration value="Next Message Request Available"/>
+            <xs:enumeration value="Flush Queue Request"/>
+            <xs:enumeration value="Time Advance Grant"/>
+            <xs:enumeration value="Enable Asynchronous Delivery"/>
+            <xs:enumeration value="Disable Asynchronous Delivery"/>
+            <xs:enumeration value="Query GALT"/>
+            <xs:enumeration value="Query Logical Time"/>
+            <xs:enumeration value="Query LITS"/>
+            <xs:enumeration value="Modify Lookahead"/>
+            <xs:enumeration value="Query Lookahead"/>
+            <xs:enumeration value="Retract"/>
+            <xs:enumeration value="Request Retraction"/>
+            <xs:enumeration value="Change Attribute Order Type"/>
+            <xs:enumeration value="Change Interaction Order Type"/>
+            <!--Data distribution management-->
+            <xs:enumeration value="Create Region"/>
+            <xs:enumeration value="Commit Region Modifications"/>
+            <xs:enumeration value="Delete Region"/>
+            <xs:enumeration value="Register Object Instance With Regions"/>
+            <xs:enumeration value="Associate Regions For Updates"/>
+            <xs:enumeration value="Unassociate Regions For Updates"/>
+            <xs:enumeration value="Subscribe Object Class Attributes With Regions"/>
+            <xs:enumeration value="Unsubscribe Object Class Attributes With Regions"/>
+            <xs:enumeration value="Subscribe Interaction Class With Regions"/>
+            <xs:enumeration value="Unsubscribe Interaction Class With Regions"/>
+            <xs:enumeration value="Send Interaction With Regions"/>
+            <xs:enumeration value="Request Attribute Value Update With Regions"/>
+            <!--Support services-->
+            <xs:enumeration value="Get Object Class Handle"/>
+            <xs:enumeration value="Get Object Class Name"/>
+            <xs:enumeration value="Get Attribute Handle"/>
+            <xs:enumeration value="Get Attribute Name"/>
+            <xs:enumeration value="Get Interaction Class Handle"/>
+            <xs:enumeration value="Get Interaction Class Name"/>
+            <xs:enumeration value="Get Parameter Handle"/>
+            <xs:enumeration value="Get Parameter Name"/>
+            <xs:enumeration value="Get Object Instance Handle"/>
+            <xs:enumeration value="Get Object Instance Name"/>
+            <xs:enumeration value="Get Dimension Handle"/>
+            <xs:enumeration value="Get Dimension Name"/>
+            <xs:enumeration value="Get Dimension Upper Bound"/>
+            <xs:enumeration value="Get Available Dimensions For Class Attribute"/>
+            <xs:enumeration value="Get Known Object Class Handle"/>
+            <xs:enumeration value="Get Available Dimensions For Interaction Class"/>
+            <xs:enumeration value="Get Transportation Type"/>
+            <xs:enumeration value="Get Transportation Name"/>
+            <xs:enumeration value="Get Order Type"/>
+            <xs:enumeration value="Get order name"/>
+            <xs:enumeration value="Enable Object Class Relevance Advisory Switch"/>
+            <xs:enumeration value="Disable Object Class Relevance Advisory Switch"/>
+            <xs:enumeration value="Enable Attribute Relevance Advisory Switch"/>
+            <xs:enumeration value="Disable Attribute Relevance Advisory Switch"/>
+            <xs:enumeration value="Enable Attribute Scope Advisory Switch"/>
+            <xs:enumeration value="Disable Attribute Scope Advisory Switch"/>
+            <xs:enumeration value="Enable Interaction Relevance Advisory Switch"/>
+            <xs:enumeration value="Disable Interaction Relevance Advisory Switch"/>
+            <xs:enumeration value="Get Dimension Handle Set"/>
+            <xs:enumeration value="Get Range Bounds"/>
+            <xs:enumeration value="Set Range Bounds"/>
+            <xs:enumeration value="Normalize Federate Handle"/>
+            <xs:enumeration value="Normalize Service Group"/>
+            <xs:enumeration value="Initialize RTI"/>
+            <xs:enumeration value="Finalize RTI"/>
+            <xs:enumeration value="Evoke Callback"/>
+            <xs:enumeration value="Evoke Multiple Callbacks"/>
+            <xs:enumeration value="Enable Callbacks"/>
+            <xs:enumeration value="Disable Callbacks"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="HLA1516.Evolved-ServicesEnum">
+        <xs:annotation>
+            <xs:documentation>
+                Enumeration of services available under the HLA 1516 Evolved simulation architecture.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <!--Federation management-->
+            <xs:enumeration value="Connect"/>
+            <xs:enumeration value="Disconnect"/>
+            <xs:enumeration value="Connection Lost"/>
+            <xs:enumeration value="Create Federation Execution"/>
+            <xs:enumeration value="Destroy Federation Execution"/>
+            <xs:enumeration value="List Federation Executions"/>
+            <xs:enumeration value="Report Federation Executions"/>
+            <xs:enumeration value="Join Federation Execution"/>
+            <xs:enumeration value="Resign Federation Execution"/>
+            <xs:enumeration value="Register Federation Synchronization Point"/>
+            <xs:enumeration value="Confirm Synchronization Point Registration "/>
+            <xs:enumeration value="Announce Synchronization Point"/>
+            <xs:enumeration value="Synchronization Point Achieved"/>
+            <xs:enumeration value="Federation Synchronized"/>
+            <xs:enumeration value="Request Federation Save"/>
+            <xs:enumeration value="Initiate Federate Save"/>
+            <xs:enumeration value="Federate Save Begun"/>
+            <xs:enumeration value="Federate Save Complete"/>
+            <xs:enumeration value="Federation Saved"/>
+            <xs:enumeration value="Abort Federation Save"/>
+            <xs:enumeration value="Query Federation Save Status"/>
+            <xs:enumeration value="Federation Save Status Response"/>
+            <xs:enumeration value="Request Federation Restore "/>
+            <xs:enumeration value="Confirm Federation Restoration Request"/>
+            <xs:enumeration value="Federation Restore Begun"/>
+            <xs:enumeration value="Initiate Federate Restore"/>
+            <xs:enumeration value="Federate Restore Complete"/>
+            <xs:enumeration value="Federation Restored"/>
+            <xs:enumeration value="Abort Federation Restore"/>
+            <xs:enumeration value="Query Federation Restore Status"/>
+            <xs:enumeration value="Federation Restore Status Response"/>
+            <!--Declaration management-->
+            <xs:enumeration value="Publish Object Class Attributes"/>
+            <xs:enumeration value="Unpublish Object Class Attributes"/>
+            <xs:enumeration value="Publish Interaction Class"/>
+            <xs:enumeration value="Unpublish Interaction Class"/>
+            <xs:enumeration value="Subscribe Object Class Attributes"/>
+            <xs:enumeration value="Unsubscribe Object Class Attributes"/>
+            <xs:enumeration value="Subscribe Interaction Class"/>
+            <xs:enumeration value="Unsubscribe Interaction Class"/>
+            <xs:enumeration value="Start Registration For Object Class"/>
+            <xs:enumeration value="Stop Registration For Object Class"/>
+            <xs:enumeration value="Turn Interactions On"/>
+            <xs:enumeration value="Turn Interactions Off"/>
+            <!--Object management -->
+            <xs:enumeration value="Reserve Object Instance Name"/>
+            <xs:enumeration value="Object Instance Name Reserved"/>
+            <xs:enumeration value="Release Object Instance Name"/>
+            <xs:enumeration value="Reserve Multiple Object Instance Names"/>
+            <xs:enumeration value="Multiple Object Instance Names Reserved"/>
+            <xs:enumeration value="Release Mulitple Object Instance Names"/>
+            <xs:enumeration value="Register Object Instance"/>
+            <xs:enumeration value="Discover Object Instance"/>
+            <xs:enumeration value="Update Attribute Values"/>
+            <xs:enumeration value="Reflect Attribute Values"/>
+            <xs:enumeration value="Send Interaction"/>
+            <xs:enumeration value="Receive Interaction"/>
+            <xs:enumeration value="Delete Object Instance"/>
+            <xs:enumeration value="Remove object instance"/>
+            <xs:enumeration value="Local Delete Object Instance"/>
+            <xs:enumeration value="Attributes In Scope"/>
+            <xs:enumeration value="Attributes Out Of Scope"/>
+            <xs:enumeration value="Request Attribute Value Update"/>
+            <xs:enumeration value="Provide Attribute Value Update"/>
+            <xs:enumeration value="Turn Updates On For Object Instance"/>
+            <xs:enumeration value="Turn Updates Off For Object Instance"/>
+            <xs:enumeration value="Request Attribute Transportation Type"/>
+            <xs:enumeration value="Confirm Attribute Transportation Type Change"/>
+            <xs:enumeration value="Query Attribute Transportation Type"/>
+            <xs:enumeration value="Report Attribute Transportation Type"/>
+            <xs:enumeration value="Request Interaction Transportation Type Change"/>
+            <xs:enumeration value="Confirm Interaction Transportation Type Change"/>
+            <xs:enumeration value="Query Interaction Transportation Type"/>
+            <xs:enumeration value="Report Interaction Transportation Type"/>
+            <!--Ownership management-->
+            <xs:enumeration value="Unconditional Attribute Ownership Divestiture"/>
+            <xs:enumeration value="Negotiated Attribute Ownership Divestiture"/>
+            <xs:enumeration value="Request Attribute Ownership Assumption"/>
+            <xs:enumeration value="Request Divestiture Confirmation"/>
+            <xs:enumeration value="Confirm Divestiture"/>
+            <xs:enumeration value="Attribute Ownership Acquisition Notification"/>
+            <xs:enumeration value="Attribute Ownership Acquisition"/>
+            <xs:enumeration value="Attribute Ownership Acquisition If Available"/>
+            <xs:enumeration value="Attribute Ownership Unavailable"/>
+            <xs:enumeration value="Request Attribute Ownership Release"/>
+            <xs:enumeration value="Attribute Ownership Release Denied"/>
+            <xs:enumeration value="Attribute Ownership Divestiture If Wanted"/>
+            <xs:enumeration value="Cancel Negotiated Attribute Ownership Divestiture"/>
+            <xs:enumeration value="Cancel Attribute Ownership Acquisition"/>
+            <xs:enumeration value="Confirm Attribute Ownership Acquisition Cancellation"/>
+            <xs:enumeration value="Query Attribute Ownership"/>
+            <xs:enumeration value="Inform Attribute Ownership"/>
+            <xs:enumeration value="Is Attribute Owned By Federate"/>
+            <!--Time management-->
+            <xs:enumeration value="Enable time regulation"/>
+            <xs:enumeration value="Time Regulation Enabled"/>
+            <xs:enumeration value="Disable Time Regulation"/>
+            <xs:enumeration value="Enable Time Constrained"/>
+            <xs:enumeration value="Time Constrained Enabled"/>
+            <xs:enumeration value="Disable Time Constrained"/>
+            <xs:enumeration value="Time Advance Request"/>
+            <xs:enumeration value="Time Advance Request Available"/>
+            <xs:enumeration value="Next Message Request"/>
+            <xs:enumeration value="Next Message Request Available"/>
+            <xs:enumeration value="Flush Queue Request"/>
+            <xs:enumeration value="Time Advance Grant"/>
+            <xs:enumeration value="Enable Asynchronous Delivery"/>
+            <xs:enumeration value="Disable Asynchronous Delivery"/>
+            <xs:enumeration value="Query GALT"/>
+            <xs:enumeration value="Query Logical Time"/>
+            <xs:enumeration value="Query LITS"/>
+            <xs:enumeration value="Modify Lookahead"/>
+            <xs:enumeration value="Query Lookahead"/>
+            <xs:enumeration value="Retract"/>
+            <xs:enumeration value="Request Retraction"/>
+            <xs:enumeration value="Change Attribute Order Type"/>
+            <xs:enumeration value="Change Interaction Order Type"/>
+            <!--Data distribution management-->
+            <xs:enumeration value="Create Region"/>
+            <xs:enumeration value="Commit Region Modifications"/>
+            <xs:enumeration value="Delete Region"/>
+            <xs:enumeration value="Register Object Instance With Regions"/>
+            <xs:enumeration value="Associate Regions For Updates"/>
+            <xs:enumeration value="Unassociate Regions For Updates"/>
+            <xs:enumeration value="Subscribe Object Class Attributes With Regions"/>
+            <xs:enumeration value="Unsubscribe Object Class Attributes With Regions"/>
+            <xs:enumeration value="Subscribe Interaction Class With Regions"/>
+            <xs:enumeration value="Unsubscribe Interaction Class With Regions"/>
+            <xs:enumeration value="Send Interaction With Regions"/>
+            <xs:enumeration value="Request Attribute Value Update With Regions"/>
+            <!--Support services-->
+            <xs:enumeration value="Get Automatic Resign Directive"/>
+            <xs:enumeration value="Set Automatic Resign Directive"/>
+            <xs:enumeration value="Get Federate Handle"/>
+            <xs:enumeration value="Get Federate Name"/>
+            <xs:enumeration value="Get Object Class Handle"/>
+            <xs:enumeration value="Get Object Class Name"/>
+            <xs:enumeration value="Get Known Object Class Handle"/>
+            <xs:enumeration value="Get Object Instance Handle"/>
+            <xs:enumeration value="Get Object Instance Name"/>
+            <xs:enumeration value="Get Attribute Handle"/>
+            <xs:enumeration value="Get Attribute Name"/>
+            <xs:enumeration value="Get Update Rate Value"/>
+            <xs:enumeration value="Get Update Rate Value For Attribute"/>
+            <xs:enumeration value="Get Interaction Class Handle"/>
+            <xs:enumeration value="Get Interaction Class Name"/>
+            <xs:enumeration value="Get Parameter Handle"/>
+            <xs:enumeration value="Get Parameter Name"/>
+            <xs:enumeration value="Get Order Type"/>
+            <xs:enumeration value="Get Order Name"/>
+            <xs:enumeration value="Get Transportation Type Handle"/>
+            <xs:enumeration value="Get Transportation Type Name"/>
+            <xs:enumeration value="Get Available Dimensions For Class Attribute"/>
+            <xs:enumeration value="Get Available Dimensions For Interaction Class"/>
+            <xs:enumeration value="Get Dimension Handle"/>
+            <xs:enumeration value="Get Dimension Name"/>
+            <xs:enumeration value="Get Dimension Upper Bound"/>
+            <xs:enumeration value="Get Dimension Handle Set"/>
+            <xs:enumeration value="Get Range Bounds"/>
+            <xs:enumeration value="Set Range Bounds"/>
+            <xs:enumeration value="Normalize Federate Handle"/>
+            <xs:enumeration value="Normalize Service Group"/>
+            <xs:enumeration value="Enable Object Class Relevance Advisory Switch"/>
+            <xs:enumeration value="Disable Object Class Relevance Advisory Switch"/>
+            <xs:enumeration value="Enable Attribute Relevance Advisory Switch"/>
+            <xs:enumeration value="Disable Attribute Relevance Advisory Switch"/>
+            <xs:enumeration value="Enable Attribute Scope Advisory Switch"/>
+            <xs:enumeration value="Disable Attribute Scope Advisory Switch"/>
+            <xs:enumeration value="Enable Interaction Relevance Advisory Switch"/>
+            <xs:enumeration value="Disable Interaction Relevance Advisory Switch"/>
+            <xs:enumeration value="Evoke Callback"/>
+            <xs:enumeration value="Evoke Multiple Callbacks"/>
+            <xs:enumeration value="Enable Callbacks"/>
+            <xs:enumeration value="Disable Callbacks"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="HLA1.3-ServicesEnum">
+        <xs:annotation>
+            <xs:documentation>
+                Enumeration of services available under the HLA 1.3 simulation architecture.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <!--Federation management-->
+            <xs:enumeration value="Create Federation Execution"/>
+            <xs:enumeration value="Destroy Federation Execution"/>
+            <xs:enumeration value="Join Federation Execution"/>
+            <xs:enumeration value="Resign Federation Execution"/>
+            <xs:enumeration value="Register Federation Synchronization Point"/>
+            <xs:enumeration value="Confirm Synchronization Point Registration"/>
+            <xs:enumeration value="Announce Synchronization Point"/>
+            <xs:enumeration value="Synchronization Point Achieved"/>
+            <xs:enumeration value="Federation Synchronized"/>
+            <xs:enumeration value="Request Federation Save"/>
+            <xs:enumeration value="Initiate Federate Save"/>
+            <xs:enumeration value="Federate Save Begun"/>
+            <xs:enumeration value="Federate Save Complete"/>
+            <xs:enumeration value="Federation Saved"/>
+            <xs:enumeration value="Request Federation Restore"/>
+            <xs:enumeration value="Confirm Federation Restoration Request"/>
+            <xs:enumeration value="Federation Restore Begun"/>
+            <xs:enumeration value="Initiate Federate Restore"/>
+            <xs:enumeration value="Federate Restore Complete"/>
+            <xs:enumeration value="Federation Restored"/>
+            <!--Declaration management-->
+            <xs:enumeration value="Publish Object Class"/>
+            <xs:enumeration value="Unpublish Object Class"/>
+            <xs:enumeration value="Publish Interaction Class"/>
+            <xs:enumeration value="Unpublish Interaction Class"/>
+            <xs:enumeration value="Subscribe Object Class Attributes"/>
+            <xs:enumeration value="Unsubscribe Object Class"/>
+            <xs:enumeration value="Subscribe Interaction Class"/>
+            <xs:enumeration value="Unsubscribe Interaction Class"/>
+            <xs:enumeration value="Start Registration For Object Class"/>
+            <xs:enumeration value="Stop Registration For Object Class"/>
+            <xs:enumeration value="Turn Interactions On"/>
+            <xs:enumeration value="Turn Interactions Off"/>
+            <!--Object management-->
+            <xs:enumeration value="Register Object Instance"/>
+            <xs:enumeration value="Discover Object Instance"/>
+            <xs:enumeration value="Update Attribute Values"/>
+            <xs:enumeration value="Reflect Attribute Values"/>
+            <xs:enumeration value="Send Interaction"/>
+            <xs:enumeration value="Receive Interaction"/>
+            <xs:enumeration value="Delete Object Instance"/>
+            <xs:enumeration value="Remove Object Instance"/>
+            <xs:enumeration value="Local Delete Object Instance"/>
+            <xs:enumeration value="Change Attribute Transportation Type"/>
+            <xs:enumeration value="Change Interaction Transportation Type"/>
+            <xs:enumeration value="Attributes In Scope"/>
+            <xs:enumeration value="Attributes Out Of Scope"/>
+            <xs:enumeration value="Request Attribute Value Update"/>
+            <xs:enumeration value="Provide Attribute Value Update"/>
+            <xs:enumeration value="Turn Updates On For Object Instance"/>
+            <xs:enumeration value="Turn Updates Off For Object Instance"/>
+            <!--Ownership management-->
+            <xs:enumeration value="Unconditional Attribute Ownership Divestiture"/>
+            <xs:enumeration value="Negotiated Attribute Ownership Divestiture"/>
+            <xs:enumeration value="Request Attribute Ownership Assumption"/>
+            <xs:enumeration value="Attribute Ownership Divestiture Notification"/>
+            <xs:enumeration value="Attribute Ownership Acquisition Notification"/>
+            <xs:enumeration value="Attribute Ownership Acquisition"/>
+            <xs:enumeration value="Attribute Ownership Acquisition If Available"/>
+            <xs:enumeration value="Attribute Ownership Unavailable"/>
+            <xs:enumeration value="Request Attribute Ownership Release"/>
+            <xs:enumeration value="Attribute Ownership Release Response"/>
+            <xs:enumeration value="Cancel Negotiated Attribute Ownership Divestiture"/>
+            <xs:enumeration value="Cancel Attribute Ownership Acquisition"/>
+            <xs:enumeration value="Confirm Attribute Ownership Acquisition Cancellation"/>
+            <xs:enumeration value="Query Attribute Ownership"/>
+            <xs:enumeration value="Inform Attribute Ownership"/>
+            <xs:enumeration value="Is Attribute Owned By Federate"/>
+            <!--Time management-->
+            <xs:enumeration value="Enable Time Regulation"/>
+            <xs:enumeration value="Time Regulation Enabled"/>
+            <xs:enumeration value="Disable Time Regulation"/>
+            <xs:enumeration value="Enable Time Constrained"/>
+            <xs:enumeration value="Time Constrained Enabled"/>
+            <xs:enumeration value="Disable Time Constrained"/>
+            <xs:enumeration value="Time Advance Request"/>
+            <xs:enumeration value="Time Advance Request Available"/>
+            <xs:enumeration value="Next Event Request"/>
+            <xs:enumeration value="Next Event Request Available"/>
+            <xs:enumeration value="Flush Queue Request"/>
+            <xs:enumeration value="Time Advance Grant"/>
+            <xs:enumeration value="Enable Asynchronous Delivery"/>
+            <xs:enumeration value="Disable Asynchronous Delivery"/>
+            <xs:enumeration value="Query LBTS"/>
+            <xs:enumeration value="Query Federate Time"/>
+            <xs:enumeration value="Query Minimum Next Event Time"/>
+            <xs:enumeration value="Modify Lookahead"/>
+            <xs:enumeration value="Query Lookahead"/>
+            <xs:enumeration value="Retract"/>
+            <xs:enumeration value="Request Retraction"/>
+            <xs:enumeration value="Change Attribute Order Type"/>
+            <xs:enumeration value="Change Interaction Order Type"/>
+            <!--Data distribution management-->
+            <xs:enumeration value="Create Region"/>
+            <xs:enumeration value="Modify Region"/>
+            <xs:enumeration value="Delete Region"/>
+            <xs:enumeration value="Register Object Instance With Region"/>
+            <xs:enumeration value="Associate Region For Updates"/>
+            <xs:enumeration value="Unassociate Region For Updates"/>
+            <xs:enumeration value="Subscribe Object Class Attributes With Region"/>
+            <xs:enumeration value="Unsubscribe Object Class With Region"/>
+            <xs:enumeration value="Subscribe Interaction Class With Region"/>
+            <xs:enumeration value="Unsubscribe Interaction Class With Region"/>
+            <xs:enumeration value="Send Interaction With Region"/>
+            <xs:enumeration value="Request Attribute Value Update With Region"/>
+            <!--Support services-->
+            <xs:enumeration value="Get Object Class Handle"/>
+            <xs:enumeration value="Get Object Class Name"/>
+            <xs:enumeration value="Get Attribute Handle"/>
+            <xs:enumeration value="Get Attribute Name"/>
+            <xs:enumeration value="Get Interaction Class Handle"/>
+            <xs:enumeration value="Get Interaction Class Name"/>
+            <xs:enumeration value="Get Parameter Handle"/>
+            <xs:enumeration value="Get Parameter Name"/>
+            <xs:enumeration value="Get Object Instance Handle"/>
+            <xs:enumeration value="Get Object Instance Name"/>
+            <xs:enumeration value="Get Routing Space Handle"/>
+            <xs:enumeration value="Get Routing Space Name"/>
+            <xs:enumeration value="Get Dimension Handle"/>
+            <xs:enumeration value="Get Dimension Name"/>
+            <xs:enumeration value="Get Attribute Routing Space Handle"/>
+            <xs:enumeration value="Get Object Class"/>
+            <xs:enumeration value="Get Interaction Routing Space Handle"/>
+            <xs:enumeration value="Get Transportation Handle"/>
+            <xs:enumeration value="Get Transportation Name"/>
+            <xs:enumeration value="Get Ordering Handle"/>
+            <xs:enumeration value="Get Ordering Name"/>
+            <xs:enumeration value="Enable Class Relevance Advisory Switch"/>
+            <xs:enumeration value="Disable Class Relevance Advisory Switch"/>
+            <xs:enumeration value="Enable Attribute Relevance Advisory Switch"/>
+            <xs:enumeration value="Disable Attribute Relevance Advisory Switch"/>
+            <xs:enumeration value="Enable Attribute Scope Advisory Switch"/>
+            <xs:enumeration value="Disable Attribute Scope Advisory Switch"/>
+            <xs:enumeration value="Enable Interaction Relevance Advisory Switch"/>
+            <xs:enumeration value="Disable Interaction Relevance Advisory Switch"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="DIS-PDU-Enum">
+        <xs:annotation>
+            <xs:documentation>
+                Enumeration of DIS PDU types
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Entity State"/>
+            <xs:enumeration value="Collision"/>
+            <xs:enumeration value="Collision-Elastic"/>
+            <xs:enumeration value="Entity State Update"/>
+            <xs:enumeration value="Attribute"/>
+            <xs:enumeration value="Fire"/>
+            <xs:enumeration value="Detonation"/>
+            <xs:enumeration value="Directed Energy Fire"/>
+            <xs:enumeration value="Entity Damage Status"/>
+            <xs:enumeration value="Service Request"/>
+            <xs:enumeration value="Resupply Offer"/>
+            <xs:enumeration value="Resupply Received"/>
+            <xs:enumeration value="Resupply Cancel"/>
+            <xs:enumeration value="Repair Complete"/>
+            <xs:enumeration value="Repair Response"/>
+            <xs:enumeration value="Create Entity"/>
+            <xs:enumeration value="Remove Entity"/>
+            <xs:enumeration value="Start/Resume"/>
+            <xs:enumeration value="Stop/Freeze"/>
+            <xs:enumeration value="Acknowledge"/>
+            <xs:enumeration value="Action Request"/>
+            <xs:enumeration value="Action Response"/>
+            <xs:enumeration value="Data Query"/>
+            <xs:enumeration value="Set Data"/>
+            <xs:enumeration value="Data"/>
+            <xs:enumeration value="Event Report"/>
+            <xs:enumeration value="Comment"/>
+            <xs:enumeration value="Electromagnetic Emission"/>
+            <xs:enumeration value="Designator"/>
+            <xs:enumeration value="UA"/>
+            <xs:enumeration value="IFF"/>
+            <xs:enumeration value="SEES"/>
+            <xs:enumeration value="Transmitter"/>
+            <xs:enumeration value="Signal"/>
+            <xs:enumeration value="Receiver"/>
+            <xs:enumeration value="Intercom Signal"/>
+            <xs:enumeration value="Intercom Control"/>
+            <xs:enumeration value="Aggregate State"/>
+            <xs:enumeration value="IsGroupOf"/>
+            <xs:enumeration value="Transfer Ownership"/>
+            <xs:enumeration value="IsPartOf"/>
+            <xs:enumeration value="Minefield State"/>
+            <xs:enumeration value="Minefield Query"/>
+            <xs:enumeration value="Minefield Data"/>
+            <xs:enumeration value="Minefield Response NACK"/>
+            <xs:enumeration value="Create Entity-R"/>
+            <xs:enumeration value="Remove Entity-R"/>
+            <xs:enumeration value="Start/Resume-R"/>
+            <xs:enumeration value="Stop/Freeze-R"/>
+            <xs:enumeration value="Acknowledge-R"/>
+            <xs:enumeration value="Action Request-R"/>
+            <xs:enumeration value="Action Response-R"/>
+            <xs:enumeration value="Data Query-R"/>
+            <xs:enumeration value="Set Data-R"/>
+            <xs:enumeration value="Data-R"/>
+            <xs:enumeration value="Event Report-R"/>
+            <xs:enumeration value="Comment-R"/>
+            <xs:enumeration value="Record Query-R"/>
+            <xs:enumeration value="Set Record-R"/>
+            <xs:enumeration value="Record-R"/>
+            <xs:enumeration value="Information Operation Action PDU"/>
+            <xs:enumeration value="Information Operation Report PDU"/>
+            <xs:enumeration value="Experimental PDU"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="CTIA-ServicesEnum">
+        <xs:annotation>
+            <xs:documentation>
+                Enumeration of CTIA services
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ComponentService"/>
+            <xs:enumeration value="CTIAServiceBase"/>
+            <xs:enumeration value="ERCUpdateManagementService"/>
+            <xs:enumeration value="PlugAndPlayComponent"/>
+            <xs:enumeration value="EventDispatchService"/>
+            <xs:enumeration value="EventQueryService"/>
+            <xs:enumeration value="EventSubscriptionService"/>
+            <xs:enumeration value="ExerciseManagement"/>
+            <xs:enumeration value="ExerciseSpecificObjectHistoryService"/>
+            <xs:enumeration value="ExerciseSpecificObjectManagementService"/>
+            <xs:enumeration value="GPSCorrectionService"/>
+            <xs:enumeration value="LocalCacheService"/>
+            <xs:enumeration value="LocalStreamViewer"/>
+            <xs:enumeration value="LocalTracker"/>
+            <xs:enumeration value="ManagedProcess"/>
+            <xs:enumeration value="MetaDataService"/>
+            <xs:enumeration value="PlugAndPlayComponent"/>
+            <xs:enumeration value="Process"/>
+            <xs:enumeration value="RegistrationAgent"/>
+            <xs:enumeration value="ReplayEventHandler"/>
+            <xs:enumeration value="ReplayModel"/>
+            <xs:enumeration value="ResultReader"/>
+            <xs:enumeration value="RuleService"/>
+            <xs:enumeration value="SARegionManagementService"/>
+            <xs:enumeration value="TacticalMessageService"/>
+            <xs:enumeration value="TrackingControlService"/>
+            <xs:enumeration value="TrackingDataQueryService"/>
+            <xs:enumeration value="UnifiedFrameworkCache"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="triggerType">
+        <xs:annotation>
+            <xs:documentation>
+                Triggers are events that precipitate other events, e.g. 1. Time: At time T, some member
+                applications will perform an action; 2. Event: When event E occurs, some member applications
+                will perform an action and 3. State: When a particular state is achieved or a state changes.
+                Normally triggers are global in nature.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="triggerDescription" type="xs:string" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:annotation>
+        <xs:documentation>Copyright © 2013 by the Simulation Interoperability Standards Organization, Inc. 
+            
+            P.O. Box 781238
+            
+            Orlando, FL 32878-1238, USA
+            
+            All rights reserved.
+            
+            Permission is hereby granted for this document to be used for production of both commercial and non- commercial products. Removal of this copyright statement and claiming rights to this document is prohibited. In addition, permission is hereby granted for this document to be distributed in its original or modified format (e.g. as part of a database) provided that no charge is invoked for the provision. Modification only applies to format and does not apply to the content of this document.
+            
+            SISO Inc. Board of Directors 
+            
+            P.O. Box 781238
+            Orlando, FL 32878-1238, USA</xs:documentation>
+    </xs:annotation>
+
+</xs:schema>

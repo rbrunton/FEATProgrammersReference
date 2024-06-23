@@ -1,0 +1,598 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:fedagree="http://www.sisostds.org/schemas/feat/v1"
+    xmlns:mscdms="http://metadata.dod.mil/mdr/ns/MSCDMS/1.3.1/"
+    xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xlink="http://www.w3.org/1999/xlink"
+    targetNamespace="http://www.sisostds.org/schemas/feat/v1">
+
+    <xs:import namespace="http://www.opengis.net/gml/3.2" schemaLocation="gml/3.2.1/gml.xsd"/>
+    <xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="xlink.xsd"/>
+
+    <xs:include schemaLocation="fedagree-common.xsd"/>
+    <xs:include schemaLocation="fedagree-metadata.xsd"/>
+
+    <xs:element name="infrastructure">
+        <xs:annotation>
+            <xs:documentation>
+                Technical agreements about hardware, software, network protocols, and processes for 
+                implementing the infrastructure to support federation execution.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:networking" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:physicalSecurity" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:middleware" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:secondaryCommChannels" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:assetAllocation" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:hardwareConfiguration" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="fedagree:locations" minOccurs="0" maxOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="networking">
+        <xs:annotation>
+            <xs:documentation>
+                Networking layout, network protocols used, WAN, LAN, VLAN, ports used.    
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="fedagree:image" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="fedagree:networkSegment" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="physicalSecurity">
+        <xs:annotation>
+            <xs:documentation>
+                Physical security requirements and procedures for the facility(ies) in which execution takes place:  
+                visit requests, restrictions due to nationality (e.g. non-US observing US exercises).    
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="securityRequirement" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="minimumClearance" type="fedagree:clearanceEnum"
+                                minOccurs="0"/>
+                            <xs:element name="visitRequestForm" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:attributeGroup ref="fedagree:remoteDocAttrs"/>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="visitRequestPOCs" type="fedagree:pocListType"
+                                minOccurs="1" maxOccurs="1"/>
+                        </xs:sequence>
+                        <xs:attribute name="locationRef" type="xs:IDREF" use="required">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    Reference to the unique ID of a separately included physical location to which this
+                                    security restriction applies.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="middleware">
+        <xs:annotation>
+            <xs:documentation>
+                Software that connects or integrates other software modules or components, typically providing a set of
+                communications or interaction functions that may be invoked by the linked modules.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="fedagree:middlewareInstance" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="middlewareInstance">
+        <xs:annotation>
+            <xs:documentation>
+                Middleware type, version, and configuration parameters and switches; references to configuration files.
+                Both of the child elements of this element allow a sequence of any valid XML elements as their children
+                in order to support various vendor-specific XML-encoded configurations.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="supportedInteropStandards">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="interopStandard" type="fedagree:simArchitectureType"
+                                minOccurs="0" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="simComponentConfiguration" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:any processContents="lax" minOccurs="0"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="centralComponentConfiguration" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:any processContents="lax" minOccurs="0"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="toolRef" use="optional" type="xs:IDREF">
+                <xs:annotation>
+                    <xs:documentation>
+                        Reference to the unique ID of a previously included middleware tool.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="secondaryCommChannels">
+        <xs:annotation>
+            <xs:documentation>
+                Non-data exchange model data, e.g. video or chat; live entity, C4I protocols, 
+                and HWIL communication protocols.    
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="channel" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="connectionInstructions" type="xs:string" minOccurs="0"
+                                maxOccurs="1"/>
+                            <xs:element name="connectionRole" type="xs:string" minOccurs="0"
+                                maxOccurs="1"/>
+                            <xs:element name="protocol" minOccurs="1" maxOccurs="unbounded"
+                                type="xs:string"/>
+                            <xs:element name="connectedHardwareList">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="connectedHardware" minOccurs="0"
+                                            maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:attribute name="hardwareRef" type="xs:IDREF">
+                                                  <xs:annotation>
+                                                  <xs:documentation>
+                                                            Reference to the unique ID of a previously included hardware element.
+                                                        </xs:documentation>
+                                                  </xs:annotation>
+                                                </xs:attribute>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="connectedLocationList">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="connectedLocation" minOccurs="0"
+                                            maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:attribute name="locationRef" type="xs:IDREF">
+                                                  <xs:annotation>
+                                                  <xs:documentation>
+                                                            Reference to the unique ID of a previously included location element.
+                                                        </xs:documentation>
+                                                  </xs:annotation>
+                                                </xs:attribute>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="POCs" type="fedagree:pocListType" minOccurs="1"
+                                maxOccurs="1"/>
+                        </xs:sequence>
+                        <xs:attribute name="name" type="xs:string" use="required"/>
+                        <xs:attribute name="id" type="xs:ID" use="required"/>
+                        <xs:attribute name="type" type="xs:string" use="required"/>
+                        <xs:attribute name="role" type="xs:string" use="optional"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="assetAllocation">
+        <xs:annotation>
+            <xs:documentation>
+                Allocation of simulation systems, member applications, and live systems to specific hardware.    
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="asset" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="description" type="xs:string" maxOccurs="1"/>
+                            <xs:element name="configDescription" type="xs:string" maxOccurs="1"/>
+                            <xs:element name="configuration" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>
+                                        Arbitrary XML is allowed for child elements in order to support vendor-specific XML-encoded data.
+                                    </xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:any processContents="lax" minOccurs="0"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="name" type="xs:string" use="required"/>
+                        <xs:attribute name="role" type="xs:string" use="optional"/>
+                        <xs:attribute name="toolRef" use="required" type="xs:IDREF">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    Reference to the unique ID of a previously included tool element.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="hardwareRef" use="required" type="xs:IDREF">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    Reference to the unique ID of a previously included hardware element.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="hardwareConfiguration">
+        <xs:annotation>
+            <xs:documentation>
+                Specifies hardware to which software (including middleware) must be deployed and 
+                hardware configuration including OS versions.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="hardware" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:attribute name="name" use="required" type="xs:string"/>
+                        <xs:attribute name="description" use="optional" type="xs:string"/>
+                        <xs:attribute name="id" use="required" type="xs:ID"/>
+                        <xs:attribute name="ipAddress" use="optional" type="fedagree:ipaddr"/>
+                        <xs:attribute name="locationRef" use="optional" type="xs:IDREF">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    Reference to the unique ID of a previously included location element.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="hostRef" use="optional" type="xs:IDREF">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    Reference to the unique ID of a previously physical hardware host in the 
+                                    case of virtual machines.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="osRef" type="xs:IDREF" use="required">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    Reference to the unique ID of a previously included tool element representing the 
+                                    operating system used on this hardware.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="assetType" use="optional">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:enumeration value="physical hardware baseline"/>
+                                    <xs:enumeration value="hypervisor type 1"/>
+                                    <xs:enumeration value="hypervisor type 2"/>
+                                    <xs:enumeration value="don't care"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="locations">
+        <xs:annotation>
+            <xs:documentation>
+                Identification of sites where federation components will be instantiated.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fedagree:remoteDocumentRef" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="location" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:choice>
+                                <xs:annotation>
+                                    <xs:documentation>
+                                        Locations can be represented by address, geographical bounding box, or a geographical point.
+                                    </xs:documentation>
+                                </xs:annotation>
+                                <xs:element name="address" type="fedagree:addressType"/>
+                                <xs:element ref="gml:boundedBy"/>
+                                <xs:element ref="gml:Point"/>
+                            </xs:choice>
+                            <xs:element name="phone" type="fedagree:phoneType" minOccurs="0"
+                                maxOccurs="1">
+                                <xs:annotation>
+                                    <xs:documentation>
+                                        Main contact phone number for this location.
+                                    </xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="POCs" type="fedagree:pocListType" minOccurs="1"
+                                maxOccurs="1">
+                                <xs:annotation>
+                                    <xs:documentation>
+                                        Points of contact for this location.
+                                    </xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="constraints" type="fedagree:contraintsType"
+                                maxOccurs="1">
+                                <xs:annotation>
+                                    <xs:documentation>
+                                        Environmental constraints for the use of this location.
+                                    </xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="siteName" type="xs:string" use="required"/>
+                        <xs:attribute name="id" type="xs:ID" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="fedagree:common"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="addressType">
+        <xs:annotation>
+            <xs:documentation>
+                Extends the MSC-DMS addressInfoType with the addition of an optional room number.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="fedagree:addressInfoType">
+                <xs:sequence>
+                    <xs:element name="roomNumber" minOccurs="0" maxOccurs="1"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="contraintsType">
+        <xs:annotation>
+            <xs:documentation>
+                Environmental constraints that could limit the use of a physical location, including
+                weather (temperature, wind speed, precipiation, relative humidity), illuminance, and visibility.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="timePeriodConstraint" type="gml:TimePeriodType"/>
+                <xs:element name="weatherConstraint">
+                    <xs:complexType>
+                        <xs:attribute name="tempScale" type="fedagree:tempScaleEnumeration"
+                            default="Fahrenheit"/>
+                        <xs:attribute name="minTemp" type="xs:decimal"/>
+                        <xs:attribute name="maxTemp" type="xs:decimal"/>
+                        <xs:attribute name="windSpeedScale" type="fedagree:velocityUnitsEnumeration"/>
+                        <xs:attribute name="maxWindspeed" type="xs:decimal"/>
+                        <xs:attribute name="maxPrecipitation"
+                            type="fedagree:precipitationEnumeration" default="none"/>
+                        <xs:attribute name="maxRelativeHumidity"
+                            type="fedagree:relativeHumidityType"/>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="illuminanceConstraint">
+                    <xs:complexType>
+                        <xs:attribute name="illuminanceUnits" fixed="lux" type="xs:string"/>
+                        <xs:attribute name="maxLux" type="xs:decimal"/>
+                        <xs:attribute name="minLux" type="xs:decimal"/>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="visibilityConstraint">
+                    <xs:complexType>
+                        <xs:attribute name="distanceUnits" type="fedagree:distanceUnitsEnumeration"/>
+                        <xs:attribute name="distance" type="xs:decimal"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="relativeHumidityType">
+        <xs:annotation>
+            <xs:documentation>
+                In percent.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="800">
+                <xs:annotation>
+                    <xs:documentation>
+                        Yes, this is higher than 100%. According to Elements of Meteorology, perfectly clean air can
+                        be super-saturated to 800% before water droplets form (ISBIN-13: 978-0675200059).
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:maxInclusive>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="distanceUnitsEnumeration">
+        <xs:annotation>
+            <xs:documentation>
+                Enumeration of units of distance
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="miles"/>
+            <xs:enumeration value="feet"/>
+            <xs:enumeration value="meters"/>
+            <xs:enumeration value="kilometers"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="precipitationEnumeration">
+        <xs:annotation>
+            <xs:documentation>
+                Enumeration of types of precipitation
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="none"/>
+            <xs:enumeration value="rain"/>
+            <xs:enumeration value="sleet"/>
+            <xs:enumeration value="hail"/>
+            <xs:enumeration value="snow"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="tempScaleEnumeration">
+        <xs:annotation>
+            <xs:documentation>
+                Enumeration of temperature scales
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Fahrenheit"/>
+            <xs:enumeration value="Celsius"/>
+            <xs:enumeration value="Kelvin"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="velocityUnitsEnumeration">
+        <xs:annotation>
+            <xs:documentation>
+                Enumeration of units of velocity
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="milesPerHour"/>
+            <xs:enumeration value="kilometersPerHour"/>
+            <xs:enumeration value="metersPerSecond"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="ipaddr">
+        <xs:annotation>
+            <xs:documentation>
+                IP address
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern
+                value="((1?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.){3}(1?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])"
+            />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:element name="networkSegment">
+        <xs:annotation>
+            <xs:documentation>
+                Complex type for describing a network segment
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="bandwidth" minOccurs="0">
+                    <xs:complexType>
+                        <xs:attribute name="value" type="xs:int" use="required"/>
+                        <xs:attribute name="units" type="fedagree:bandwidthUnits" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="latency" minOccurs="0" type="xs:float">
+                    <xs:annotation>
+                        <xs:documentation>
+                            This is in milliseconds.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="protocol" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:attribute name="name" use="required" type="xs:string"/>
+                        <xs:attribute name="minPortNumber" use="optional" type="xs:int"/>
+                        <xs:attribute name="maxPortNumber" use="optional" type="xs:int"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="ID" type="xs:IDREF"/>
+            <xs:attribute name="type" type="xs:string"/>
+            <xs:attribute name="vmNetworkType" use="optional">
+                <xs:annotation>
+                    <xs:documentation>
+                        Options taken from: http://www.virtualbox.org/manual/ch06.html
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="vm-internal"/>
+                        <xs:enumeration value="vm-host-only"/>
+                        <xs:enumeration value="vm-bridged"/>
+                        <xs:enumeration value="vm-nat"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:simpleType name="bandwidthUnits">
+        <xs:annotation>
+            <xs:documentation>
+                Enumeration of units of network bandwidth
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Kbps"/>
+            <xs:enumeration value="Mbps"/>
+            <xs:enumeration value="Gbps"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:annotation>
+        <xs:documentation>Copyright © 2013 by the Simulation Interoperability Standards Organization, Inc. 
+            
+            P.O. Box 781238
+            
+            Orlando, FL 32878-1238, USA
+            
+            All rights reserved.
+            
+            Permission is hereby granted for this document to be used for production of both commercial and non- commercial products. Removal of this copyright statement and claiming rights to this document is prohibited. In addition, permission is hereby granted for this document to be distributed in its original or modified format (e.g. as part of a database) provided that no charge is invoked for the provision. Modification only applies to format and does not apply to the content of this document.
+            
+            SISO Inc. Board of Directors 
+            
+            P.O. Box 781238
+            Orlando, FL 32878-1238, USA</xs:documentation>
+    </xs:annotation>
+
+</xs:schema>
